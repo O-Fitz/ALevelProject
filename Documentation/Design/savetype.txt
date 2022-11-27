@@ -1,0 +1,13 @@
+	rigidbodies{
+
+	[Circle] {
+		[Vector] position = {10.0, 1.0};
+		[Vector] velocity = {0.0, 0.0};
+		[Vector] force = {};
+		[Double] mass = 1;
+		[Double] radius = 1;
+	},
+
+	[]
+
+}
