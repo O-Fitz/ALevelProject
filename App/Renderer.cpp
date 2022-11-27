@@ -86,37 +86,30 @@ void Renderer::renderSimulation(std::vector<Body> bodies) {
     glGenFramebuffers(1, &fbo);
     glBindFramebuffer(GL_FRAMEBUFFER, fbo);
 
-    GLuint TOF;
-    glGenTextures(1, &TOF);
-    glBindTexture(GL_TEXTURE_2D, TOF);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 400, 300, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+    // generate texture
+    unsigned int tex;
+    glGenTextures(1, &tex);
+    glBindTexture(GL_TEXTURE_2D, tex);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 800, 600, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glBindTexture(GL_TEXTURE_2D, 0);
 
-    
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, tex, 0);
+
+    // ImGUI window
     ImGui::Begin("Viewport");
     //ImGui::Text("This is some useful text.");
-
-    //renderCircle(Vector());
     renderCircle(Vector(0, 0), 0.5);
-
-    float view3d_height = ImGui::GetWindowSize().x;
-    float view3d_width = ImGui::GetWindowSize().y;
-    ImVec2 pos = ImGui::GetCursorScreenPos();
-    ImGui::GetWindowDrawList()->AddImage(
-        (void*)TOF,
-        ImVec2(ImGui::GetCursorScreenPos()),
-        ImVec2(ImGui::GetCursorScreenPos().x + ImGui::GetWindowSize().x - 15,
-            ImGui::GetCursorScreenPos().y + ImGui::GetWindowSize().y - 35),
-        ImVec2(0, 1),
-        ImVec2(1, 0)
-
-    );
-    
+    ImVec2 wsize = ImGui::GetWindowSize();
+    ImGui::Image((ImTextureID)tex, wsize, ImVec2(0, 1), ImVec2(1, 0));
     ImGui::End();
 
+
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    glBindTexture(GL_TEXTURE_2D, 0);
     glDeleteFramebuffers(1, &fbo);
-    glDeleteTextures(1, &TOF);
+    glDeleteTextures(1, &tex);
 
 
 }
