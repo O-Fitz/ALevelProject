@@ -1,12 +1,12 @@
 #pragma once
-#include "Maths/Vector.h"
+#include "glm/glm.hpp"
 
 struct Projection {
 	double min;
 	double max;
-	Vector axis;
+	glm::vec2 axis;
 
-	Projection(Vector axis);
-	Projection(Vector axis, double min, double max);
+	Projection(glm::vec2 axis);
+	Projection(glm::vec2 axis, double min, double max);
 };
 

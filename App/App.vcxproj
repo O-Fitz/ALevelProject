@@ -149,6 +149,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Body.h" />
+    <ClInclude Include="Circle.h" />
     <ClInclude Include="Collisions.h" />
     <ClInclude Include="definitions.h" />
     <ClInclude Include="External\glm\common.hpp" />
@@ -314,6 +315,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Body.cpp" />
+    <ClCompile Include="Circle.cpp" />
     <ClCompile Include="Collisions.cpp" />
     <ClCompile Include="External\glm\detail\glm.cpp" />
     <ClCompile Include="imgui\backends\imgui_impl_glfw.cpp" />

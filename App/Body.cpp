@@ -5,7 +5,7 @@ void Body::render(Renderer* renderer) {
 	
 }
 
-Projection Body::project(Vector axis) {
+Projection Body::project(glm::vec2 axis) {
 	return Projection(axis);
 }
 

@@ -4,7 +4,6 @@
 
 #include "imguiInclude.h"
 #include <vector>
-#include "Maths/Vector.h"
 #include "Body.h"
 #include "Simulation.h"
 
@@ -40,13 +39,13 @@ private:
 	Simulation* simulation;
 public:
 
-	Renderer(GLFWwindow* win);
+	Renderer(GLFWwindow* win, Simulation* sim);
 	void newFrame();
 	void renderImGUI();
 	void renderSimulation();
 
-	void renderCircle(Vector position, double radius, ImVec4 colour);
-	void renderPolygon(Vector position, std::vector<Vector> verticies, ImVec4 colour);
+	void renderCircle(glm::vec2 position, double radius, ImVec4 colour);
+	void renderPolygon(glm::vec2 position, std::vector<glm::vec2> verticies, ImVec4 colour);
 
 private:
 

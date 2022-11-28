@@ -537,6 +537,9 @@
     <ClInclude Include="External\glm\detail\type_vec4.hpp">
       <Filter>External\glm\detail</Filter>
     </ClInclude>
+    <ClInclude Include="Circle.h">
+      <Filter>Bodies</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="imgui\imgui.cpp">
@@ -592,6 +595,9 @@
     </ClCompile>
     <ClCompile Include="External\glm\detail\glm.cpp">
       <Filter>External\glm\detail</Filter>
+    </ClCompile>
+    <ClCompile Include="Circle.cpp">
+      <Filter>Bodies</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

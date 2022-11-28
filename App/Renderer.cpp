@@ -1,7 +1,7 @@
 #include "Renderer.h"
 
-Renderer::Renderer(GLFWwindow* win) {
-	window = win;
+Renderer::Renderer(GLFWwindow* win, Simulation* sim) : window(win), simulation(sim) {
+	
 }
 
 void Renderer::newFrame() {
@@ -102,7 +102,12 @@ void Renderer::renderSimulation() {
 	glClear(GL_COLOR_BUFFER_BIT);
 
 	// RENDER SIMULATION HERE
-	renderCircle(Vector(wsize.x/2, wsize.y/2), 10, ImVec4(1.0, 0.0, 0.0, 1.0));
+
+	for (auto body : simulation->getBodies()) {
+		body.render(this);
+	}
+
+	renderCircle(glm::vec2(wsize.x/2, wsize.y/2), 10, ImVec4(1.0, 0.0, 0.0, 1.0));
 
 	// Unbinds Frame buffer
 	fb.unbind();
@@ -132,12 +137,12 @@ void Renderer::renderSimulation() {
 	glVertex2f(-1, -1);
 
 	glEnd();
-	renderCircle(Vector(1, 1), 0.5);*/
+	renderCircle(glm::vec2(1, 1), 0.5);*/
 
 
 }
 
-void Renderer::renderCircle(Vector position, double radius, ImVec4 colour) {
+void Renderer::renderCircle(glm::vec2 position, double radius, ImVec4 colour) {
 	glBegin(GL_TRIANGLE_FAN);
 	// Change colour
 	glColor4f(colour.x, colour.y, colour.z, colour.w);
@@ -151,12 +156,12 @@ void Renderer::renderCircle(Vector position, double radius, ImVec4 colour) {
 	glEnd();
 }
 
-void Renderer::renderPolygon(Vector position, std::vector<Vector> verticies, ImVec4 colour) {
+void Renderer::renderPolygon(glm::vec2 position, std::vector<glm::vec2> verticies, ImVec4 colour) {
 
 	glBegin(GL_TRIANGLE_FAN);
 	glColor4f(colour.x, colour.y, colour.z, colour.w);
 
-	for (auto vertex : verticies) {
+	for (const glm::vec2& vertex : verticies) {
 		glVertex2d(pos.x, pos.y);
 	}
 

@@ -127,8 +127,11 @@ void cleanup(GLFWwindow* window) {
 
 void mainloop(GLFWwindow* window, ImGuiIO& io) {
 
-	Renderer renderer = Renderer(window);
 
+	Simulation simulation = Simulation();
+	Renderer renderer = Renderer(window, &simulation);
+
+	double dt;
 
 	// Main loop
 	while (!glfwWindowShouldClose(window))
@@ -140,8 +143,13 @@ void mainloop(GLFWwindow* window, ImGuiIO& io) {
 		// Generally you may always pass all inputs to dear imgui, and hide them from your application based on those two flags.
 		glfwPollEvents();
 
-		// Start the Dear ImGui frame
 
+		// Update simulation
+		dt = ImGui::GetIO().DeltaTime;
+		simulation.update(dt);
+
+
+		// Render the simulation
 		renderer.newFrame();
 		renderer.renderSimulation();
 		renderer.renderImGUI();
