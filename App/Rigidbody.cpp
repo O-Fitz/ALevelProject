@@ -1,4 +1,5 @@
 #include "Rigidbody.h"
+#include "Renderer.h"
 
 Rigidbody::Rigidbody() {
 	verticies = std::vector<glm::vec2>();
@@ -31,6 +32,11 @@ void Rigidbody::render(Renderer* renderer) {
 
 void Rigidbody::update(double dt) {
 	glm::fvec1 dtv = glm::fvec1(dt);
-	velocity = velocity + (force / glm::fvec1(mass)) * dtv;
+	velocity += (force / glm::fvec1(mass)) * dtv;
+	position += velocity * dtv;
 
+}
+
+Projection Rigidbody::project(glm::vec2 axis) {
+	return Projection(axis);
 }

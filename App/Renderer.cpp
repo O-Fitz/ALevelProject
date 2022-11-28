@@ -103,8 +103,11 @@ void Renderer::renderSimulation() {
 
 	// RENDER SIMULATION HERE
 
-	for (auto body : simulation->getBodies()) {
-		body.render(this);
+	std::vector<Body*> n = simulation->getBodies();
+	for (int i = 0; i < n.size(); i++) {
+		//body.render(this);
+		n[i]->print();
+		//n[i].render(this);
 	}
 
 	renderCircle(glm::vec2(wsize.x/2, wsize.y/2), 10, ImVec4(1.0, 0.0, 0.0, 1.0));

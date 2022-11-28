@@ -13,9 +13,6 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Maths">
-      <UniqueIdentifier>{980f2292-29f6-4fa2-8356-fb2f3d8dc8de}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Collisions">
       <UniqueIdentifier>{23c3c9da-a265-49cd-9ddd-813381546c8f}</UniqueIdentifier>
     </Filter>
@@ -46,6 +43,9 @@
     <Filter Include="External\glm\detail">
       <UniqueIdentifier>{bc7b362b-ce6c-4c09-b494-cdd17309a91c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Other">
+      <UniqueIdentifier>{eca9f747-2a4a-45ba-bcbb-f7c6d370a5eb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="imgui\imconfig.h">
@@ -74,9 +74,6 @@
     </ClInclude>
     <ClInclude Include="imgui\backends\imgui_impl_opengl3_loader.h">
       <Filter>External\imgui\backends</Filter>
-    </ClInclude>
-    <ClInclude Include="Maths\Vector.h">
-      <Filter>Maths</Filter>
     </ClInclude>
     <ClInclude Include="Renderer.h">
       <Filter>Header Files</Filter>
@@ -540,6 +537,9 @@
     <ClInclude Include="Circle.h">
       <Filter>Bodies</Filter>
     </ClInclude>
+    <ClInclude Include="Other\PList.h">
+      <Filter>Other</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="imgui\imgui.cpp">
@@ -565,9 +565,6 @@
     </ClCompile>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Maths\Vector.cpp">
-      <Filter>Maths</Filter>
     </ClCompile>
     <ClCompile Include="Renderer.cpp">
       <Filter>Source Files</Filter>
@@ -598,6 +595,9 @@
     </ClCompile>
     <ClCompile Include="Circle.cpp">
       <Filter>Bodies</Filter>
+    </ClCompile>
+    <ClCompile Include="Other\PList.cpp">
+      <Filter>Other</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

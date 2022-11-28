@@ -12,5 +12,6 @@ public:
 	void render(Renderer* renderer);
 	Projection project(glm::vec2 axis);
 	void update(double dt);
+	void print();
 
 };
