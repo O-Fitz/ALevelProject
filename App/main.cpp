@@ -1,4 +1,5 @@
 #include "Renderer.h"
+#include "Simulation.h"
 #include <iostream>
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1900) && !defined(IMGUI_DISABLE_WIN32_FUNCTIONS)
@@ -69,6 +70,8 @@ int main(int, char**)
         return 1;
     }
 
+    glEnable(GL_TEXTURE_2D);
+
     // Setup Dear ImGui style
     ImGui::StyleColorsDark();
     //ImGui::StyleColorsLight();
@@ -126,10 +129,6 @@ void mainloop(GLFWwindow* window, ImGuiIO& io) {
 
     Renderer renderer = Renderer(window);
 
-    // Our state
-    bool show_demo_window = true;
-    bool show_another_window = false;
-    ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
     std::vector<Body> bodies = std::vector<Body>();
 
@@ -145,11 +144,11 @@ void mainloop(GLFWwindow* window, ImGuiIO& io) {
 
         // Start the Dear ImGui frame
 
-        renderer.newFrame(clear_color);
+        renderer.newFrame();
 
         renderer.renderSimulation(bodies);
         
-        renderer.renderImGUI(show_demo_window, show_another_window, clear_color);
+        renderer.renderImGUI();
 
         glfwSwapBuffers(window);
         

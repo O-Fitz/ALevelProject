@@ -1,126 +1,175 @@
 #include "Renderer.h"
-#include "Body.h"
 
 Renderer::Renderer(GLFWwindow* win) {
-    window = win;
+	window = win;
 }
 
-void Renderer::newFrame(ImVec4& clear_color) {
+void Renderer::newFrame() {
 
-    ImGui_ImplOpenGL3_NewFrame();
-    ImGui_ImplGlfw_NewFrame();
-    ImGui::NewFrame();
+	ImGui_ImplOpenGL3_NewFrame();
+	ImGui_ImplGlfw_NewFrame();
+	ImGui::NewFrame();
 
-    int display_w, display_h;
-    glfwGetFramebufferSize(window, &display_w, &display_h);
-    glViewport(0, 0, display_w, display_h);
-    glClearColor(clear_color.x * clear_color.w, clear_color.y * clear_color.w, clear_color.z * clear_color.w, clear_color.w);
-    glClear(GL_COLOR_BUFFER_BIT);
+	//ImGui::DockSpaceOverViewport();
+
+	int display_w, display_h;
+	glfwGetFramebufferSize(window, &display_w, &display_h);
+	glViewport(0, 0, display_w, display_h);
+	glClearColor(background.x * background.w, background.y * background.w, background.z * background.w, background.w);
+	glClear(GL_COLOR_BUFFER_BIT);
 }
 
-void Renderer::renderImGUI(bool& show_demo_window, bool& show_another_window, ImVec4& clear_color) {
+void Renderer::renderImGUI() {
 
-    ImGuiIO& io = ImGui::GetIO(); (void)io;
+	ImGuiIO& io = ImGui::GetIO(); (void)io;
 
-    // 1. Show the big demo window (Most of the sample code is in ImGui::ShowDemoWindow()! You can browse its code to learn more about Dear ImGui!).
-    if (show_demo_window)
-        ImGui::ShowDemoWindow(&show_demo_window);
+	// 1. Show the big demo window (Most of the sample code is in ImGui::ShowDemoWindow()! You can browse its code to learn more about Dear ImGui!).
+	if (show_demo_window)
+		ImGui::ShowDemoWindow(&show_demo_window);
 
-    // 2. Show a simple window that we create ourselves. We use a Begin/End pair to create a named window.
-    {
-        static float f = 0.0f;
-        static int counter = 0;
+	// 2. Show a simple window that we create ourselves. We use a Begin/End pair to create a named window.
+	{
+		static float f = 0.0f;
+		static int counter = 0;
 
-        ImGui::Begin("Hello, world!");                          // Create a window called "Hello, world!" and append into it.
+		ImGui::Begin("Hello, world!");                          // Create a window called "Hello, world!" and append into it.
 
-        ImGui::Text("This is some useful text.");               // Display some text (you can use a format strings too)
-        ImGui::Checkbox("Demo Window", &show_demo_window);      // Edit bools storing our window open/close state
-        ImGui::Checkbox("Another Window", &show_another_window);
+		ImGui::Text("This is some useful text.");               // Display some text (you can use a format strings too)
+		ImGui::Checkbox("Demo Window", &show_demo_window);      // Edit bools storing our window open/close state
+		ImGui::Checkbox("Another Window", &show_another_window);
 
-        ImGui::SliderFloat("float", &f, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
-        ImGui::ColorEdit3("clear color", (float*)&clear_color); // Edit 3 floats representing a color
+		ImGui::SliderFloat("float", &f, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
+		ImGui::ColorEdit3("clear color", (float*)&background); // Edit 3 floats representing a color
 
-        if (ImGui::Button("Button"))                            // Buttons return true when clicked (most widgets return true when edited/activated)
-            counter++;
-        ImGui::SameLine();
-        ImGui::Text("counter = %d", counter);
+		if (ImGui::Button("Button"))                            // Buttons return true when clicked (most widgets return true when edited/activated)
+			counter++;
+		ImGui::SameLine();
+		ImGui::Text("counter = %d", counter);
 
-        ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
-        ImGui::End();
-    }
+		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+		ImGui::End();
+	}
 
-    // 3. Show another simple window.
-    if (show_another_window)
-    {
-        ImGui::Begin("Another Window", &show_another_window);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked)
-        ImGui::Text("Hello from another window!");
-        if (ImGui::Button("Close Me"))
-            show_another_window = false;
-        ImGui::End();
-    }
+	// 3. Show another simple window.
+	if (show_another_window)
+	{
+		ImGui::Begin("Another Window", &show_another_window);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked)
+		ImGui::Text("Hello from another window!");
+		if (ImGui::Button("Close Me"))
+			show_another_window = false;
+		ImGui::End();
+	}
 
-    // Rendering
-    ImGui::Render();
-    
-    ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+	// Rendering
+	ImGui::Render();
+	
+	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
-    // Update and Render additional Platform Windows
-    // (Platform functions may change the current OpenGL context, so we save/restore it to make it easier to paste this code elsewhere.
-    //  For this specific demo app we could also call glfwMakeContextCurrent(window) directly)
-    if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
-    {
-        GLFWwindow* backup_current_context = glfwGetCurrentContext();
-        ImGui::UpdatePlatformWindows();
-        ImGui::RenderPlatformWindowsDefault();
-        glfwMakeContextCurrent(backup_current_context);
-    }
+	// Update and Render additional Platform Windows
+	// (Platform functions may change the current OpenGL context, so we save/restore it to make it easier to paste this code elsewhere.
+	//  For this specific demo app we could also call glfwMakeContextCurrent(window) directly)
+	if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+	{
+		GLFWwindow* backup_current_context = glfwGetCurrentContext();
+		ImGui::UpdatePlatformWindows();
+		ImGui::RenderPlatformWindowsDefault();
+		glfwMakeContextCurrent(backup_current_context);
+	}
 }
 
 void Renderer::renderSimulation(std::vector<Body> bodies) {
-    
-    for (auto body : bodies) {
-        body.render(this);
-    }
+	
+	// Setup ImGui window with no border
+	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
+	ImGui::Begin("Viewport");
 
-    unsigned int fbo;
-    glGenFramebuffers(1, &fbo);
-    glBindFramebuffer(GL_FRAMEBUFFER, fbo);
+	// Updates the window position and size
+	wsize = ImGui::GetWindowSize();
+	pos = ImGui::GetCursorScreenPos();
 
-    // generate texture
-    unsigned int tex;
-    glGenTextures(1, &tex);
-    glBindTexture(GL_TEXTURE_2D, tex);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 800, 600, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glBindTexture(GL_TEXTURE_2D, 0);
+	// Initialises and binds Frame Buffer
+	fb.create_buffers(wsize.x, wsize.y);
+	fb.bind();
 
-    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, tex, 0);
+	// Clear the window
+	glClearColor(background.x * background.w, background.y * background.w, background.z * background.w, background.w);
+	glClear(GL_COLOR_BUFFER_BIT);
 
-    // ImGUI window
-    ImGui::Begin("Viewport");
-    //ImGui::Text("This is some useful text.");
-    renderCircle(Vector(0, 0), 0.5);
-    ImVec2 wsize = ImGui::GetWindowSize();
-    ImGui::Image((ImTextureID)tex, wsize, ImVec2(0, 1), ImVec2(1, 0));
-    ImGui::End();
+	// RENDER SIMULATION HERE
+	renderCircle(Vector(0.5, 0.5), 0.25, ImVec4(1.0, 0.0, 0.0, 1.0));
+
+	// Unbinds Frame buffer
+	fb.unbind();
+
+	// Draws the texture linked to the frame buffer to the screen
+	ImGui::GetWindowDrawList()->AddImage(
+		(void*)fb.get_texture(), ImVec2(ImGui::GetCursorScreenPos()),
+		ImVec2(pos.x + wsize.x, pos.y + wsize.y), ImVec2(0, 1), ImVec2(1, 0));
+
+	// End of ImGui window
+	ImGui::End();
+	ImGui::PopStyleVar(ImGuiStyleVar_WindowPadding);
 
 
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
-    glBindTexture(GL_TEXTURE_2D, 0);
-    glDeleteFramebuffers(1, &fbo);
-    glDeleteTextures(1, &tex);
+	// TEST TEXTURE ON BACKGROUND
+	/*glBindTexture(GL_TEXTURE_2D, fb.get_texture());
+	glBegin(GL_TRIANGLES);
+
+	glColor4f(1.0, 1.0, 1.0, 1.0);
+
+	glVertex2f(-1, -1);
+	glVertex2f(-1, 1);
+	glVertex2f(1, 1);
+
+	glVertex2f(1, 1);
+	glVertex2f(1, -1);
+	glVertex2f(-1, -1);
+
+	glEnd();
+	renderCircle(Vector(1, 1), 0.5);*/
 
 
 }
 
-void Renderer::renderCircle(Vector position, double radius) {
-    glBegin(GL_TRIANGLE_FAN);
-    glVertex2f(position.x, position.y);
-    for (double i = 0; i <= 2 * PI + 0.1; i += 0.1)
-    {
-        glVertex2f(position.x + sin(i) * radius, position.y + cos(i) * radius);
-    }
-    glEnd();
+void Renderer::renderCircle(Vector position, double radius, ImVec4 colour) {
+	glBegin(GL_TRIANGLE_FAN);
+	// Change colour
+	glColor4f(colour.x, colour.y, colour.z, colour.w);
+	glVertex2f(position.x, position.y);
+	
+	for (double i = 0; i <= 2 * PI + 0.1; i += 0.1)
+	{
+		// Rotates 0.1 rads round the circle and draws a line
+		glVertex2f(position.x + sin(i) * radius, position.y + cos(i) * radius);
+	}
+	glEnd();
 }
 
+void Renderer::renderPolygon(Vector position, std::vector<Vector> verticies, ImVec4 colour) {
+
+	glBegin(GL_TRIANGLE_FAN);
+	glColor4f(colour.x, colour.y, colour.z, colour.w);
+
+	for (auto vertex : verticies) {
+		Vector pos = transformPosition(position + vertex);
+		glVertex2d(pos.x, pos.y);
+	}
+
+	glEnd();
+}
+
+Vector Renderer::transformPosition(Vector position) {
+	Vector simSize = simulation->getSimulationSize();
+
+	double scale = 2 / std::max(simSize.x, simSize.y);
+
+	return Vector(1, 1) - (position * scale);
+
+}
+
+Vector Renderer::transformRadius(double radius) {
+	Vector simSize = simulation->getSimulationSize();
+	double scale = 2 / std::max(simSize.x, simSize.y);
+
+
+}

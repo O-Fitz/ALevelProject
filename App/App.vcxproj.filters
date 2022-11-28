@@ -28,6 +28,9 @@
     <Filter Include="Bodies">
       <UniqueIdentifier>{e5fc1b66-c2f8-4c44-83ba-b16def082b61}</UniqueIdentifier>
     </Filter>
+    <Filter Include="openglAbstraction">
+      <UniqueIdentifier>{b46495a7-63bf-4d4e-8940-1897b1dd78f5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="imgui\imconfig.h">
@@ -81,6 +84,18 @@
     <ClInclude Include="libs\glew\include\GL\glew.h">
       <Filter>imgui</Filter>
     </ClInclude>
+    <ClInclude Include="openglAbstraction\Framebuffer.h">
+      <Filter>openglAbstraction</Filter>
+    </ClInclude>
+    <ClInclude Include="Simulation.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Square.h">
+      <Filter>Bodies</Filter>
+    </ClInclude>
+    <ClInclude Include="Rectangle.h">
+      <Filter>Bodies</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="imgui\imgui.cpp">
@@ -120,6 +135,18 @@
       <Filter>Bodies</Filter>
     </ClCompile>
     <ClCompile Include="Rigidbody.cpp">
+      <Filter>Bodies</Filter>
+    </ClCompile>
+    <ClCompile Include="openglAbstraction\Framebuffer.cpp">
+      <Filter>openglAbstraction</Filter>
+    </ClCompile>
+    <ClCompile Include="Simulation.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Square.cpp">
+      <Filter>Bodies</Filter>
+    </ClCompile>
+    <ClCompile Include="Rectangle.cpp">
       <Filter>Bodies</Filter>
     </ClCompile>
   </ItemGroup>
