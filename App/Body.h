@@ -11,5 +11,6 @@ public:
 
 	void render(Renderer* renderer);
 	Projection project(Vector axis);
+	void update(double dt);
 
 };

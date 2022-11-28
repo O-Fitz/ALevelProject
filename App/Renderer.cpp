@@ -10,13 +10,14 @@ void Renderer::newFrame() {
 	ImGui_ImplGlfw_NewFrame();
 	ImGui::NewFrame();
 
-	//ImGui::DockSpaceOverViewport();
+	ImGui::DockSpaceOverViewport();
 
 	int display_w, display_h;
 	glfwGetFramebufferSize(window, &display_w, &display_h);
 	glViewport(0, 0, display_w, display_h);
 	glClearColor(background.x * background.w, background.y * background.w, background.z * background.w, background.w);
 	glClear(GL_COLOR_BUFFER_BIT);
+
 }
 
 void Renderer::renderImGUI() {
@@ -77,7 +78,12 @@ void Renderer::renderImGUI() {
 	}
 }
 
-void Renderer::renderSimulation(std::vector<Body> bodies) {
+void Renderer::renderSimulation() {
+
+	// Setup Projection matrix
+	projection = glm::ortho(0.0f, wsize.x, 0.0f, wsize.y, -1.0f, 1.0f);
+	glMatrixMode(GL_PROJECTION_MATRIX);
+	glLoadMatrixf(glm::value_ptr(projection));
 	
 	// Setup ImGui window with no border
 	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
@@ -96,7 +102,7 @@ void Renderer::renderSimulation(std::vector<Body> bodies) {
 	glClear(GL_COLOR_BUFFER_BIT);
 
 	// RENDER SIMULATION HERE
-	renderCircle(Vector(0.5, 0.5), 0.25, ImVec4(1.0, 0.0, 0.0, 1.0));
+	renderCircle(Vector(wsize.x/2, wsize.y/2), 10, ImVec4(1.0, 0.0, 0.0, 1.0));
 
 	// Unbinds Frame buffer
 	fb.unbind();
@@ -151,25 +157,8 @@ void Renderer::renderPolygon(Vector position, std::vector<Vector> verticies, ImV
 	glColor4f(colour.x, colour.y, colour.z, colour.w);
 
 	for (auto vertex : verticies) {
-		Vector pos = transformPosition(position + vertex);
 		glVertex2d(pos.x, pos.y);
 	}
 
 	glEnd();
-}
-
-Vector Renderer::transformPosition(Vector position) {
-	Vector simSize = simulation->getSimulationSize();
-
-	double scale = 2 / std::max(simSize.x, simSize.y);
-
-	return Vector(1, 1) - (position * scale);
-
-}
-
-Vector Renderer::transformRadius(double radius) {
-	Vector simSize = simulation->getSimulationSize();
-	double scale = 2 / std::max(simSize.x, simSize.y);
-
-
 }

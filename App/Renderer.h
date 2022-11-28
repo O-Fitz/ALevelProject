@@ -12,6 +12,9 @@
 #include <algorithm>
 
 #include "openglAbstraction/Framebuffer.h"
+#include "glm/glm.hpp"
+#include "glm/gtc/matrix_transform.hpp"
+#include "glm/gtc/type_ptr.hpp"
 
 class Renderer {
 private:
@@ -24,6 +27,7 @@ private:
 
 	// FrameBuffer for rendering to imgui window
 	FrameBuffer fb = FrameBuffer();
+	glm::mat4 projection;
 
 	// OPTIONS:
 	ImVec4 background = ImVec4(0.45f, 0.55f, 0.60f, 1.00f); // Background colour
@@ -39,14 +43,11 @@ public:
 	Renderer(GLFWwindow* win);
 	void newFrame();
 	void renderImGUI();
-	void renderSimulation(std::vector<Body> bodies);
+	void renderSimulation();
 
 	void renderCircle(Vector position, double radius, ImVec4 colour);
 	void renderPolygon(Vector position, std::vector<Vector> verticies, ImVec4 colour);
 
 private:
-	
-	Vector transformPosition(Vector position);
-	Vector transformRadius(double radius);
 
 };
