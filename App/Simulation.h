@@ -7,15 +7,19 @@
 #include "Body.h"
 #include "Circle.h"
 
+#ifndef PBody 
+#define PBody std::shared_ptr<Body>
+#endif
 
 class Simulation{
 
 private:
 
 	glm::vec2 simSize; // Size of the simulation
-	std::vector<Body*> bodies;
+	std::vector<PBody> bodies;
+	
 
-public:
+public:	
 
 	Simulation();
 	~Simulation();
@@ -25,7 +29,7 @@ public:
 	glm::vec2 getSimulationSize();
 	void setSimulationSize(glm::vec2 newSize);
 
-	std::vector<Body*> getBodies();
+	std::vector<PBody> getBodies();
 
 private:
 

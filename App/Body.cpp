@@ -10,7 +10,7 @@ Projection Body::project(glm::vec2 axis) {
 }
 
 void Body::update(double dt) {
-
+	
 }
 
 void Body::print() {

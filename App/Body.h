@@ -9,9 +9,9 @@ class Body {
 
 public:
 
-	void render(Renderer* renderer);
-	Projection project(glm::vec2 axis);
-	void update(double dt);
-	void print();
+	virtual void render(Renderer* renderer);
+	virtual Projection project(glm::vec2 axis);
+	virtual void update(double dt);
+	virtual void print();
 
 };

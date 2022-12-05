@@ -6,16 +6,18 @@ Renderer::Renderer(GLFWwindow* win, Simulation* sim) : window(win), simulation(s
 
 void Renderer::newFrame() {
 
+	// New ImGui frame
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplGlfw_NewFrame();
 	ImGui::NewFrame();
-
 	ImGui::DockSpaceOverViewport();
-
+	
+	// Update window size
 	int display_w, display_h;
 	glfwGetFramebufferSize(window, &display_w, &display_h);
 	glViewport(0, 0, display_w, display_h);
-	glClearColor(background.x * background.w, background.y * background.w, background.z * background.w, background.w);
+
+	// Clear opengl window buffer
 	glClear(GL_COLOR_BUFFER_BIT);
 
 }
@@ -103,11 +105,9 @@ void Renderer::renderSimulation() {
 
 	// RENDER SIMULATION HERE
 
-	std::vector<Body*> n = simulation->getBodies();
+	std::vector<PBody> n = simulation->getBodies();
 	for (int i = 0; i < n.size(); i++) {
-		//body.render(this);
-		n[i]->print();
-		//n[i].render(this);
+		n[i]->render(this);
 	}
 
 	renderCircle(glm::vec2(wsize.x/2, wsize.y/2), 10, ImVec4(1.0, 0.0, 0.0, 1.0));

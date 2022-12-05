@@ -13,8 +13,8 @@ public:
 	Circle();
 	Circle(double rad, glm::vec2 position, glm::vec2 velocity, glm::vec2 Force, double Mass, ImVec4 col);
 
-	void render(Renderer* renderer);
-	Projection project(glm::vec2 axis);
+	void render(Renderer* renderer) override;
+	Projection project(glm::vec2 axis) override;
 
-	void print();
+	void print() override;
 };

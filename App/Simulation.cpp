@@ -2,14 +2,15 @@
 #include "Renderer.h"
 
 Simulation::Simulation() {
-	bodies = std::vector<Body*>();
+	bodies = std::vector<PBody>();
 
 	glm::vec2 pos = glm::vec2(100, 100);
-	glm::vec2 vel = glm::vec2(10, 10);
+	glm::vec2 vel = glm::vec2(100, 100);
 
-	Circle* c1 = new Circle(20, pos, vel, glm::vec2(0, 0), 1, ImVec4(0.0f, 1.0f, 1.0f, 1.0f));
+	Circle c1 = Circle(20, pos, vel, glm::vec2(0, 0), 1, ImVec4(0.0f, 1.0f, 1.0f, 1.0f));
 
-	bodies.push_back(c1);
+	bodies.push_back(std::make_shared<Circle>(c1));
+
 
 }
 
@@ -37,7 +38,7 @@ glm::vec2 Simulation::getSimulationSize() {
 	return simSize;
 }
 
-std::vector<Body*> Simulation::getBodies() {
+std::vector<PBody> Simulation::getBodies() {
 	return bodies;
 }
 

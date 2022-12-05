@@ -14,7 +14,6 @@ Circle::Circle(double rad, glm::vec2 pos, glm::vec2 vel, glm::vec2 Force, double
 
 
 void Circle::render(Renderer* renderer) {
-	std::cout << "Render Circle" << std::endl;
 	renderer->renderCircle(position, radius, colour);
 }
 
@@ -23,5 +22,5 @@ Projection Circle::project(glm::vec2 axis) {
 }
 
 void Circle::print() {
-	std::cout << "Body" << std::endl;
+	std::cout << "Circle" << std::endl;
 }

@@ -537,9 +537,6 @@
     <ClInclude Include="Circle.h">
       <Filter>Bodies</Filter>
     </ClInclude>
-    <ClInclude Include="Other\PList.h">
-      <Filter>Other</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="imgui\imgui.cpp">
@@ -595,9 +592,6 @@
     </ClCompile>
     <ClCompile Include="Circle.cpp">
       <Filter>Bodies</Filter>
-    </ClCompile>
-    <ClCompile Include="Other\PList.cpp">
-      <Filter>Other</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
