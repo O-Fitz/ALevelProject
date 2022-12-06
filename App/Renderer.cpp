@@ -165,7 +165,7 @@ void Renderer::renderPolygon(glm::vec2 position, std::vector<glm::vec2> verticie
 	glColor4f(colour.x, colour.y, colour.z, colour.w);
 
 	for (const glm::vec2& vertex : verticies) {
-		glVertex2d(pos.x, pos.y);
+		glVertex2d(pos.x+vertex.x, pos.y+vertex.y);
 	}
 
 	glEnd();

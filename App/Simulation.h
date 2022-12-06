@@ -6,6 +6,7 @@
 
 #include "Body.h"
 #include "Circle.h"
+#include "Square.h"
 
 #ifndef PBody 
 #define PBody std::shared_ptr<Body>
