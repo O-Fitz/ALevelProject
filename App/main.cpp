@@ -143,6 +143,10 @@ void mainloop(GLFWwindow* window, ImGuiIO& io) {
 		// Generally you may always pass all inputs to dear imgui, and hide them from your application based on those two flags.
 		glfwPollEvents();
 
+		// Set simulation size
+		ImVec2 rsize = renderer.getWindowSize();
+		glm::vec2 size = glm::vec2(rsize.x, rsize.y);
+		simulation.setSimulationSize(size);
 
 		// Update simulation
 		dt = ImGui::GetIO().DeltaTime;

@@ -170,3 +170,7 @@ void Renderer::renderPolygon(glm::vec2 position, std::vector<glm::vec2> verticie
 
 	glEnd();
 }
+
+ImVec2 Renderer::getWindowSize() {
+	return wsize;
+}

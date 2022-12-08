@@ -38,5 +38,11 @@ void Rigidbody::update(double dt) {
 }
 
 Projection Rigidbody::project(glm::vec2 axis) {
+
+	for (const glm::vec2& vertex : verticies) {
+		glm::vec2 vpos = vertex + position;
+		glm::vec2 perp = axis - vpos * ((glm::dot(vpos, axis)) / (glm::dot(vpos, vpos)));
+	}
+
 	return Projection(axis);
 }

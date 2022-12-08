@@ -46,4 +46,18 @@ std::vector<PBody> Simulation::getBodies() {
 
 void Simulation::checkCollisions() {
 	
+
+	// Check if hit the edge of the screen
+
+	for (auto bodyp : bodies) {
+		auto body = bodyp.get();
+
+		Projection proj1 = body->project(glm::vec2(0, 1));
+		Projection axisProj1 = ;
+		Projection proj2 = body->project(glm::vec2(1, 0));
+
+		if (false);
+
+	}
+
 }
