@@ -34,6 +34,9 @@ private:
 	bool show_demo_window = true; // Temporary windows
 	bool show_another_window = false;
 
+	// Add object values
+	static int selected_type_index;
+	const char* bodyTypes[9] = { "Rigidbody", "N-Gon", "Circle", "Semi-Circle", "Triangle", "Rectangle", "Square", "Line", "Softbody" };
 
 	// Simulation
 	Simulation* simulation;
@@ -50,5 +53,7 @@ public:
 	ImVec2 getWindowSize();
 
 private:
+
+	void addBodyOptions();
 
 };

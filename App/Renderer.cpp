@@ -1,6 +1,7 @@
 #include "Renderer.h"
 
-Renderer::Renderer(GLFWwindow* win, Simulation* sim) : window(win), simulation(sim) {
+Renderer::Renderer(GLFWwindow* win, Simulation* sim) : window(win), simulation(sim) :
+	selected_type_index(0) {
 	
 }
 
@@ -30,24 +31,35 @@ void Renderer::renderImGUI() {
 	if (show_demo_window)
 		ImGui::ShowDemoWindow(&show_demo_window);
 
-	// 2. Show a simple window that we create ourselves. We use a Begin/End pair to create a named window.
+	
 	{
 		static float f = 0.0f;
 		static int counter = 0;
 
-		ImGui::Begin("Hello, world!");                          // Create a window called "Hello, world!" and append into it.
+		ImGui::Begin("New Object");
 
-		ImGui::Text("This is some useful text.");               // Display some text (you can use a format strings too)
-		ImGui::Checkbox("Demo Window", &show_demo_window);      // Edit bools storing our window open/close state
-		ImGui::Checkbox("Another Window", &show_another_window);
 
-		ImGui::SliderFloat("float", &f, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
-		ImGui::ColorEdit3("clear color", (float*)&background); // Edit 3 floats representing a color
+		// New object Type
+		const char* combo_preview_value = bodyTypes[selected_type_index];
+		if (ImGui::BeginCombo("Object type", combo_preview_value))
+		{
+			//for (int n = 0; n < IM_ARRAYSIZE(items); n++)
+			for (int n=0; n<IM_ARRAYSIZE(bodyTypes); n++)
+			{
+				const bool is_selected = (selected_type_index == n);
+				if (ImGui::Selectable(bodyTypes[n], is_selected))
+					selected_type_index = n;
 
-		if (ImGui::Button("Button"))                            // Buttons return true when clicked (most widgets return true when edited/activated)
-			counter++;
-		ImGui::SameLine();
-		ImGui::Text("counter = %d", counter);
+				// Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
+				if (is_selected)
+					ImGui::SetItemDefaultFocus();
+			}
+			ImGui::EndCombo();
+		}
+
+		if (ImGui::Button("Add Object")) {
+
+		}
 
 		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 		ImGui::End();
@@ -173,4 +185,12 @@ void Renderer::renderPolygon(glm::vec2 position, std::vector<glm::vec2> verticie
 
 ImVec2 Renderer::getWindowSize() {
 	return wsize;
+}
+
+void Renderer::addBodyOptions() {
+	switch (selected_type_index) {
+	case (0) : {
+		
+		}
+	}
 }

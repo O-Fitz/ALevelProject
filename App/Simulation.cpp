@@ -53,7 +53,6 @@ void Simulation::checkCollisions() {
 		auto body = bodyp.get();
 
 		Projection proj1 = body->project(glm::vec2(0, 1));
-		Projection axisProj1 = ;
 		Projection proj2 = body->project(glm::vec2(1, 0));
 
 		if (false);
