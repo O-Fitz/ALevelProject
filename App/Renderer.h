@@ -35,7 +35,7 @@ private:
 	bool show_another_window = false;
 
 	// Add object values
-	static int selected_type_index;
+	int selected_type_index;
 	const char* bodyTypes[9] = { "Rigidbody", "N-Gon", "Circle", "Semi-Circle", "Triangle", "Rectangle", "Square", "Line", "Softbody" };
 
 	// Simulation

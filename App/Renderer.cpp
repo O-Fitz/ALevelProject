@@ -1,7 +1,6 @@
 #include "Renderer.h"
 
-Renderer::Renderer(GLFWwindow* win, Simulation* sim) : window(win), simulation(sim) :
-	selected_type_index(0) {
+Renderer::Renderer(GLFWwindow* win, Simulation* sim) : window(win), simulation(sim), selected_type_index(0) {
 	
 }
 
