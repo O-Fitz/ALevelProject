@@ -26,7 +26,7 @@ void Renderer::renderImGUI() {
 
 	ImGuiIO& io = ImGui::GetIO(); (void)io;
 
-	// 1. Show the big demo window (Most of the sample code is in ImGui::ShowDemoWindow()! You can browse its code to learn more about Dear ImGui!).
+	// New Object window
 	if (show_demo_window)
 		ImGui::ShowDemoWindow(&show_demo_window);
 
@@ -55,6 +55,8 @@ void Renderer::renderImGUI() {
 			}
 			ImGui::EndCombo();
 		}
+
+		addBodyOptions();
 
 		if (ImGui::Button("Add Object")) {
 
@@ -187,9 +189,16 @@ ImVec2 Renderer::getWindowSize() {
 }
 
 void Renderer::addBodyOptions() {
+
 	switch (selected_type_index) {
-	case (0) : {
+	case (0): { // Rigidbody
+
+		static int vertecies;
+
+		//ImGui::DragInt("Vertecies", &vertecies, 1, 3, 20);
+		ImGui::SliderInt("Vertecies", &vertecies, 3, 20);
 		
-		}
 	}
+	}
+
 }
