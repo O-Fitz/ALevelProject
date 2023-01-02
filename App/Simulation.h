@@ -13,13 +13,6 @@
 #endif
 
 class Simulation{
-
-private:
-
-	glm::vec2 simSize; // Size of the simulation
-	std::vector<PBody> bodies;
-	
-
 public:	
 
 	Simulation();
@@ -34,7 +27,8 @@ public:
 
 private:
 
-	void checkCollisions();
+	glm::vec2 simSize; // Size of the simulation
+	std::vector<PBody> bodies;
 
 };
 

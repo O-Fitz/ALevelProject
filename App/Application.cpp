@@ -1,4 +1,8 @@
 #include "Application.h"
+#include <string>
+#include <iostream>
+#include "Renderer.h"
+#include "Simulation.h"
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1900) && !defined(IMGUI_DISABLE_WIN32_FUNCTIONS)
 #pragma comment(lib, "legacy_stdio_definitions")
@@ -23,6 +27,16 @@ Application::~Application() {
 	glfwDestroyWindow(window);
 	glfwTerminate();
 }
+
+//void Application::run() {
+//
+//	while (!glfwWindowShouldClose(window)) {
+//
+//
+//
+//	}
+//
+//}
 
 void Application::run() {
 	Simulation simulation = Simulation();
@@ -107,8 +121,6 @@ void Application::setupWindow() {
 	const char* glsl_version = "#version 130";
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
-	//glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);  // 3.2+ only
-	//glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);            // 3.0+ only
 #endif
 
 
@@ -130,8 +142,6 @@ void Application::setupWindow() {
 	//io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
 	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;           // Enable Docking
 	io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;         // Enable Multi-Viewport / Platform Windows
-	//io.ConfigViewportsNoAutoMerge = true;
-	//io.ConfigViewportsNoTaskBarIcon = true;
 
 	if (glewInit() != GLEW_OK) {
 		std::cout << "ERROR WITH GLEW" << std::endl;
@@ -143,9 +153,7 @@ void Application::setupWindow() {
 
 	// Setup Dear ImGui style
 	ImGui::StyleColorsDark();
-	//ImGui::StyleColorsLight();
 
-	// When viewports are enabled we tweak WindowRounding/WindowBg so platform windows can look identical to regular ones.
 	ImGuiStyle& style = ImGui::GetStyle();
 	if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
 	{

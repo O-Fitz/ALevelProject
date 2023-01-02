@@ -1,13 +1,7 @@
 #pragma once
-
-#include "Simulation.h"
-#include "Renderer.h"
+#include "imguiInclude.h"
 
 class Application {
-private:
-
-	GLFWwindow* window;
-
 public:
 
 	Application();
@@ -18,11 +12,14 @@ public:
 
 private:
 
-	void setupWindow();
+	GLFWwindow* window;
 
 	enum errorType {
 		NONE, GLFW_INIT, GLFW_WINDOW, GLEW_INIT
 	} error;
+
+
+	void setupWindow();
 
 };
 
