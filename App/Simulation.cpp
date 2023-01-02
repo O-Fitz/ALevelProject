@@ -7,8 +7,8 @@ Simulation::Simulation() {
 	glm::vec2 pos = glm::vec2(100, 100);
 	glm::vec2 vel = glm::vec2(100, 100);
 
-	Circle c1 = Circle(20, pos, vel, glm::vec2(0, 0), 1, ImVec4(0.0f, 1.0f, 1.0f, 1.0f));
-	Square s2 = Square(20, pos, glm::vec2(0, 0), glm::vec2(0, 0), 1, ImVec4(1.0f, 1.0f, 0.0f, 1.0f));
+	Circle c1 = Circle(20, pos, vel, glm::vec2(0, 0), 1, ImVec4(0.0f, 1.0f, 1.0f, 1.0f), false);
+	Square s2 = Square(20, pos, glm::vec2(0, 0), glm::vec2(0, 0), 1, ImVec4(1.0f, 1.0f, 0.0f, 1.0f), false);
 
 	bodies.push_back(std::make_shared<Circle>(c1));
 	bodies.push_back(std::make_shared<Square>(s2));

@@ -10,7 +10,7 @@ private:
 public:
 	Square();
 	Square(double sideLength);
-	Square(double sideLength, glm::vec2 position, glm::vec2 vel, glm::vec2 Force, double Mass, ImVec4 colour);
+	Square(double sideLength, glm::vec2 position, glm::vec2 vel, glm::vec2 Force, double Mass, ImVec4 colour, bool stat);
 
 private:
 

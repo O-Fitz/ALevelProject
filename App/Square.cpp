@@ -8,8 +8,8 @@ Square::Square(double sideLength) : Rectangle(sideLength, sideLength), mSideLeng
 
 }
 
-Square::Square(double sideLength, glm::vec2 position, glm::vec2 vel, glm::vec2 Force, double Mass, ImVec4 colour) : 
-	Rectangle(sideLength, sideLength, position, vel, Force, Mass, colour), mSideLength(sideLength) {
+Square::Square(double sideLength, glm::vec2 position, glm::vec2 vel, glm::vec2 Force, double Mass, ImVec4 colour, bool stat) :
+	Rectangle(sideLength, sideLength, position, vel, Force, Mass, colour, stat), mSideLength(sideLength) {
 
 	
 }

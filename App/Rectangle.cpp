@@ -10,8 +10,8 @@ Rectangle::Rectangle(double width, double height) :
 }
 
 
-Rectangle::Rectangle(double width, double height, glm::vec2 position, glm::vec2 vel, glm::vec2 Force, double Mass, ImVec4 colour) : 
-	Rigidbody(sizeToVerticies(width, height), position, vel, Force, Mass, colour), mWidth(width), mHeight(height) {
+Rectangle::Rectangle(double width, double height, glm::vec2 position, glm::vec2 vel, glm::vec2 Force, double Mass, ImVec4 colour, bool stat) :
+	Rigidbody(sizeToVerticies(width, height), position, vel, Force, Mass, colour, stat), mWidth(width), mHeight(height) {
 
 }
 

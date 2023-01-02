@@ -148,6 +148,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Application.h" />
     <ClInclude Include="Body.h" />
     <ClInclude Include="Circle.h" />
     <ClInclude Include="Collisions.h" />
@@ -313,6 +314,7 @@
     <ClInclude Include="Square.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Application.cpp" />
     <ClCompile Include="Body.cpp" />
     <ClCompile Include="Circle.cpp" />
     <ClCompile Include="Collisions.cpp" />

@@ -19,8 +19,8 @@ Rigidbody::Rigidbody(std::vector<glm::vec2> vert) : verticies(vert) {
 	colour = ImVec4(0.0f, 0.0f, 0.0f, 1.0f);
 }
 
-Rigidbody::Rigidbody(std::vector<glm::vec2> Vert, glm::vec2 Pos, glm::vec2 Vel, glm::vec2 Force, double Mass, ImVec4 col) :
-	verticies(Vert), position(Pos), velocity(Vel), force(Force), mass(Mass), colour(col) {
+Rigidbody::Rigidbody(std::vector<glm::vec2> Vert, glm::vec2 Pos, glm::vec2 Vel, glm::vec2 Force, double Mass, ImVec4 col, bool stat) :
+	verticies(Vert), position(Pos), velocity(Vel), force(Force), mass(Mass), colour(col), isStatic(stat) {
 
 }
 
