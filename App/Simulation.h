@@ -30,5 +30,9 @@ private:
 	glm::vec2 simSize; // Size of the simulation
 	std::vector<PBody> bodies;
 
+	void CollisionDetection();
+	bool checkCollision(Body* b1, Body* p2);
+	void resolveCollision(Body* b1, Body* p2);
+
 };
 

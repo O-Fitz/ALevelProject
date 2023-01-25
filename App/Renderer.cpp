@@ -123,8 +123,6 @@ void Renderer::renderSimulation() {
 		n[i]->render(this);
 	}
 
-	renderCircle(glm::vec2(wsize.x/2, wsize.y/2), 10, ImVec4(1.0, 0.0, 0.0, 1.0));
-
 	// Unbinds Frame buffer
 	fb.unbind();
 
@@ -178,7 +176,7 @@ void Renderer::renderPolygon(glm::vec2 position, std::vector<glm::vec2> verticie
 	glColor4f(colour.x, colour.y, colour.z, colour.w);
 
 	for (const glm::vec2& vertex : verticies) {
-		glVertex2d(pos.x+vertex.x, pos.y+vertex.y);
+		glVertex2d(position.x+vertex.x, position.y+vertex.y);
 	}
 
 	glEnd();

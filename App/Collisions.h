@@ -12,3 +12,8 @@ struct Projection {
 	bool overlap(const Projection& proj2);
 };
 
+namespace Collision {
+
+	
+
+}

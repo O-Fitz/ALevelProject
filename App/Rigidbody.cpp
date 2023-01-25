@@ -37,12 +37,30 @@ void Rigidbody::update(double dt) {
 
 }
 
-Projection Rigidbody::project(glm::vec2 axis) {
+std::vector<glm::vec2> Rigidbody::getAxes() {
+	std::vector<glm::vec2> axes = std::vector<glm::vec2>();
 
-	for (const glm::vec2& vertex : verticies) {
-		glm::vec2 vpos = vertex + position;
-		glm::vec2 perp = axis - vpos * ((glm::dot(vpos, axis)) / (glm::dot(vpos, vpos)));
+	for (int i = 0; i < verticies.size(); i++) {
+		glm::vec2 face = verticies[(i + 1) % verticies.size()] - verticies[i];
+		
 	}
 
-	return Projection(axis);
+}
+
+Projection Rigidbody::project(glm::vec2 axis) {
+
+	float projection = glm::dot<float>(verticies[0], axis);
+
+	float min = projection;
+	float max = projection;
+
+	for (const glm::vec2& vertex : verticies) {
+		projection = glm::dot<float>(vertex, axis);
+		if (projection < min)
+			min = projection;
+		if (projection > max)
+			max = projection;
+	}
+
+	return Projection(axis, min, max);
 }

@@ -15,6 +15,7 @@ public:
 
 	void render(Renderer* renderer) override;
 	Projection project(glm::vec2 axis) override;
+	std::vector<glm::vec2> getAxes() override;
 
-	void print() override;
+	void print();
 };
