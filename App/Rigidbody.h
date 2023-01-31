@@ -2,7 +2,6 @@
 
 #include "glm/glm.hpp"
 #include <vector>
-#include "imguiInclude.h"
 
 #include "Body.h"
 
@@ -10,12 +9,6 @@ class Rigidbody : public Body {
 
 protected:
 	std::vector<glm::vec2> verticies;
-	glm::vec2 position;
-	glm::vec2 velocity;
-	glm::vec2 force;
-	double mass;
-	ImVec4 colour;
-	bool isStatic;
 
 public:
 

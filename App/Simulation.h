@@ -25,14 +25,18 @@ public:
 
 	std::vector<PBody> getBodies();
 
+	void pausePlay();
+
 private:
 
 	glm::vec2 simSize; // Size of the simulation
 	std::vector<PBody> bodies;
+	bool running;
+	float elasticity=1;
 
 	void CollisionDetection();
 	bool checkCollision(Body* b1, Body* p2);
-	void resolveCollision(Body* b1, Body* p2);
+	void resolveCollision(Body* b1, Body* p2, float elasticity);
 
 };
 
