@@ -1,22 +1,30 @@
 #include "Simulation.h"
 #include "Renderer.h"
+#include <algorithm>
 
 Simulation::Simulation() {
 	bodies = std::vector<PBody>();
 
-	glm::vec2 pos = glm::vec2(100, 100);
-	glm::vec2 pos1 = glm::vec2(200, 200);
-	glm::vec2 pos2 = glm::vec2(300, 300);
+
+	glm::vec2 pos = glm::vec2(300, 100);
+	glm::vec2 pos1 = glm::vec2(100, 200);
+	glm::vec2 pos2 = glm::vec2(800, 300);
+	glm::vec2 pos3 = glm::vec2(500, 400);
 	glm::vec2 vel = glm::vec2(100, 100);
+	glm::vec2 vel2 = glm::vec2(0, 100);
 
-	Circle c1 = Circle(10, pos2, glm::vec2(0, 0), glm::vec2(0, 0), 1, ImVec4(0.0f, 1.0f, 1.0f, 1.0f), false);
-	Square s2 = Square(20, pos1, glm::vec2(0, 0), glm::vec2(0, 0), 1, ImVec4(1.0f, 1.0f, 0.0f, 1.0f), false);
-	Square s1 = Square(20, pos, vel, glm::vec2(0, 0), 1, ImVec4(1.0f, 1.0f, 0.0f, 1.0f), false);
+	Circle c2 = Circle(20, pos3, vel2, glm::vec2(0, 0), 1, ImVec4(0.0f, 1.0f, 1.0f, 1.0f), false);
+	Circle c1 = Circle(20, pos2, glm::vec2(-200, 0), glm::vec2(0, 0), 1, ImVec4(0.0f, 1.0f, 1.0f, 1.0f), false);
+	Square s2 = Square(20, pos1, glm::vec2(0, 10), glm::vec2(0, 0), 1, ImVec4(1.0f, 1.0f, 0.0f, 1.0f), false);
+	Square s1 = Square(20, pos, vel, glm::vec2(50, 0), 1, ImVec4(1.0f, 1.0f, 0.0f, 1.0f), false);
 
-	bodies.push_back(std::make_shared<Circle>(c1));
-	bodies.push_back(std::make_shared<Square>(s1));
-	bodies.push_back(std::make_shared<Square>(s2));
+	//bodies.push_back(std::make_shared<Square>(s1));
+	//bodies.push_back(std::make_shared<Square>(s2));
+	//bodies.push_back(std::make_shared<Circle>(c1));
+	bodies.push_back(std::make_shared<Circle>(c2));
 
+	Circle c3 = Circle(20, glm::vec2(500, 500), glm::vec2(0, 0), glm::vec2(0, 0), 1, ImVec4(0.4, 0.5, 0.245, 1.0), false);
+	//bodies.push_back(std::make_shared<Circle>(c3));
 
 }
 
@@ -26,18 +34,43 @@ Simulation::~Simulation() {
 
 void Simulation::update(double dt) {
 
+	//dt *= 2;
+
 	// Exit function if simulation not running
 	if (!running) {
 		return;
 	}
 
+	for (int i = 0; i < traceBodies.size(); i++) {
+		traceBodies[i].update(dt);
+	}
+
+	
+	traceBodies.erase(std::remove_if(traceBodies.begin(), traceBodies.end(), [](const Tracer& i) {return i.getDestroy(); }), traceBodies.end());
+
 	for (int i = 0; i < bodies.size(); i++) {
 
 		bodies[i]->update(dt);
 
+		if (tracing)
+			traceBodies.push_back(Tracer(bodies[i]->getPostition(), 20, bodies[i]->getColour()));
+
 	}
 
-	CollisionDetection();
+	if (gravity) {
+		for (int i = 0; i < bodies.size(); i++) {
+			glm::vec2 sep = gravPoint - bodies[i]->getPostition();
+			std::cout << "GravStrength: " << gravStrength << std::endl;
+			std::cout << "Mass: " << bodies[i]->getMass() << std::endl;
+			std::cout << "dt: " << dt << std::endl;
+			glm::fvec1 strength = glm::fvec1(gravStrength*dt*bodies[i]->getMass())/glm::dot(sep, sep);
+			std::cout << strength.x << std::endl;
+			bodies[i]->applyImpulse(glm::normalize(sep) * strength);
+		}
+	}
+
+	if (collisions)
+		CollisionDetection();
 
 }
 
@@ -179,4 +212,32 @@ void Simulation::resolveCollision(Body* b1, Body* b2, float elasticity) {
 		b1->applyImpulse(-impulse);
 		b2->applyImpulse(impulse);
 	}
+}
+
+std::vector<Tracer> Simulation::getTraceBodies() {
+	return traceBodies;
+}
+
+bool Simulation::getCollisions() {
+	return collisions;
+}
+
+bool* Simulation::getCollisionsP() {
+	return &collisions;
+}
+
+bool Simulation::getGravity() {
+	return gravity;
+}
+
+bool* Simulation::getGravityP() {
+	return &gravity;
+}
+
+float Simulation::getElasticity() {
+	return elasticity;
+}
+
+float* Simulation::getElasticityP() {
+	return &elasticity;
 }

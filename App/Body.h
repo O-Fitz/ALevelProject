@@ -27,6 +27,7 @@ public:
 	glm::vec2 getForce();
 	double getMass();
 	bool getStatic();
+	ImVec4 getColour();
 
 protected:
 	glm::vec2 impulse;

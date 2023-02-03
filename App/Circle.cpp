@@ -18,9 +18,12 @@ void Circle::render(Renderer* renderer) {
 }
 
 Projection Circle::project(glm::vec2 axis) {
-	float val = glm::dot<float>(position, axis);
-	std::cout << val-radius << "\n\n";
-	return Projection(axis, val-radius, val+radius);
+	glm::vec2 pos1 = position - glm::normalize(axis) * glm::fvec1(radius);
+	glm::vec2 pos2 = position + glm::normalize(axis) * glm::fvec1(radius);
+	float val1 = glm::dot<float>(pos1, axis);
+	float val2 = glm::dot<float>(pos2, axis);
+	
+	return Projection(axis, val1, val2);
 }
 
 void Circle::print() {
@@ -28,5 +31,9 @@ void Circle::print() {
 }
 
 std::vector<glm::vec2> Circle::getAxes() {
-	return std::vector<glm::vec2>({ {1,0} });
+	std::vector<glm::vec2>axes = std::vector<glm::vec2>();
+	for (float i = 0; i < 2*PI; i+=2*PI/collisionAxis) {
+		axes.emplace_back( sin(i), cos(i));
+	}
+	return axes;
 }

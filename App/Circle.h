@@ -7,6 +7,7 @@ class Circle : public Rigidbody{
 private:
 
 	double radius;
+	int collisionAxis = 10;
 
 public:
 

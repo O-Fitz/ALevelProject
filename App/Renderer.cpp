@@ -63,11 +63,28 @@ void Renderer::renderImGUI() {
 		}
 
 		
+
+		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+		ImGui::End();
+	}
+
+	if (show_simulation_window) {
+
+		ImGui::Begin("Simulation");
+
+		ImGui::Checkbox("Collisions", simulation->getCollisionsP());
+		ImGui::Checkbox("Gravity", simulation->getGravityP());
+		ImGui::SliderFloat("Elasticity", simulation->getElasticityP(), 0.0f, 1.0f, "%.3f");
+
+		ImGui::Spacing();
+		ImGui::Spacing();
+		ImGui::Spacing();
+		ImGui::Spacing();
+
 		if (ImGui::Button("Pause/Play")) {
 			simulation->pausePlay();
 		}
 
-		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 		ImGui::End();
 	}
 
@@ -126,6 +143,11 @@ void Renderer::renderSimulation() {
 	std::vector<PBody> n = simulation->getBodies();
 	for (int i = 0; i < n.size(); i++) {
 		n[i]->render(this);
+	}
+
+	std::vector<Tracer> t = simulation->getTraceBodies();
+	for (int i = 0; i < t.size(); i++) {
+		t[i].render(this);
 	}
 
 	// Unbinds Frame buffer

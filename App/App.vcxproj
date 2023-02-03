@@ -312,6 +312,7 @@
     <ClInclude Include="Rigidbody.h" />
     <ClInclude Include="Simulation.h" />
     <ClInclude Include="Square.h" />
+    <ClInclude Include="Tracer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
@@ -333,6 +334,7 @@
     <ClCompile Include="Rigidbody.cpp" />
     <ClCompile Include="Simulation.cpp" />
     <ClCompile Include="Square.cpp" />
+    <ClCompile Include="Tracer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="External\glm\detail\func_common.inl" />

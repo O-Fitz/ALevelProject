@@ -36,10 +36,14 @@ void Rigidbody::update(double dt) {
 		return;
 	}
 
+	/*glm::vec2 dpos = glm::vec2(500, 500) - position;
+	force = glm::normalize(dpos)*glm::fvec1(mass*100);*/
+
 	glm::fvec1 dtv = glm::fvec1(dt);
 	velocity += (force / glm::fvec1(mass)) * dtv + impulse / glm::fvec1(mass);
 	impulse = glm::vec2(0, 0);
 	position += velocity * dtv;
+	//force = glm::vec2(0, 0);
 
 }
 

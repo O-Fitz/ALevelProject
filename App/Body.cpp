@@ -54,3 +54,7 @@ double Body::getMass() {
 bool Body::getStatic() {
 	return isStatic;
 }
+
+ImVec4 Body::getColour() {
+	return colour;
+}

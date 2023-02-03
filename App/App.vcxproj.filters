@@ -540,6 +540,9 @@
     <ClInclude Include="Application.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Tracer.h">
+      <Filter>Bodies</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="imgui\imgui.cpp">
@@ -598,6 +601,9 @@
     </ClCompile>
     <ClCompile Include="Application.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Tracer.cpp">
+      <Filter>Bodies</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

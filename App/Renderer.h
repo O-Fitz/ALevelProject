@@ -33,6 +33,7 @@ private:
 
 	bool show_demo_window = true; // Temporary windows
 	bool show_another_window = false;
+	bool show_simulation_window = true;
 
 	// Add object values
 	int selected_type_index;
