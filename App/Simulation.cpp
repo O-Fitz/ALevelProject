@@ -11,7 +11,7 @@ Simulation::Simulation() {
 	glm::vec2 pos2 = glm::vec2(800, 300);
 	glm::vec2 pos3 = glm::vec2(500, 400);
 	glm::vec2 vel = glm::vec2(100, 100);
-	glm::vec2 vel2 = glm::vec2(0, 100);
+	glm::vec2 vel2 = glm::vec2(0, 90);
 
 	Circle c2 = Circle(20, pos3, vel2, glm::vec2(0, 0), 1, ImVec4(0.0f, 1.0f, 1.0f, 1.0f), false);
 	Circle c1 = Circle(20, pos2, glm::vec2(-200, 0), glm::vec2(0, 0), 1, ImVec4(0.0f, 1.0f, 1.0f, 1.0f), false);
@@ -63,8 +63,11 @@ void Simulation::update(double dt) {
 			std::cout << "GravStrength: " << gravStrength << std::endl;
 			std::cout << "Mass: " << bodies[i]->getMass() << std::endl;
 			std::cout << "dt: " << dt << std::endl;
-			glm::fvec1 strength = glm::fvec1(gravStrength*dt*bodies[i]->getMass())/glm::dot(sep, sep);
-			std::cout << strength.x << std::endl;
+			std::cout << "dot: " << std::sqrt(glm::dot(sep, sep)) << std::endl;
+			std::cout << "Sep: " << sep.x << " " << sep.y << std::endl;
+			glm::fvec1 strength = glm::fvec1(gravStrength*dt*bodies[i]->getMass())/glm::dot(sep, sep); // GMm/r^2
+			std::cout << "Strength: " << strength.x << std::endl;
+			std::cout << std::endl;
 			bodies[i]->applyImpulse(glm::normalize(sep) * strength);
 		}
 	}
@@ -240,4 +243,12 @@ float Simulation::getElasticity() {
 
 float* Simulation::getElasticityP() {
 	return &elasticity;
+}
+
+glm::vec2 Simulation::getGravPoint() {
+	return gravPoint;
+}
+
+glm::vec2* Simulation::getGravPointP() {
+	return &gravPoint;
 }
