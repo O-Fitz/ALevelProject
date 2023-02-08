@@ -34,6 +34,8 @@ public:
 	bool* getGravityP();
 	float getElasticity();
 	float* getElasticityP();
+	glm::vec2 getGravPoint();
+	glm::vec2* getGravPointP();
 
 	void pausePlay();
 
@@ -47,7 +49,7 @@ private:
 	bool collisions = true;
 	bool gravity = true;
 	glm::vec2 gravPoint = glm::vec2(400, 400);
-	double gravStrength = 100;
+	double gravStrength = 1000000;
 	bool tracing = true;
 
 	void CollisionDetection();

@@ -150,6 +150,11 @@ void Renderer::renderSimulation() {
 		t[i].render(this);
 	}
 
+	if (simulation->getGravity()) {
+		glm::vec2 gravPoint = simulation->getGravPoint();
+		renderCircle(gravPoint, 3.0, ImVec4(1.0, 0.0, 0.0, 1.0));
+	}
+
 	// Unbinds Frame buffer
 	fb.unbind();
 
