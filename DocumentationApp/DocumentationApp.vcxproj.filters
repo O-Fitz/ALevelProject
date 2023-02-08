@@ -72,6 +72,15 @@
     <ClCompile Include="External\glm\detail\glm.cpp">
       <Filter>External\glm\detail</Filter>
     </ClCompile>
+    <ClCompile Include="Simulation.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Body.cpp">
+      <Filter>Bodies</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">
@@ -532,6 +541,15 @@
     </ClInclude>
     <ClInclude Include="External\glm\gtx\wrap.hpp">
       <Filter>External\glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="Simulation.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Body.h">
+      <Filter>Bodies</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -28,13 +28,20 @@ Application::~Application() {
 }
 
 void Application::run() {
+	// Initialise Simulation
+	Simulation simulation = Simulation();
 
 	double dt;
 
 	// Main loop
 	while (!glfwWindowShouldClose(window))
 	{
-		
+		// Poll events
+		glfwPollEvents();
+
+		// Update simulation
+		dt = ImGui::GetIO().DeltaTime;
+		simulation.update(dt);
 
 	}
 
