@@ -11,16 +11,16 @@ Simulation::Simulation() {
 	glm::vec2 pos2 = glm::vec2(800, 300);
 	glm::vec2 pos3 = glm::vec2(500, 400);
 	glm::vec2 vel = glm::vec2(100, 100);
-	glm::vec2 vel2 = glm::vec2(0, 90);
+	glm::vec2 vel2 = glm::vec2(0, 100);
 
 	Circle c2 = Circle(20, pos3, vel2, glm::vec2(0, 0), 1, ImVec4(0.0f, 1.0f, 1.0f, 1.0f), false);
 	Circle c1 = Circle(20, pos2, glm::vec2(-200, 0), glm::vec2(0, 0), 1, ImVec4(0.0f, 1.0f, 1.0f, 1.0f), false);
-	Square s2 = Square(20, pos1, glm::vec2(0, 10), glm::vec2(0, 0), 1, ImVec4(1.0f, 1.0f, 0.0f, 1.0f), false);
+	Square s2 = Square(20, pos1, glm::vec2(0, 100), glm::vec2(0, 0), 1, ImVec4(1.0f, 1.0f, 0.0f, 1.0f), false);
 	Square s1 = Square(20, pos, vel, glm::vec2(50, 0), 1, ImVec4(1.0f, 1.0f, 0.0f, 1.0f), false);
 
-	//bodies.push_back(std::make_shared<Square>(s1));
-	//bodies.push_back(std::make_shared<Square>(s2));
-	//bodies.push_back(std::make_shared<Circle>(c1));
+	bodies.push_back(std::make_shared<Square>(s1));
+	bodies.push_back(std::make_shared<Square>(s2));
+	bodies.push_back(std::make_shared<Circle>(c1));
 	bodies.push_back(std::make_shared<Circle>(c2));
 
 	Circle c3 = Circle(20, glm::vec2(500, 500), glm::vec2(0, 0), glm::vec2(0, 0), 1, ImVec4(0.4, 0.5, 0.245, 1.0), false);

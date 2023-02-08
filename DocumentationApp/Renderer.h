@@ -29,6 +29,8 @@ private:
 	ImVec2 wsize;
 	ImVec2 pos;
 
+	// ImGUI windows
+	bool showDataWindow = true;
 
 	ImVec4 background = ImVec4(0.45f, 0.55f, 0.60f, 1.00f); // Background colour
 
