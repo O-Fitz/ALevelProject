@@ -1,6 +1,7 @@
 #pragma once
 #include "imguiInclude.h"
 #include "Simulation.h"
+#include "Renderer.h"
 
 class Application {
 public:

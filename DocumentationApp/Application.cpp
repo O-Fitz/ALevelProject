@@ -28,8 +28,9 @@ Application::~Application() {
 }
 
 void Application::run() {
-	// Initialise Simulation
+	// Initialise Simulation and Renderer
 	Simulation simulation = Simulation();
+	Renderer renderer = Renderer(window, &simulation);
 
 	double dt;
 
@@ -42,6 +43,13 @@ void Application::run() {
 		// Update simulation
 		dt = ImGui::GetIO().DeltaTime;
 		simulation.update(dt);
+
+		// Render Simulation
+		renderer.newFrame();
+		renderer.renderSimulation();
+		renderer.renderImGUI();
+
+		glfwSwapBuffers(window);
 
 	}
 

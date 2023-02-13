@@ -37,6 +37,9 @@
     <Filter Include="Bodies">
       <UniqueIdentifier>{c2cf8ce5-2fc8-4bf8-a05d-1a16a205b8cb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="OpenGLAbstraction">
+      <UniqueIdentifier>{71c498cb-c98d-44c5-8293-a08f7bb147d7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -66,9 +69,6 @@
     <ClCompile Include="imgui\backends\imgui_impl_opengl3.cpp">
       <Filter>External\imgui\backends</Filter>
     </ClCompile>
-    <ClCompile Include="External\glm\detail\dummy.cpp">
-      <Filter>External\glm\detail</Filter>
-    </ClCompile>
     <ClCompile Include="External\glm\detail\glm.cpp">
       <Filter>External\glm\detail</Filter>
     </ClCompile>
@@ -80,6 +80,9 @@
     </ClCompile>
     <ClCompile Include="Renderer.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="openglAbstraction\Framebuffer.cpp">
+      <Filter>OpenGLAbstraction</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -550,6 +553,9 @@
     </ClInclude>
     <ClInclude Include="Renderer.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="openglAbstraction\Framebuffer.h">
+      <Filter>OpenGLAbstraction</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

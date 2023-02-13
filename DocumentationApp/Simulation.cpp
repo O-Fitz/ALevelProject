@@ -1,7 +1,11 @@
-#include "Simulation.h";
+#include "Simulation.h"
 
 Simulation::Simulation() {
 	bodies = std::vector<Body>();
+}
+
+Simulation::~Simulation() {
+
 }
 
 void Simulation::update(double dt) {

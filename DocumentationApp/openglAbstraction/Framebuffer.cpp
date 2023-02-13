@@ -1,21 +1,23 @@
 #include "Framebuffer.h"
 
-
 void FrameBuffer::create_buffers(int32_t width, int32_t height)
 {
     mWidth = width;
     mHeight = height;
 
+    // Check if buffers already exist, if so delete them
     if (mFBO)
     {
         delete_buffers();
     }
 
+    // Create Framebuffer
     glGenFramebuffers(1, &mFBO);
     glBindFramebuffer(GL_FRAMEBUFFER, mFBO);
     glCreateTextures(GL_TEXTURE_2D, 1, &mTexId);
     glBindTexture(GL_TEXTURE_2D, mTexId);
 
+    // Create Texture
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, mWidth, mHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -24,6 +26,7 @@ void FrameBuffer::create_buffers(int32_t width, int32_t height)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, mTexId, 0);
 
+    // Bind texture to frambuffer
     glCreateTextures(GL_TEXTURE_2D, 1, &mDepthId);
     glBindTexture(GL_TEXTURE_2D, mDepthId);
     glTexStorage2D(GL_TEXTURE_2D, 1, GL_DEPTH24_STENCIL8, mWidth, mHeight);
@@ -35,9 +38,10 @@ void FrameBuffer::create_buffers(int32_t width, int32_t height)
 
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_TEXTURE_2D, mDepthId, 0);
 
+    // Check that operation was successful
     if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
         std::cout << "ERROR::FRAMEBUFFER:: Framebuffer is not complete!" << std::endl;
-
+    
     unbind();
 }
 
