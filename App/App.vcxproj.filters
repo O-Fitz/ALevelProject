@@ -543,6 +543,9 @@
     <ClInclude Include="Tracer.h">
       <Filter>Bodies</Filter>
     </ClInclude>
+    <ClInclude Include="Spring.h">
+      <Filter>Bodies</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="imgui\imgui.cpp">
@@ -603,6 +606,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Tracer.cpp">
+      <Filter>Bodies</Filter>
+    </ClCompile>
+    <ClCompile Include="Spring.cpp">
       <Filter>Bodies</Filter>
     </ClCompile>
   </ItemGroup>

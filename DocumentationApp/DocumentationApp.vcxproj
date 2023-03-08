@@ -132,6 +132,7 @@
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="Body.cpp" />
+    <ClCompile Include="Circle.cpp" />
     <ClCompile Include="External\glm\detail\glm.cpp" />
     <ClCompile Include="imgui\backends\imgui_impl_glfw.cpp" />
     <ClCompile Include="imgui\backends\imgui_impl_opengl3.cpp" />
@@ -142,12 +143,15 @@
     <ClCompile Include="imgui\imgui_widgets.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="openglAbstraction\Framebuffer.cpp" />
+    <ClCompile Include="Rectangle.cpp" />
     <ClCompile Include="Renderer.cpp" />
+    <ClCompile Include="Rigidbody.cpp" />
     <ClCompile Include="Simulation.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
     <ClInclude Include="Body.h" />
+    <ClInclude Include="Circle.h" />
     <ClInclude Include="External\glm\common.hpp" />
     <ClInclude Include="External\glm\detail\func_common.hpp" />
     <ClInclude Include="External\glm\detail\func_exponential.hpp" />
@@ -301,7 +305,9 @@
     <ClInclude Include="imgui\imstb_textedit.h" />
     <ClInclude Include="imgui\imstb_truetype.h" />
     <ClInclude Include="openglAbstraction\Framebuffer.h" />
+    <ClInclude Include="Rectangle.h" />
     <ClInclude Include="Renderer.h" />
+    <ClInclude Include="Rigidbody.h" />
     <ClInclude Include="Simulation.h" />
   </ItemGroup>
   <ItemGroup>

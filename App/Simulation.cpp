@@ -6,7 +6,7 @@ Simulation::Simulation() {
 	bodies = std::vector<PBody>();
 
 
-	glm::vec2 pos = glm::vec2(300, 100);
+	glm::vec2 pos = glm::vec2(300, 150);
 	glm::vec2 pos1 = glm::vec2(100, 200);
 	glm::vec2 pos2 = glm::vec2(800, 300);
 	glm::vec2 pos3 = glm::vec2(500, 400);
@@ -18,13 +18,27 @@ Simulation::Simulation() {
 	Square s2 = Square(20, pos1, glm::vec2(0, 100), glm::vec2(0, 0), 1, ImVec4(1.0f, 1.0f, 0.0f, 1.0f), false);
 	Square s1 = Square(20, pos, vel, glm::vec2(50, 0), 1, ImVec4(1.0f, 1.0f, 0.0f, 1.0f), false);
 
-	bodies.push_back(std::make_shared<Square>(s1));
-	bodies.push_back(std::make_shared<Square>(s2));
-	bodies.push_back(std::make_shared<Circle>(c1));
-	bodies.push_back(std::make_shared<Circle>(c2));
+	//bodies.push_back(std::make_shared<Square>(s1));
+	//bodies.push_back(std::make_shared<Square>(s2));
+	//bodies.push_back(std::make_shared<Circle>(c1));
+	//bodies.push_back(std::make_shared<Circle>(c2));
 
 	Circle c3 = Circle(20, glm::vec2(500, 500), glm::vec2(0, 0), glm::vec2(0, 0), 1, ImVec4(0.4, 0.5, 0.245, 1.0), false);
 	//bodies.push_back(std::make_shared<Circle>(c3));
+
+	// SPRING TEST
+	glm::vec2 circlepos = glm::vec2(200, 200);
+	glm::vec2 dif = glm::vec2(100, 0);
+	Circle cs1 = Circle(10, circlepos, glm::vec2(0, 0), glm::vec2(0, 0), 1, ImVec4(1.0f, 0.0f, 0.0f, 1.0f), false);
+	Circle cs2 = Circle(10, circlepos+dif, glm::vec2(0, 0), glm::vec2(0, 0), 1, ImVec4(1.0f, 1.0f, 0.0f, 1.0f), false);
+
+	std::shared_ptr<Circle> cs1p = std::make_shared<Circle>(cs1);
+	std::shared_ptr<Circle> cs2p = std::make_shared<Circle>(cs2);
+
+	bodies.push_back(cs1p);
+	bodies.push_back(cs2p);
+
+	spring = Spring(cs2p, cs1p, 50, 3);
 
 }
 
@@ -45,6 +59,8 @@ void Simulation::update(double dt) {
 		traceBodies[i].update(dt);
 	}
 
+	// Spring TEST:
+	spring.update(dt);
 	
 	traceBodies.erase(std::remove_if(traceBodies.begin(), traceBodies.end(), [](const Tracer& i) {return i.getDestroy(); }), traceBodies.end());
 
@@ -60,14 +76,7 @@ void Simulation::update(double dt) {
 	if (gravity) {
 		for (int i = 0; i < bodies.size(); i++) {
 			glm::vec2 sep = gravPoint - bodies[i]->getPostition();
-			std::cout << "GravStrength: " << gravStrength << std::endl;
-			std::cout << "Mass: " << bodies[i]->getMass() << std::endl;
-			std::cout << "dt: " << dt << std::endl;
-			std::cout << "dot: " << std::sqrt(glm::dot(sep, sep)) << std::endl;
-			std::cout << "Sep: " << sep.x << " " << sep.y << std::endl;
 			glm::fvec1 strength = glm::fvec1(gravStrength*dt*bodies[i]->getMass())/glm::dot(sep, sep); // GMm/r^2
-			std::cout << "Strength: " << strength.x << std::endl;
-			std::cout << std::endl;
 			bodies[i]->applyImpulse(glm::normalize(sep) * strength);
 		}
 	}

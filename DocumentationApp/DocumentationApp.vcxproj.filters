@@ -84,6 +84,15 @@
     <ClCompile Include="openglAbstraction\Framebuffer.cpp">
       <Filter>OpenGLAbstraction</Filter>
     </ClCompile>
+    <ClCompile Include="Rigidbody.cpp">
+      <Filter>Bodies</Filter>
+    </ClCompile>
+    <ClCompile Include="Circle.cpp">
+      <Filter>Bodies</Filter>
+    </ClCompile>
+    <ClCompile Include="Rectangle.cpp">
+      <Filter>Bodies</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">
@@ -556,6 +565,15 @@
     </ClInclude>
     <ClInclude Include="openglAbstraction\Framebuffer.h">
       <Filter>OpenGLAbstraction</Filter>
+    </ClInclude>
+    <ClInclude Include="Rigidbody.h">
+      <Filter>Bodies</Filter>
+    </ClInclude>
+    <ClInclude Include="Circle.h">
+      <Filter>Bodies</Filter>
+    </ClInclude>
+    <ClInclude Include="Rectangle.h">
+      <Filter>Bodies</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

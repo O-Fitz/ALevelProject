@@ -16,10 +16,11 @@ public:
 	Body();
 
 	virtual void update(double dt);
-	virtual std::vector<Body*> getCollisionBodies();
 	virtual void render(Renderer* renderer);
+
 	virtual Projection project(glm::vec2 axis);
 	virtual std::vector<glm::vec2> getAxes();
+
 	virtual void applyImpulse(glm::vec2 impulse);
 
 	glm::vec2 getPostition();
@@ -28,6 +29,8 @@ public:
 	double getMass();
 	bool getStatic();
 	ImVec4 getColour();
+
+	virtual std::vector<Body*> getCollisionBodies();
 
 protected:
 	glm::vec2 impulse;

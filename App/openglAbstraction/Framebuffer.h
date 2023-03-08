@@ -14,7 +14,7 @@ public:
     {create_buffers(width, height); }
 
     ~FrameBuffer() {
-        
+        delete_buffers();
     }
 
     void create_buffers(int32_t width, int32_t height);

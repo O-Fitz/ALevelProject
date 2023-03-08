@@ -4,6 +4,9 @@
 #include "Simulation.h"
 
 #include "openglAbstraction/Framebuffer.h"
+#include "glm/glm.hpp"
+#include "glm/gtc/matrix_transform.hpp"
+#include "glm/gtc/type_ptr.hpp"
 
 class Renderer {
 
@@ -27,6 +30,10 @@ private:
 	// Simulation Pointer;
 	Simulation* simulation;
 	
+	// Framebuffer
+	FrameBuffer fb = FrameBuffer();
+	glm::mat4 projection;
+
 	// Window properties
 	ImVec2 wsize;
 	ImVec2 pos;

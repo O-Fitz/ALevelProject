@@ -36,6 +36,10 @@ void Rigidbody::update(double dt) {
 		return;
 	}
 
+	if (velocity == glm::vec2(0, 0)) {
+		std::cout << "00" << std::endl;
+	}
+
 	/*glm::vec2 dpos = glm::vec2(500, 500) - position;
 	force = glm::normalize(dpos)*glm::fvec1(mass*100);*/
 

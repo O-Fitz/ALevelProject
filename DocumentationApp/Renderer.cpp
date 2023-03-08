@@ -53,6 +53,11 @@ void Renderer::renderImGUI() {
 
 void Renderer::renderSimulation() {
 
+	// Setup Projection matrix
+	projection = glm::ortho(0.0f, wsize.x, 0.0f, wsize.y, -1.0f, 1.0f);
+	glMatrixMode(GL_PROJECTION_MATRIX);
+	glLoadMatrixf(glm::value_ptr(projection));
+
 	// Setup ImGui window with no border
 	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
 	ImGui::Begin("Viewport");
@@ -62,12 +67,11 @@ void Renderer::renderSimulation() {
 	pos = ImGui::GetCursorScreenPos();
 
 	// Initialises and binds Frame Buffer
-	FrameBuffer fb = FrameBuffer();
 	fb.create_buffers(wsize.x, wsize.y);
 	fb.bind();
 
 	// Clear the window
-	glClearColor(background.x * background.w, background.y * background.w, background.z * background.w, background.w);
+	glClearColor(background.x, background.y, background.z, background.w);
 	glClear(GL_COLOR_BUFFER_BIT);
 
 	// Renders Simulation
@@ -75,22 +79,6 @@ void Renderer::renderSimulation() {
 	for (int i = 0; i < n.size(); i++) {
 		n[i].render(this);
 	}
-
-	// TEST TEXTURE ON BACKGROUND
-	glBindTexture(GL_TEXTURE_2D, fb.get_texture());
-	glBegin(GL_TRIANGLES);
-
-	glColor4f(1.0, 1.0, 1.0, 1.0);
-
-	glVertex2f(-1, -1);
-	glVertex2f(-1, 1);
-	glVertex2f(1, 1);
-
-	glVertex2f(1, 1);
-	glVertex2f(1, -1);
-	glVertex2f(-1, -1);
-
-	glEnd();
 
 	// Unbinds Frame buffer
 	fb.unbind();
