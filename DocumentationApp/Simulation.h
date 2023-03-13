@@ -6,6 +6,11 @@
 
 #include "Body.h"
 
+#ifndef PBody
+#define PBody std::shared_ptr<Body>
+#endif // !PBody
+
+
 class Simulation {
 
 public:
@@ -18,12 +23,15 @@ public:
 	glm::vec2 getSimulationSize();
 	void setSimulationSize(glm::vec2 size);
 
-	std::vector<Body> getBodies();
+	void collisionDetection();
+	bool checkCollision(Body* b1, Body* b2);
+
+	std::vector<PBody> getBodies();
 
 private:
 
 	glm::vec2 simSize;
-	std::vector<Body> bodies;
+	std::vector<PBody> bodies;
 	bool running;
 
 };

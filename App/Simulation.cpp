@@ -18,10 +18,12 @@ Simulation::Simulation() {
 	Square s2 = Square(20, pos1, glm::vec2(0, 100), glm::vec2(0, 0), 1, ImVec4(1.0f, 1.0f, 0.0f, 1.0f), false);
 	Square s1 = Square(20, pos, vel, glm::vec2(50, 0), 1, ImVec4(1.0f, 1.0f, 0.0f, 1.0f), false);
 
-	//bodies.push_back(std::make_shared<Square>(s1));
-	//bodies.push_back(std::make_shared<Square>(s2));
-	//bodies.push_back(std::make_shared<Circle>(c1));
-	//bodies.push_back(std::make_shared<Circle>(c2));
+	s1.setAngle(3.141 / 4);
+
+	bodies.push_back(std::make_shared<Square>(s1));
+	bodies.push_back(std::make_shared<Square>(s2));
+	bodies.push_back(std::make_shared<Circle>(c1));
+	bodies.push_back(std::make_shared<Circle>(c2));
 
 	Circle c3 = Circle(20, glm::vec2(500, 500), glm::vec2(0, 0), glm::vec2(0, 0), 1, ImVec4(0.4, 0.5, 0.245, 1.0), false);
 	//bodies.push_back(std::make_shared<Circle>(c3));
@@ -35,10 +37,10 @@ Simulation::Simulation() {
 	std::shared_ptr<Circle> cs1p = std::make_shared<Circle>(cs1);
 	std::shared_ptr<Circle> cs2p = std::make_shared<Circle>(cs2);
 
-	bodies.push_back(cs1p);
-	bodies.push_back(cs2p);
+	//bodies.push_back(cs1p);
+	//bodies.push_back(cs2p);
 
-	spring = Spring(cs2p, cs1p, 50, 3);
+	//spring = Spring(cs2p, cs1p, 50, 3);
 
 }
 
@@ -60,7 +62,7 @@ void Simulation::update(double dt) {
 	}
 
 	// Spring TEST:
-	spring.update(dt);
+	//spring.update(dt);
 	
 	traceBodies.erase(std::remove_if(traceBodies.begin(), traceBodies.end(), [](const Tracer& i) {return i.getDestroy(); }), traceBodies.end());
 

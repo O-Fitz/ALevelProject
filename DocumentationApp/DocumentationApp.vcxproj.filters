@@ -93,6 +93,9 @@
     <ClCompile Include="Rectangle.cpp">
       <Filter>Bodies</Filter>
     </ClCompile>
+    <ClCompile Include="Square.cpp">
+      <Filter>Bodies</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">
@@ -573,6 +576,9 @@
       <Filter>Bodies</Filter>
     </ClInclude>
     <ClInclude Include="Rectangle.h">
+      <Filter>Bodies</Filter>
+    </ClInclude>
+    <ClInclude Include="Square.h">
       <Filter>Bodies</Filter>
     </ClInclude>
   </ItemGroup>

@@ -58,3 +58,11 @@ bool Body::getStatic() {
 ImVec4 Body::getColour() {
 	return colour;
 }
+
+void Body::setAngle(double ang) {
+	angle = ang;
+}
+
+double Body::getAngle() {
+	return angle;
+}

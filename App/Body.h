@@ -30,6 +30,9 @@ public:
 	bool getStatic();
 	ImVec4 getColour();
 
+	void setAngle(double ang);
+	double getAngle();
+
 	virtual std::vector<Body*> getCollisionBodies();
 
 protected:
@@ -38,6 +41,11 @@ protected:
 	glm::vec2 velocity;
 	glm::vec2 force;
 	float mass;
+
+	double angle;
+	double angularVelocity;
+	double angularImpulse;
+
 	ImVec4 colour;
 	bool isStatic;
 };

@@ -15,8 +15,12 @@ public:
 	void update(double dt) override;
 	void render(Renderer* renderer) override;
 
+	std::vector<Body*> getCollisionBodies() override;
+	glm::vec2 project(glm::vec2 axis) override;
+	std::vector<glm::vec2> getAxes() override;
+
 protected:
 
-	std::vector<glm::vec2> verticies;
+	std::vector<glm::vec2> vertices;
 
 };

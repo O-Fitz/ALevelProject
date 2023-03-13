@@ -8,7 +8,7 @@
 class Rigidbody : public Body {
 
 protected:
-	std::vector<glm::vec2> verticies;
+	std::vector<glm::vec2> vertices;
 
 public:
 

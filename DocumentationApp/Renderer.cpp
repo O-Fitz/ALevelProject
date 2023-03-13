@@ -1,4 +1,5 @@
 #include "Renderer.h"
+#include "Body.h"
 
 
 Renderer::Renderer(GLFWwindow* win, Simulation* sim) : window(win), simulation(sim){
@@ -75,9 +76,9 @@ void Renderer::renderSimulation() {
 	glClear(GL_COLOR_BUFFER_BIT);
 
 	// Renders Simulation
-	std::vector<Body> n = simulation->getBodies();
+	std::vector<PBody> n = simulation->getBodies();
 	for (int i = 0; i < n.size(); i++) {
-		n[i].render(this);
+		n[i]->render(this);
 	}
 
 	// Unbinds Frame buffer
@@ -108,11 +109,11 @@ void Renderer::renderCircle(glm::vec2 position, double radius, ImVec4 colour) {
 	glEnd();
 }
 
-void Renderer::renderPolygon(glm::vec2 position, std::vector<glm::vec2> verticies, ImVec4 colour) {
+void Renderer::renderPolygon(glm::vec2 position, std::vector<glm::vec2> vertices, ImVec4 colour) {
 	glBegin(GL_TRIANGLE_FAN);
 	glColor4f(colour.x, colour.y, colour.z, colour.w);
 
-	for (const glm::vec2& vertex : verticies) {
+	for (const glm::vec2& vertex : vertices) {
 		glVertex2d(position.x + vertex.x, position.y + vertex.y);
 	}
 
