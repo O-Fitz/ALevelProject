@@ -11,10 +11,15 @@ Simulation::Simulation() {
 
 	Circle c1 = Circle(20, pos, vel, glm::vec2(0, 0), 2, ImVec4(0, 255, 0, 255), false);
 	Square s1 = Square(20, pos2, vel2, glm::vec2(0, 0), 2, ImVec4(255, 0, 0, 255), false);
-	
 
-	bodies.push_back(std::make_shared<Circle>(c1));
-	bodies.push_back(std::make_shared<Square>(s1));
+	Square s2 = Square(20, pos2, vel2, vel2, 2, ImVec4(0, 255, 0, 255), false);
+	Square s3 = Square(20, pos2+glm::vec2(6, 5), vel2, vel2, 2, ImVec4(255, 0, 0, 255), false);
+	
+	bodies.push_back(std::make_shared<Square>(s2));
+	bodies.push_back(std::make_shared<Square>(s3));
+
+	//bodies.push_back(std::make_shared<Circle>(c1));
+	//bodies.push_back(std::make_shared<Square>(s1));
 
 }
 
@@ -94,12 +99,14 @@ bool Simulation::checkCollision(Body* b1, Body* b2) {
 }
 
 void Simulation::collisionResloution(Body* b1, Body* b2) {
-
+	positionCorrection((Rigidbody*)b1, (Rigidbody*)b2);
 }
 
 void Simulation::positionCorrection(Rigidbody* b1, Rigidbody* b2) {
 
-	if (b1->getStatic() || b2->getStatic()) {
+	
+
+	if (b1->getStatic() && b2->getStatic()) {
 		return;
 	}
 
@@ -109,19 +116,36 @@ void Simulation::positionCorrection(Rigidbody* b1, Rigidbody* b2) {
 
 	// Finds the most penetrating vertex
 	if (findMostPenetratingVertex(b1, b2, mostPenetrating, distance)) 
-		body = b1;
+		body = b2;
 	
 	if (findMostPenetratingVertex(b2, b1, mostPenetrating, distance))
-		body = b2;
+		body = b1;
 
 	// Find closest face
 
 	glm::vec2 moveVector = findDisplacementVector(body, mostPenetrating);
 
+	std::cout << "Distance: " << distance << std::endl;
+	std::cout << "Most Penetrating: " << mostPenetrating.x  << " " << mostPenetrating.y << std::endl;
+	std::cout << "MoveVector: " << moveVector.x << " " << moveVector.y << std::endl;
+	std::cout << std::endl;
+	std::cout << std::endl;
+
 	// Move objects
 
+	if (body == b2) {
+		moveVector = -moveVector;
+	}
+
 	if (b1->getStatic()) {
-		
+		b2->addPosition(moveVector);
+	}
+	else if (b2->getStatic()) {
+		b1->addPosition(-moveVector);
+	}
+	else {
+		b1->addPosition(moveVector * glm::fvec1(0.5));
+		b2->addPosition(-moveVector * glm::fvec1(0.5));
 	}
 
 }
@@ -173,21 +197,33 @@ glm::vec2 Simulation::findDisplacementVector(Rigidbody* b1, glm::vec2 vertex) {
 
 	std::vector<glm::vec2> vertices = b1->getVertices();
 
-	glm::vec2 shortest = glm::vec2(10000000000, 100000000000);
+	glm::vec2 shortest = glm::vec2(10000000000, 10000000000);
+	std::cout << "Shortest1: " << shortest.x << " " << shortest.y << std::endl;
 
 	for (int i = 0; i < vertices.size(); i++) {
 		glm::vec2 AB = vertices[(i + 1) % vertices.size()] - vertices[i];
 		glm::vec2 AP = vertex - vertices[i];
-		// Finds the angle between the two vectors AB and AP
+
 		float u = glm::dot<float>(AB, AP)/(glm::length(AB)*glm::length(AB));
-		// Finds the distance using basic trigonometry
 		
+		glm::vec2 test = (vertices[i] + glm::fvec1(u) * AB);
 		glm::vec2 vec = vertex - (vertices[i] + glm::fvec1(u) * AB);
+
+		std::cout << "AB: " << AB.x << " " << AB.y << std::endl;
+		std::cout << "AP: " << AP.x << " " << AP.y << std::endl;
+		std::cout << "U: " << u << std::endl;
+		std::cout << "Vertex: " << vertex.x << " " << vertex.y << std::endl;
+		std::cout << "A + u*AB: " << test.x << " " << test.y << std::endl;
+		std::cout << "Vec: " << vec.x << " " << vec.y << std::endl;
+		std::cout << std::endl;
+
 
 		if (glm::length(vec) < glm::length(shortest)) {
 			shortest = vec;
 		}
 	}
+
+	std::cout << "Shortest: " << shortest.x << " " << shortest.y << std::endl;
 
 	return shortest;
 

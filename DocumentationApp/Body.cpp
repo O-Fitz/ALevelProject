@@ -58,4 +58,6 @@ std::vector<glm::vec2> Body::getAxes() {
 	return std::vector<glm::vec2>();
 }
 
-void Body::addPosition(glm::vec2 pos)
+void Body::addPosition(glm::vec2 pos) {
+	position += pos;
+}
