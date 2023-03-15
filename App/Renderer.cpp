@@ -203,7 +203,7 @@ void Renderer::renderCircle(glm::vec2 position, double radius, ImVec4 colour) {
 	glEnd();
 }
 
-void Renderer::renderPolygon(glm::vec2 position, std::vector<glm::vec2> verticies, double angle, ImVec4 colour) {
+void Renderer::renderPolygon(glm::vec2 position, std::vector<glm::vec2> verticies, ImVec4 colour) {
 
 	glBegin(GL_TRIANGLE_FAN);
 	glColor4f(colour.x, colour.y, colour.z, colour.w);

@@ -57,3 +57,5 @@ glm::vec2 Body::project(glm::vec2 axis) {
 std::vector<glm::vec2> Body::getAxes() {
 	return std::vector<glm::vec2>();
 }
+
+void Body::addPosition(glm::vec2 pos)

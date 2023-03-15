@@ -22,6 +22,8 @@ public:
 	bool getStatic();
 	ImVec4 getColour();
 
+	void addPosition(glm::vec2 pos);
+
 	void applyImpulse(glm::vec2 impulse);
 
 	virtual std::vector<Body*> getCollisionBodies();

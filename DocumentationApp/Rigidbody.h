@@ -18,6 +18,7 @@ public:
 	std::vector<Body*> getCollisionBodies() override;
 	glm::vec2 project(glm::vec2 axis) override;
 	std::vector<glm::vec2> getAxes() override;
+	std::vector<glm::vec2> getVertices();
 
 protected:
 

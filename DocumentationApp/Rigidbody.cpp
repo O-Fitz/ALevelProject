@@ -83,3 +83,13 @@ std::vector<glm::vec2> Rigidbody::getAxes() {
 	return axes;
 
 }
+
+std::vector<glm::vec2> Rigidbody::getVertices() {
+
+	std::vector<glm::vec2> ver = std::vector<glm::vec2>();
+	for (const glm::vec2& vertex : vertices) {
+		ver.push_back(vertex + position);
+	}
+
+	return ver;
+}

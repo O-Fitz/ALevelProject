@@ -65,7 +65,7 @@ void Simulation::collisionDetection() {
 		for (int j = 0; j < collisionBodies.size(); j++) {
 			float min;
 			if (!checked[j] && checkCollision(collisionBodies[i], collisionBodies[j])) {
-				std::cout << "COLLISION" << std::endl;
+				collisionResloution(collisionBodies[i], collisionBodies[j]);
 			}
 		}
 	}
@@ -91,4 +91,104 @@ bool Simulation::checkCollision(Body* b1, Body* b2) {
 	}
 
 	return true;
+}
+
+void Simulation::collisionResloution(Body* b1, Body* b2) {
+
+}
+
+void Simulation::positionCorrection(Rigidbody* b1, Rigidbody* b2) {
+
+	if (b1->getStatic() || b2->getStatic()) {
+		return;
+	}
+
+	glm::vec2 mostPenetrating = glm::vec2(0, 0);
+	float distance = std::numeric_limits<float>::max();
+	Rigidbody* body = 0;
+
+	// Finds the most penetrating vertex
+	if (findMostPenetratingVertex(b1, b2, mostPenetrating, distance)) 
+		body = b1;
+	
+	if (findMostPenetratingVertex(b2, b1, mostPenetrating, distance))
+		body = b2;
+
+	// Find closest face
+
+	glm::vec2 moveVector = findDisplacementVector(body, mostPenetrating);
+
+	// Move objects
+
+	if (b1->getStatic()) {
+		
+	}
+
+}
+
+bool Simulation::findMostPenetratingVertex(Rigidbody* b1, Rigidbody* b2, glm::vec2& mostPenetrating, float& distance) {
+	// Passes mostPenetrating and distance by reference
+
+	bool hasMostPenVertex = false;
+
+	for (const glm::vec2& vertex : b1->getVertices()) {
+		// Is penetrating
+		bool pen = true;
+		
+		// Check if the vertex is penetrating (uses similar process to SAT)
+		for (const glm::vec2& axis : b2->getAxes()) {
+			// Projects b2 onto the axes
+			glm::vec2 proj = b2->project(axis);
+			// Projects the vertex onto the axes
+			float dot = glm::dot<float>(vertex, axis);
+
+			// Checks if the vertex is outside the shadow
+			if (proj.x > dot || proj.y < dot) {
+				// If so, then the vertex is not penetrating
+				pen = false;
+				break;
+			}
+		}
+
+		if (pen) {
+			// If the object is penetrating
+			// Find the distance from the vertex to the centre of the other shape
+			glm::vec2 relPos = b2->getPostition() - vertex;
+			float dis = glm::distance<float>(relPos.x, relPos.y);
+			if (dis < distance) {
+				// If the distance is closer than the previous closer one
+				// Set the distance and mostPenetrating to be the vertex and the distance
+				distance = dis;
+				mostPenetrating = vertex;
+				hasMostPenVertex = true;
+			}
+		}
+	}
+
+	return hasMostPenVertex;
+
+}
+
+glm::vec2 Simulation::findDisplacementVector(Rigidbody* b1, glm::vec2 vertex) {
+
+	std::vector<glm::vec2> vertices = b1->getVertices();
+
+	glm::vec2 shortest = glm::vec2(10000000000, 100000000000);
+
+	for (int i = 0; i < vertices.size(); i++) {
+		glm::vec2 AB = vertices[(i + 1) % vertices.size()] - vertices[i];
+		glm::vec2 AP = vertex - vertices[i];
+		// Finds the angle between the two vectors AB and AP
+		float u = glm::dot<float>(AB, AP)/(glm::length(AB)*glm::length(AB));
+		// Finds the distance using basic trigonometry
+		
+		glm::vec2 vec = vertex - (vertices[i] + glm::fvec1(u) * AB);
+
+		if (glm::length(vec) < glm::length(shortest)) {
+			shortest = vec;
+		}
+	}
+
+	return shortest;
+
 }
