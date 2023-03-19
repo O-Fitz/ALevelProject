@@ -127,7 +127,6 @@ void Simulation::CollisionDetection() {
 			float min;
 			if (!checked[j]) {
 				glm::vec2 MTV = checkCollision(collisionBodies[i], collisionBodies[j]);
-				std::cout << "\n\n";
 				if (MTV != glm::vec2(0, 0)) {
 					resolveCollision(collisionBodies[i], collisionBodies[j], elasticity, MTV);
 				}
@@ -219,8 +218,7 @@ void Simulation::resolveCollision(Body* b1, Body* b2, float elasticity, glm::vec
 		glm::vec2 normal = b2->getPostition() - b1->getPostition();
 		normal = glm::normalize(normal);
 
-
-		glm::vec2 par = normal * glm::fvec1(glm::dot<float>(b2->getVelocity(), normal)/glm::dot(normal, normal));
+		glm::vec2 par = normal * (glm::dot<float>(b2->getVelocity(), normal)/glm::dot(normal, normal);
 		glm::vec2 perp = b2->getVelocity()-par;
 		glm::vec2 impulse = glm::fvec1(elasticity * b2->getMass() * 2) * (par - perp);
 		b2->applyImpulse(impulse);
@@ -230,7 +228,7 @@ void Simulation::resolveCollision(Body* b1, Body* b2, float elasticity, glm::vec
 		glm::vec2 normal = b2->getPostition() - b1->getPostition();
 		normal = glm::normalize(normal);
 
-		glm::vec2 par = normal * glm::fvec1(glm::dot<float>(b2->getVelocity(), normal) / glm::dot(normal, normal));
+		glm::vec2 par = normal * glm::fvec1(glm::dot<float>(b1->getVelocity(), normal) / glm::dot(normal, normal));
 		glm::vec2 perp = b1->getVelocity() - par;
 		glm::vec2 impulse = glm::fvec1(elasticity*b1->getMass()*2) * (par - perp);
 		b1->applyImpulse(impulse);

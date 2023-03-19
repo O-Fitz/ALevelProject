@@ -6,14 +6,14 @@ Simulation::Simulation() {
 
 	glm::vec2 pos = glm::vec2(100, 100);
 	glm::vec2 pos2 = glm::vec2(200, 200);
-	glm::vec2 vel = glm::vec2(100, 100);
+	glm::vec2 vel = glm::vec2(-100, 0);
 	glm::vec2 vel2 = glm::vec2(0, 0);
 
 	Circle c1 = Circle(20, pos, vel, glm::vec2(0, 0), 2, ImVec4(0, 255, 0, 255), false);
 	Square s1 = Square(20, pos2, vel2, glm::vec2(0, 0), 2, ImVec4(255, 0, 0, 255), false);
 
-	Square s2 = Square(20, pos2, vel2, vel2, 2, ImVec4(0, 255, 0, 255), false);
-	Square s3 = Square(20, pos2+glm::vec2(6, 9), vel2, vel2, 2, ImVec4(255, 0, 0, 255), false);
+	Square s2 = Square(20, pos2, vel2, vel2, 4, ImVec4(0, 255, 0, 255), true);
+	Square s3 = Square(20, pos2+glm::vec2(100, 0), vel, vel2, 2, ImVec4(255, 0, 0, 255), false);
 	
 	bodies.push_back(std::make_shared<Square>(s2));
 	bodies.push_back(std::make_shared<Square>(s3));
@@ -105,7 +105,7 @@ glm::vec2 Simulation::checkCollision(Body* b1, Body* b2) {
 			float distance = std::max(d1, d2);
 			if (distance > overlap) {
 				overlap = distance;
-				MTV = glm::normalize(axis) * glm::fvec1(overlap);
+				MTV = glm::normalize(axis) * overlap;
 			}
 		}
 	}
@@ -131,22 +131,22 @@ void Simulation::positionCorrection(Body* b1, Body* b2, glm::vec2 MTV) {
 	}
 
 
-	double rMass1 = 1 / b1->getMass();
-	double rMass2 = 1 / b2->getMass();
+	float rMass1 = 1 / b1->getMass();
+	float rMass2 = 1 / b2->getMass();
 
 	glm::vec2 moveVector = MTV * glm::fvec1(1 / (rMass1 + rMass2));
 
 	// Move objects
 
 	if (b1->getStatic()) {
-		b2->addPosition(moveVector * glm::fvec1(rMass1 + rMass2));
+		b2->addPosition(moveVector * (rMass1 + rMass2));
 	}
 	else if (b2->getStatic()) {
-		b1->addPosition(-moveVector * glm::fvec1(rMass1 + rMass2));
+		b1->addPosition(-moveVector * (rMass1 + rMass2));
 	}
 	else {
-		b1->addPosition(moveVector * glm::fvec1(rMass1));
-		b2->addPosition(-moveVector * glm::fvec1(rMass2));
+		b1->addPosition(moveVector * rMass1);
+		b2->addPosition(-moveVector * rMass2);
 	}
 
 }
@@ -155,17 +155,34 @@ void Simulation::impulseCalculation(Body* b1, Body* b2) {
 
 	glm::vec2 normal = glm::normalize(b2->getPostition() - b1->getPostition());
 
-	// Find the relative velocity of the objects
-	glm::vec2 rv = b2->getVelocity() - b1->getVelocity();
+	if (b1->getStatic()) {
+		glm::vec2 par = normal * (glm::dot(b2->getVelocity(), normal) / glm::dot(normal, normal));
+		glm::vec2 perp = b2->getVelocity() - par;
+		glm::vec2 impulse = (perp - par) * (elasticity * b2->getMass() * 2);
+		b2->applyImpulse(impulse);
+	}
+	else if (b2->getStatic()) {
+		glm::vec2 par = normal * (glm::dot(b1->getVelocity(), normal) / glm::dot(normal, normal));
+		glm::vec2 perp = b1->getVelocity() - par;
+		glm::vec2 impulse = (perp - par) * (elasticity * b1->getMass() * 2);
+		b2->applyImpulse(impulse);
+	}
+	else {
 
-	// Find the relative velocity along the normal
-	float velAlongNormal = glm::dot(rv, normal);
+		// Find the relative velocity of the objects
+		glm::vec2 rv = b2->getVelocity() - b1->getVelocity();
 
-	// Calculate the impulse scalar
-	float j = -(1 + elasticity) * velAlongNormal;
-	j /= 1 / b1->getMass() + 1 / b2->getMass();
+		// Find the relative velocity along the normal
+		float velAlongNormal = glm::dot(rv, normal);
 
-	// Apply the impulse to the objects
-	glm::vec2 impulse = normal * j;
+		// Calculate the impulse scalar
+		float j = -(1 + elasticity) * velAlongNormal;
+		j /= 1 / b1->getMass() + 1 / b2->getMass();
 
+		// Apply the impulse to the objects
+		glm::vec2 impulse = normal * j;
+
+		b1->applyImpulse(-impulse);
+		b2->applyImpulse(impulse);
+	}
 }
