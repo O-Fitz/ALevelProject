@@ -30,6 +30,8 @@ public:
 	bool getStatic();
 	ImVec4 getColour();
 
+	void addPosition(glm::vec2 pos);
+
 	void setAngle(double ang);
 	double getAngle();
 

@@ -57,8 +57,8 @@ private:
 	Spring spring;
 
 	void CollisionDetection();
-	bool checkCollision(Body* b1, Body* p2);
-	void resolveCollision(Body* b1, Body* p2, float elasticity);
+	glm::vec2 checkCollision(Body* b1, Body* p2);
+	void resolveCollision(Body* b1, Body* p2, float elasticity, glm::vec2 MTV);
 
 };
 

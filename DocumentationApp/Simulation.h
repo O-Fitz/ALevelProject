@@ -25,13 +25,6 @@ public:
 	void setSimulationSize(glm::vec2 size);
 
 	void collisionDetection();
-	bool checkCollision(Body* b1, Body* b2);
-	void collisionResloution(Body* b1, Body* b2);
-	void positionCorrection(Rigidbody* b1, Rigidbody* b2);
-
-	bool findMostPenetratingVertex(Rigidbody* b1, Rigidbody* b2, glm::vec2& mostPenetrating, float& distance);
-	glm::vec2 findDisplacementVector(Rigidbody* b1, glm::vec2 vertex);
-
 	std::vector<PBody> getBodies();
 
 private:
@@ -39,5 +32,12 @@ private:
 	glm::vec2 simSize;
 	std::vector<PBody> bodies;
 	bool running;
+
+	float elasticity = 1;
+
+	glm::vec2 checkCollision(Body* b1, Body* b2);
+	void collisionResloution(Body* b1, Body* b2, glm::vec2 MTV);
+	void positionCorrection(Body* b1, Body* b2, glm::vec2 MTV);
+	void impulseCalculation(Body* b1, Body* b2);
 
 };

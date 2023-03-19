@@ -77,7 +77,7 @@ std::vector<glm::vec2> Rigidbody::getAxes() {
 
 		// Find the perpendicular vector by swapping x and y and making x negative
 		// and add it to the axes.
-		axes.push_back(glm::vec2(edge.y, -edge.x));
+		axes.push_back(glm::normalize(glm::vec2(edge.y, -edge.x)));
 	}
 
 	return axes;

@@ -210,7 +210,7 @@ void Renderer::renderPolygon(glm::vec2 position, std::vector<glm::vec2> verticie
 
 	for (const glm::vec2& vertex : verticies) {
 		std::complex<float> vpos = std::complex<float>(vertex.x, vertex.y);
-		vpos *= std::complex<float>(sin(angle), cos(angle));
+		//vpos *= std::complex<float>(sin(angle), cos(angle));
 		glVertex2d(position.x+vertex.x, position.y+vertex.y);
 	}
 

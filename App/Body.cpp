@@ -66,3 +66,7 @@ void Body::setAngle(double ang) {
 double Body::getAngle() {
 	return angle;
 }
+
+void Body::addPosition(glm::vec2 pos) {
+	position += pos;
+}

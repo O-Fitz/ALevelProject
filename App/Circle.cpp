@@ -33,7 +33,7 @@ void Circle::print() {
 std::vector<glm::vec2> Circle::getAxes() {
 	std::vector<glm::vec2>axes = std::vector<glm::vec2>();
 	for (float i = 0; i < 2*PI; i+=2*PI/collisionAxis) {
-		axes.emplace_back( sin(i), cos(i));
+		axes.push_back(glm::normalize(glm::vec2( sin(i), cos(i))));
 	}
 	return axes;
 }

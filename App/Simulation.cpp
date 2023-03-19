@@ -21,9 +21,9 @@ Simulation::Simulation() {
 	s1.setAngle(3.141 / 4);
 
 	bodies.push_back(std::make_shared<Square>(s1));
-	bodies.push_back(std::make_shared<Square>(s2));
+	//bodies.push_back(std::make_shared<Square>(s2));
 	bodies.push_back(std::make_shared<Circle>(c1));
-	bodies.push_back(std::make_shared<Circle>(c2));
+	//bodies.push_back(std::make_shared<Circle>(c2));
 
 	Circle c3 = Circle(20, glm::vec2(500, 500), glm::vec2(0, 0), glm::vec2(0, 0), 1, ImVec4(0.4, 0.5, 0.245, 1.0), false);
 	//bodies.push_back(std::make_shared<Circle>(c3));
@@ -125,15 +125,19 @@ void Simulation::CollisionDetection() {
 		checked[i] = true;
 		for (int j = 0; j < collisionBodies.size(); j++){
 			float min;
-			if (!checked[j] && checkCollision(collisionBodies[i], collisionBodies[j])) {
-				resolveCollision(collisionBodies[i], collisionBodies[j], elasticity);
+			if (!checked[j]) {
+				glm::vec2 MTV = checkCollision(collisionBodies[i], collisionBodies[j]);
+				std::cout << "\n\n";
+				if (MTV != glm::vec2(0, 0)) {
+					resolveCollision(collisionBodies[i], collisionBodies[j], elasticity, MTV);
+				}
 			}
 		}
 	}
 
 }
 
-bool Simulation::checkCollision(Body* b1, Body* b2) {
+glm::vec2 Simulation::checkCollision(Body* b1, Body* b2) {
 
 	/*
 	
@@ -156,6 +160,8 @@ bool Simulation::checkCollision(Body* b1, Body* b2) {
 	std::vector<glm::vec2> b2axes = b2->getAxes();
 	axes.insert(std::end(axes), std::begin(b2axes), std::end(b2axes));
 
+	float overlap = -std::numeric_limits<float>::max();
+	glm::vec2 MTV = glm::vec2(0, 0);
 
 	// Iterate through axes
 	for (const glm::vec2& axis : axes) {
@@ -164,21 +170,45 @@ bool Simulation::checkCollision(Body* b1, Body* b2) {
 		Projection p2 = b2->project(axis);
 
 		// If they don't overlap, Bodies dont collide
-		if (p1.seperate(p2)) {
-			return false;
+		// (min > proj2.max || max < proj2.min);
+		float distance1 = (p2.max - p1.min);
+		float distance2 = (p1.max - p2.min);
+			
+		//if (p1.seperate(p2)){
+		std::cout << "Distance1: " << distance1 << std::endl;
+		std::cout << "Distance2: " << distance2 << std::endl;
+		std::cout << "Axis: " << axis.x << " " << axis.y << std::endl;
+		if (distance1 < 0 || distance2 < 0){
+			return glm::vec2(0, 0);
+		}
+		else {
+			float distance = std::min(distance1, distance2);
+			if (distance > overlap) {
+				overlap = distance;
+				MTV = glm::normalize(axis) * glm::fvec1(overlap);
+			}
 		}
 	}
+	return MTV;
 
-	return true;
 
 }
 
-void Simulation::resolveCollision(Body* b1, Body* b2, float elasticity) {
+void Simulation::resolveCollision(Body* b1, Body* b2, float elasticity, glm::vec2 MTV) {
 
 	// POSITION CORRECTION
 
 	// TODO: POSITION CORRECTION
 
+	double rMass1 = 1 / b1->getMass();
+	double rMass2 = 1 / b2->getMass();
+
+	glm::vec2 correction = MTV * glm::fvec1(1/ (rMass1 + rMass2));
+	std::cout << "Correction: " << correction.x << " " << correction.y << std::endl;
+	std::cout << "MTV: " << MTV.x << " " << MTV.y << std::endl;
+	std::cout << "Scale: " << 1 / (rMass1 + rMass2) << std::endl;
+	b1->addPosition(correction*glm::fvec1(-rMass1));
+	b2->addPosition(correction*glm::fvec1(rMass2));
 
 	// APPLY IMPULSES TO OBJECTS:
 	

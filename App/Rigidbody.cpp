@@ -64,7 +64,7 @@ std::vector<glm::vec2> Rigidbody::getAxes() {
 		comp *= std::complex<float>(cos(3.141 + angle), sin(3.141 + angle));
 		glm::vec2 perp = glm::vec2(comp.real(), comp.imag());
 
-		axes.push_back(perp);
+		axes.push_back(glm::normalize(perp));
 	}
 
 	return axes;
