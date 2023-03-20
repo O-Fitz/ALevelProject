@@ -18,7 +18,7 @@ public:
 	glm::vec2 getPostition();
 	glm::vec2 getVelocity();
 	glm::vec2 getForce();
-	double getMass();
+	float getMass();
 	bool getStatic();
 	ImVec4 getColour();
 

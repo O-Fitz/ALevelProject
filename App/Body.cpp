@@ -47,7 +47,7 @@ glm::vec2 Body::getVelocity() {
 	return velocity;
 }
 
-double Body::getMass() {
+float Body::getMass() {
 	return mass;
 }
 

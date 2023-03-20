@@ -33,7 +33,7 @@ private:
 	std::vector<PBody> bodies;
 	bool running;
 
-	float elasticity = 1;
+	float elasticity = 1.0f;
 
 	glm::vec2 checkCollision(Body* b1, Body* b2);
 	void collisionResloution(Body* b1, Body* b2, glm::vec2 MTV);
