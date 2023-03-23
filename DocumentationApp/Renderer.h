@@ -20,8 +20,9 @@ public:
 	void renderImGUI();
 	void renderSimulation();
 
-	void renderCircle(glm::vec2 position, double radius, ImVec4 colour);
-	void renderPolygon(glm::vec2 position, std::vector<glm::vec2> vertices, ImVec4 colour);
+	void drawCircle(glm::vec2 position, double radius, ImVec4 colour);
+	void drawPolygon(glm::vec2 position, std::vector<glm::vec2> vertices, ImVec4 colour);
+	void drawLine(glm::vec2 pos1, glm::vec2 pos2, ImVec4 colour);
 
 	ImVec2 getWindowSize();
 
@@ -32,18 +33,19 @@ private:
 
 	// Simulation Pointer;
 	Simulation* simulation;
-	
-	// Framebuffer
-	FrameBuffer fb = FrameBuffer();
-	glm::mat4 projection;
+
 
 	// Window properties
 	ImVec2 wsize;
 	ImVec2 pos;
 
+	ImVec4 background = ImVec4(0.45f, 0.55f, 0.60f, 1.00f); // Background colour
+
+	// Framebuffer
+	FrameBuffer fb = FrameBuffer();
+	glm::mat4 projection;
+
 	// ImGUI windows
 	bool showDataWindow = true;
-
-	ImVec4 background = ImVec4(0.45f, 0.55f, 0.60f, 1.00f); // Background colour
 
 };

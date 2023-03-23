@@ -48,8 +48,9 @@ public:
 	void renderImGUI();
 	void renderSimulation();
 
-	void renderCircle(glm::vec2 position, double radius, ImVec4 colour);
-	void renderPolygon(glm::vec2 position, std::vector<glm::vec2> verticies, ImVec4 colour);
+	void drawCircle(glm::vec2 position, float radius, ImVec4 colour);
+	void drawPolygon(glm::vec2 position, std::vector<glm::vec2> verticies, ImVec4 colour);
+	void drawLine(glm::vec2 pos1, glm::vec2 pos2, ImVec4 colour);
 
 	ImVec2 getWindowSize();
 

@@ -35,9 +35,9 @@ private:
 
 	float elasticity = 1.0f;
 
-	glm::vec2 checkCollision(Body* b1, Body* b2);
+	glm::vec2 checkCollision(Body* b1, Body* b2); 
 	void collisionResloution(Body* b1, Body* b2, glm::vec2 MTV);
 	void positionCorrection(Body* b1, Body* b2, glm::vec2 MTV);
-	void impulseCalculation(Body* b1, Body* b2);
+	void impulseCalculation(Body* b1, Body* b2, glm::vec2 MTV);
 
 };

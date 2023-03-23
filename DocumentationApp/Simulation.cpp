@@ -7,13 +7,13 @@ Simulation::Simulation() {
 	glm::vec2 pos = glm::vec2(100, 100);
 	glm::vec2 pos2 = glm::vec2(200, 200);
 	glm::vec2 vel = glm::vec2(-100, 0);
-	glm::vec2 vel2 = glm::vec2(0, 0);
+	glm::vec2 vel2 = glm::vec2(200, 0);
 
 	Circle c1 = Circle(20, pos, vel, glm::vec2(0, 0), 2, ImVec4(0, 255, 0, 255), false);
 	Square s1 = Square(20, pos2, vel2, glm::vec2(0, 0), 2, ImVec4(255, 0, 0, 255), false);
 
-	Square s2 = Square(20, pos2, vel2, vel2, 4, ImVec4(0, 255, 0, 255), true);
-	Square s3 = Square(20, pos2+glm::vec2(100, 0), vel, vel2, 2, ImVec4(255, 0, 0, 255), false);
+	Square s2 = Square(20, pos2, vel2, vel2, 1, ImVec4(0, 255, 0, 255), false);
+	Square s3 = Square(20, pos2+glm::vec2(100, 0), vel, vel2, 1, ImVec4(255, 0, 0, 255), false);
 	
 	bodies.push_back(std::make_shared<Square>(s2));
 	bodies.push_back(std::make_shared<Square>(s3));
@@ -70,7 +70,6 @@ void Simulation::collisionDetection() {
 		for (int j = 0; j < collisionBodies.size(); j++) {
 			float min;
 			if (!checked[j]) {
-
 				glm::vec2 MTV = checkCollision(collisionBodies[i], collisionBodies[j]);
 				if (MTV != glm::vec2(0, 0)) {
 					collisionResloution(collisionBodies[i], collisionBodies[j], MTV);
@@ -86,7 +85,7 @@ glm::vec2 Simulation::checkCollision(Body* b1, Body* b2) {
 	std::vector<glm::vec2> b2axes = b2->getAxes();
 	axes.insert(std::end(axes), std::begin(b2axes), std::end(b2axes));
 
-	float overlap = -std::numeric_limits<float>::max();
+	float overlap = std::numeric_limits<float>::max();
 	glm::vec2 MTV = glm::vec2(0, 0);
 
 	// Iterate through axes
@@ -97,15 +96,18 @@ glm::vec2 Simulation::checkCollision(Body* b1, Body* b2) {
 
 		// If they don't overlap, Bodies dont collide
 		if (p1.x > p2.y || p1.y < p2.x) {
+			// Returns 0 vector
 			return glm::vec2(0, 0);
 		}
 		else {
-			float d1 = p2[0] - p1[1];
-			float d2 = p1[0] - p2[1];
-			float distance = std::max(d1, d2);
-			if (distance > overlap) {
-				overlap = distance;
-				MTV = glm::normalize(axis) * overlap;
+			// Calculate the overlap distance between the two shadows
+			float newOverlap = std::min(p1.y, p2.y) - std::max(p1.x, p2.x);
+			if (newOverlap < overlap) {
+				// If the overlap is smaller than the current smallest overlap
+				// The current smallest overlap becomes newOverlap
+				overlap = newOverlap;
+				// The Minimum Translation Vector is equal the the normalized axis multiplied by the size of the overlap
+				MTV = glm::normalize(axis) * (overlap);
 			}
 		}
 	}
@@ -116,73 +118,82 @@ glm::vec2 Simulation::checkCollision(Body* b1, Body* b2) {
 void Simulation::collisionResloution(Body* b1, Body* b2, glm::vec2 MTV) {
 
 	if (b1->getStatic() && b2->getStatic()) {
+		// If both are static, do nothing
 		return;
 	}
+
+	// Position Correction
 	positionCorrection(b1, b2, MTV);
-	impulseCalculation(b1, b2);
+
+	// Impulse Calculation
+	impulseCalculation(b1, b2, MTV);
 }
 
 void Simulation::positionCorrection(Body* b1, Body* b2, glm::vec2 MTV) {
 
-	
-
-	if (b1->getStatic() && b2->getStatic()) {
-		return;
-	}
-
-
-	float rMass1 = 1 / b1->getMass();
-	float rMass2 = 1 / b2->getMass();
-
-	glm::vec2 moveVector = MTV * glm::fvec1(1 / (rMass1 + rMass2));
-
 	// Move objects
-
 	if (b1->getStatic()) {
-		b2->addPosition(moveVector * (rMass1 + rMass2));
+		// If b1 is static, only move b2
+		b2->addPosition(-MTV);
 	}
 	else if (b2->getStatic()) {
-		b1->addPosition(-moveVector * (rMass1 + rMass2));
+		// If b2 is static, only move b1
+		b1->addPosition(MTV);
 	}
 	else {
-		b1->addPosition(moveVector * rMass1);
-		b2->addPosition(-moveVector * rMass2);
+		// Otherwise move both objects proportional to their masses
+		// Calculate reciprocal masses
+		float rMass1 = 1 / b1->getMass();
+		float rMass2 = 1 / b2->getMass();
+
+		glm::vec2 moveVector = MTV / (rMass1 + rMass2);
+
+		b1->addPosition(-moveVector * rMass1);
+		b2->addPosition(moveVector * rMass2);
 	}
 
 }
 
-void Simulation::impulseCalculation(Body* b1, Body* b2) {
+void Simulation::impulseCalculation(Body* b1, Body* b2, glm::vec2 MTV) {
 
-	glm::vec2 normal = glm::normalize(b2->getPostition() - b1->getPostition());
+	// Calculates collision normal
+	glm::vec2 normal = glm::normalize(MTV);
 
-	if (b1->getStatic()) {
-		glm::vec2 par = normal * (glm::dot(b2->getVelocity(), normal) / glm::dot(normal, normal));
-		glm::vec2 perp = b2->getVelocity() - par;
-		glm::vec2 impulse = (perp - par) * (elasticity * b2->getMass() * 2);
-		b2->applyImpulse(impulse);
-	}
-	else if (b2->getStatic()) {
-		glm::vec2 par = normal * (glm::dot(b1->getVelocity(), normal) / glm::dot(normal, normal));
-		glm::vec2 perp = b1->getVelocity() - par;
-		glm::vec2 impulse = (perp - par) * (elasticity * b1->getMass() * 2);
-		b2->applyImpulse(impulse);
+	if (b1->getStatic() || b2->getStatic()) {
+		// Find which body is static (cant be both as it is checked in collisionResolution)
+		Body* body = b1;
+		if (b1->getStatic()) {
+			body = b2;
+		}
+
+		// Calculates the component of body's velocity parallel to the normal 
+		glm::vec2 par = normal * (glm::dot(body->getVelocity(), normal) / glm::dot(normal, normal));
+		// Calculates the component of body's velocity perpendicular to the normal
+		glm::vec2 perp = body->getVelocity() - par;
+		
+		// Impulse = mass * change in velocity
+		// Change in velocity = perp - par (reflects the body in the opposite direction to the normal)
+		// Elasticity detemines how much energy is conservec in the reaction
+		glm::vec2 impulse = (perp - par) * (elasticity * body->getMass() * 2);
+		body->applyImpulse(impulse);
 	}
 	else {
+		// If neither of them are static
 
 		// Find the relative velocity of the objects
-		glm::vec2 rv = b2->getVelocity() - b1->getVelocity();
+		glm::vec2 rv = b2->getVelocity() - b1->getVelocity(); 
 
 		// Find the relative velocity along the normal
 		float velAlongNormal = glm::dot(rv, normal);
 
 		// Calculate the impulse scalar
-		float j = -(1 + elasticity) * velAlongNormal;
+		float j = (1 + elasticity) * velAlongNormal;
 		j /= 1 / b1->getMass() + 1 / b2->getMass();
 
 		// Apply the impulse to the objects
 		glm::vec2 impulse = normal * j;
 
-		b1->applyImpulse(-impulse);
-		b2->applyImpulse(impulse);
+		b1->applyImpulse(impulse);
+		b2->applyImpulse(-impulse);
 	}
 }

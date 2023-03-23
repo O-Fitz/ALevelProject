@@ -546,6 +546,9 @@
     <ClInclude Include="Spring.h">
       <Filter>Bodies</Filter>
     </ClInclude>
+    <ClInclude Include="Softbody.h">
+      <Filter>Bodies</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="imgui\imgui.cpp">
@@ -609,6 +612,9 @@
       <Filter>Bodies</Filter>
     </ClCompile>
     <ClCompile Include="Spring.cpp">
+      <Filter>Bodies</Filter>
+    </ClCompile>
+    <ClCompile Include="Softbody.cpp">
       <Filter>Bodies</Filter>
     </ClCompile>
   </ItemGroup>

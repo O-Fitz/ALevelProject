@@ -12,7 +12,7 @@ Circle::Circle(double rad, glm::vec2 pos, glm::vec2 vel, glm::vec2 Force, double
 }
 
 void Circle::render(Renderer* renderer) {
-	renderer->renderCircle(position, radius, colour);
+	renderer->drawCircle(position, radius, colour);
 }
 
 glm::vec2 Circle::project(glm::vec2 axis) {

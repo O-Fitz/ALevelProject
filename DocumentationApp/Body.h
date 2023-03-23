@@ -15,7 +15,7 @@ public:
 	virtual void update(double dt);
 	virtual void render(Renderer* renderer);
 
-	glm::vec2 getPostition();
+	glm::vec2 getPosition();
 	glm::vec2 getVelocity();
 	glm::vec2 getForce();
 	float getMass();

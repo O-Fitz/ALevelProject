@@ -7,14 +7,14 @@ Circle::Circle() :
 
 }
 
-Circle::Circle(double rad, glm::vec2 pos, glm::vec2 vel, glm::vec2 Force, double Mass, ImVec4 col, bool stat) :
+Circle::Circle(float rad, glm::vec2 pos, glm::vec2 vel, glm::vec2 Force, float Mass, ImVec4 col, bool stat) :
 	radius(rad), Rigidbody(std::vector<glm::vec2>(), pos, vel, Force, Mass, col, stat) {
 
 }
 
 
 void Circle::render(Renderer* renderer) {
-	renderer->renderCircle(position, radius, colour);
+	renderer->drawCircle(position, radius, colour);
 }
 
 Projection Circle::project(glm::vec2 axis) {
@@ -36,4 +36,8 @@ std::vector<glm::vec2> Circle::getAxes() {
 		axes.push_back(glm::normalize(glm::vec2( sin(i), cos(i))));
 	}
 	return axes;
+}
+
+float Circle::getRadius() {
+	return radius;
 }

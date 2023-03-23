@@ -24,7 +24,7 @@ Rigidbody::Rigidbody(std::vector<glm::vec2> Vert, glm::vec2 Pos, glm::vec2 Vel, 
 }
 
 void Rigidbody::render(Renderer* renderer) {
-	renderer->renderPolygon(position, vertices, colour);
+	renderer->drawPolygon(position, vertices, colour);
 }
 
 void Rigidbody::update(double dt) {
@@ -38,6 +38,7 @@ void Rigidbody::update(double dt) {
 	glm::fvec1 dtv = glm::fvec1(dt); // A vector version of dt
 	velocity += (force / glm::fvec1(mass)) * dtv + impulse / glm::fvec1(mass); // Update the velocity
 	impulse = glm::vec2(0, 0); // Set impulse to (0, 0)
+	force = glm::vec2(0, 0);
 	position += velocity * dtv; // Update the position
 
 }

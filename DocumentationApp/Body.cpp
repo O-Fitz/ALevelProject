@@ -22,7 +22,7 @@ void Body::applyImpulse(glm::vec2 impulse) {
 	this->impulse += impulse;
 }
 
-glm::vec2 Body::getPostition() {
+glm::vec2 Body::getPosition() {
 	return position;
 }
 

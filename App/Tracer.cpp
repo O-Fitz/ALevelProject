@@ -18,5 +18,5 @@ bool Tracer::getDestroy() const{
 }
 
 void Tracer::render(Renderer* renderer) {
-	renderer->renderCircle(position, 1, colour);
+	renderer->drawCircle(position, 1, colour);
 }

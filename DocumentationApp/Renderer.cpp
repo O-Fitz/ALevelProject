@@ -95,7 +95,7 @@ void Renderer::renderSimulation() {
 
 }
 
-void Renderer::renderCircle(glm::vec2 position, double radius, ImVec4 colour) {
+void Renderer::drawCircle(glm::vec2 position, double radius, ImVec4 colour) {
 	glBegin(GL_TRIANGLE_FAN);
 	// Change colour
 	glColor4f(colour.x, colour.y, colour.z, colour.w);
@@ -109,7 +109,7 @@ void Renderer::renderCircle(glm::vec2 position, double radius, ImVec4 colour) {
 	glEnd();
 }
 
-void Renderer::renderPolygon(glm::vec2 position, std::vector<glm::vec2> vertices, ImVec4 colour) {
+void Renderer::drawPolygon(glm::vec2 position, std::vector<glm::vec2> vertices, ImVec4 colour) {
 	glBegin(GL_TRIANGLE_FAN);
 	glColor4f(colour.x, colour.y, colour.z, colour.w);
 
@@ -117,6 +117,14 @@ void Renderer::renderPolygon(glm::vec2 position, std::vector<glm::vec2> vertices
 		glVertex2d(position.x + vertex.x, position.y + vertex.y);
 	}
 
+	glEnd();
+}
+
+void Renderer::drawLine(glm::vec2 pos1, glm::vec2 pos2, ImVec4 colour) {
+	glBegin(GL_LINES);
+	glColor4f(colour.x, colour.y, colour.z, colour.w);
+	glVertex2f(pos1.x, pos1.y);
+	glVertex2f(pos2.x, pos2.y);
 	glEnd();
 }
 

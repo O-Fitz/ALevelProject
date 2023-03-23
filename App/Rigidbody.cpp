@@ -28,7 +28,7 @@ Rigidbody::Rigidbody(std::vector<glm::vec2> Vert, glm::vec2 Pos, glm::vec2 Vel, 
 
 void Rigidbody::render(Renderer* renderer) {
 
-	renderer->renderPolygon(position, vertices, colour);
+	renderer->drawPolygon(position, vertices, colour);
 
 }
 
