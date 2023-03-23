@@ -1,4 +1,5 @@
 #include "Softbody.h"
+#include "Renderer.h"
 
 Softbody::Softbody(glm::vec2 position, glm::vec2 velocity, glm::vec2 force, float mass, ImVec4 colour, bool isStatic, int noPoints, float radius, float springConstant, float dampeningFactor) :
 	Body(position, velocity, force, mass, colour, isStatic), noPoints(noPoints), radius(radius), springConstant(springConstant), dampeningFactor(dampeningFactor) {
@@ -23,4 +24,65 @@ void Softbody::setupPoints() {
 		points.push_back(std::make_shared<Circle>(c));
 
 	}
+}
+
+void Softbody::setupSprings() {
+
+	// Stores if spring has already been made for the springs
+	std::vector<bool>added = std::vector<bool>();
+	for (int i = 0; i < points.size(); i++) {
+		added.push_back(false);
+	}
+
+	// Iterates through all combinations of points
+	for (int i = 0; i < points.size(); i++) {
+		added[i] = true;
+		for (int j = 0; j < points.size(); j++) {
+			if (!added[j]) {
+				// Calculates distance
+				float distance = glm::length(points[i]->getPosition() - points[j]->getPosition());
+				springs.emplace_back(points[i], points[j], distance, springConstant, dampeningFactor);
+
+			}
+		}
+	}
+
+}
+
+void Softbody::update(double dt) {
+
+	// Return out if static
+	if (isStatic) {
+		return;
+	}
+
+	// Velocity and position update
+	velocity += (force / mass) * (float)dt + impulse / mass;
+	impulse = glm::vec2(0, 0);
+	position += velocity * (float)dt;
+
+	// Update all of the springs
+	for (int i = 0; i < springs.size(); i++) {
+		springs[i].update(dt);
+	}
+
+	// Update all of the points
+	for (int i = 0; i < points.size(); i++) {
+		points[i]->update(dt);
+	}
+
+}
+
+void Softbody::render(Renderer* renderer) {
+
+	// Render Springs
+	for (int i = 0; i < springs.size(); i++) {
+		springs[i].render(renderer, colour);
+	}
+
+	// Render Points
+	for (int i = 0; i < points.size(); i++) {
+		points[i]->render(renderer);
+	}
+
 }

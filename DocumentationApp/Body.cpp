@@ -18,6 +18,11 @@ void Body::render(Renderer* renderer) {
 	
 }
 
+std::string Body::save() {
+	std::string ret = "body ";
+	
+}
+
 void Body::applyImpulse(glm::vec2 impulse) {
 	this->impulse += impulse;
 }

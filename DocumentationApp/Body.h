@@ -4,6 +4,7 @@
 #include "imguiInclude.h"
 
 #include <vector>
+#include <string>
 
 class Renderer;
 
@@ -14,6 +15,8 @@ public:
 
 	virtual void update(double dt);
 	virtual void render(Renderer* renderer);
+
+	virtual std::string save();
 
 	glm::vec2 getPosition();
 	glm::vec2 getVelocity();

@@ -33,7 +33,7 @@ Simulation::Simulation() {
 	////bodies.push_back(std::make_shared<Circle>(c3));
 
 
-	Softbody soft = Softbody(pos, vel, vel/5.0f, 5, red, false, 10, 50, 50, 0.9);
+	Softbody soft = Softbody(pos, vel, vel/5.0f, 5, red, false, 10, 50, 10, 0.5);
 	bodies.push_back(std::make_shared<Softbody>(soft));
 
 	Rectangle sst = Rectangle(900, 500, pos1, zero, zero, 5, green, true);
@@ -44,6 +44,8 @@ Simulation::Simulation() {
 	//bodies.push_back(std::make_shared<Circle>(cst));
 	//bodies.push_back(std::make_shared<Circle>(cst1));
 	//bodies.push_back(std::make_shared<Square>(sst1));
+
+	std::cout << cst.save();
 
 }
 

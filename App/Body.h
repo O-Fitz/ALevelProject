@@ -5,6 +5,7 @@
 #include "imguiInclude.h"
 #include <memory>
 #include <vector>
+#include <string>
 
 class Renderer;
 
@@ -17,6 +18,8 @@ public:
 
 	virtual void update(double dt);
 	virtual void render(Renderer* renderer);
+
+	virtual std::string save();
 
 	virtual Projection project(glm::vec2 axis);
 	virtual std::vector<glm::vec2> getAxes();

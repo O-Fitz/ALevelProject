@@ -315,6 +315,7 @@
     <ClInclude Include="Spring.h" />
     <ClInclude Include="Square.h" />
     <ClInclude Include="Tracer.h" />
+    <ClInclude Include="Utilities.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />

@@ -1,5 +1,6 @@
 #include "Body.h"
 #include "Renderer.h"
+#include "Utilities.h"
 
 Body::Body(glm::vec2 position, glm::vec2 velocity, glm::vec2 force, float mass, ImVec4 colour, bool isStatic) :
 	position(position), velocity(velocity), force(force), mass(mass), colour(colour), isStatic(isStatic) {
@@ -13,6 +14,18 @@ Body::Body() :
 
 void Body::update(double dt) {
 
+}
+
+std::string Body::save() {
+	std::ostringstream os;
+	os << "body ";
+	os << utilities::vec_to_str(position) << " ";
+	os << utilities::vec_to_str(velocity) << " ";
+	os << utilities::vec_to_str(force) << " ";
+	os << utilities::to_str(mass) << " ";
+	os << utilities::imvec_to_str(colour) << " ";
+	os << utilities::to_str(isStatic) << " ";
+	return os.str();
 }
 
 void Body::render(Renderer* renderer) {
