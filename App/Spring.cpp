@@ -1,5 +1,6 @@
 #include "Spring.h"
 #include "Renderer.h"
+#include "Utilities.h"
 
 #include <iostream>
 
@@ -49,4 +50,14 @@ std::vector<glm::vec2> Spring::getPointsPos() {
 
 void Spring::render(Renderer* renderer, ImVec4 colour) {
 	renderer->drawLine(points[0]->getPostition(), points[1]->getPostition(), colour);
+}
+
+std::string Spring::save() {
+	std::ostringstream os;
+	os << utilities::to_str(points[0]) << " ";
+	os << utilities::to_str(points[1]) << " ";
+	os << utilities::to_str(naturalLength) << " ";
+	os << utilities::to_str(springConstant) << " ";
+	os << utilities::to_str(dampeningFactor);
+	return os.str();
 }

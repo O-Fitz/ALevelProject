@@ -11,6 +11,9 @@ public:
 
 	void render(Renderer* renderer) override;
 
+	std::string save() override;
+	static Circle loadCircle(std::vector<std::string> data);
+
 	glm::vec2 project(glm::vec2 axis) override;
 	std::vector<glm::vec2> getAxes() override;
 

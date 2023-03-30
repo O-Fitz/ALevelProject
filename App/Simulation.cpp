@@ -2,6 +2,8 @@
 #include "Renderer.h"
 #include "Softbody.h"
 #include <algorithm>
+#include "Utilities.h"
+#include <fstream>
 
 Simulation::Simulation() {
 	bodies = std::vector<PBody>();
@@ -33,8 +35,8 @@ Simulation::Simulation() {
 	////bodies.push_back(std::make_shared<Circle>(c3));
 
 
-	Softbody soft = Softbody(pos, vel, vel/5.0f, 5, red, false, 10, 50, 10, 0.5);
-	bodies.push_back(std::make_shared<Softbody>(soft));
+	Softbody soft = Softbody(pos, vel, vel/5.0f, 5, red, false, 10, 50, 100, 0.9);
+	//bodies.push_back(std::make_shared<Softbody>(soft));
 
 	Rectangle sst = Rectangle(900, 500, pos1, zero, zero, 5, green, true);
 	Square sst1 = Square(50, pos, vel, zero, 5, green, false);
@@ -45,7 +47,11 @@ Simulation::Simulation() {
 	//bodies.push_back(std::make_shared<Circle>(cst1));
 	//bodies.push_back(std::make_shared<Square>(sst1));
 
-	std::cout << cst.save();
+	save("text.txt");
+
+	bodies = std::vector<PBody>();
+
+	load("text.txt");
 
 }
 
@@ -89,6 +95,76 @@ void Simulation::update(double dt) {
 	if (collisions)
 		CollisionDetection();
 
+}
+
+void Simulation::save(std::string path) {
+
+	std::ostringstream os;
+
+	for (int i = 0; i < bodies.size(); i++) {
+		os << bodies[i]->save();
+		if (i != bodies.size() - 1) {
+			os << "\n";
+		}
+	}
+
+	std::ofstream file(path);
+
+	if (file.is_open()) {
+		file << os.str();
+	}
+	file.close();
+
+}
+
+void Simulation::load(std::string path) {
+
+	std::ifstream file(path);
+	std::string line;
+
+	while (std::getline(file, line)) {
+		parseSaveLine(line);
+	}
+
+	file.close();
+}
+
+void Simulation::parseSaveLine(std::string line) {
+
+	std::vector<std::string> data = std::vector<std::string>();
+	std::string currentData = std::string();
+
+	PBody body;
+
+	for (int i = 0; i < line.size(); i++) {
+		if (line[i] == ' ' || line[i]=='\n') {
+			data.push_back(currentData);
+			currentData = "";
+		}
+		else {
+			currentData.push_back(line[i]);
+		}
+	}
+	data.push_back(currentData);
+
+	if (data[0] == "body") {
+		bodies.push_back(std::make_shared<Body>(Body::loadBody(data)));
+	}
+	else if (data[0] == "rigidbody") {
+		bodies.push_back(std::make_shared<Rigidbody>(Rigidbody::loadRigidbody(data)));
+	}
+	else if (data[0] == "rectangle") {
+		bodies.push_back(std::make_shared<Rectangle>(Rectangle::loadRectangle(data)));
+	}
+	else if (data[0] == "square") {
+		bodies.push_back(std::make_shared<Square>(Square::loadSquare(data)));
+	}
+	else if (data[0] == "circle") {
+		bodies.push_back(std::make_shared<Circle>(Circle::loadCircle(data)));
+	}
+	else if (data[0] == "softbody") {
+		bodies.push_back(std::make_shared<Softbody>(Softbody::loadSoftbody(data)));
+	}
 }
 
 void Simulation::setSimulationSize(glm::vec2 newSize) {

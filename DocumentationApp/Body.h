@@ -17,6 +17,7 @@ public:
 	virtual void render(Renderer* renderer);
 
 	virtual std::string save();
+	static Body loadBody(std::vector<std::string> data);
 
 	glm::vec2 getPosition();
 	glm::vec2 getVelocity();

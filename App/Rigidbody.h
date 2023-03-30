@@ -20,5 +20,8 @@ public:
 	void update(double dt) override;
 	void render(Renderer* renderer) override;
 	Projection project(glm::vec2 axis) override;
+
+	std::string save() override;
+	static Rigidbody loadRigidbody(std::vector<std::string> data);
 	
 };

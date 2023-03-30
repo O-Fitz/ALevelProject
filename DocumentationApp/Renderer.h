@@ -47,5 +47,8 @@ private:
 
 	// ImGUI windows
 	bool showDataWindow = true;
+	bool showGeneralInformation = true;
+
+	void renderGeneralInformationPanel();
 
 };

@@ -23,6 +23,9 @@ public:
 
 	void update(double dt);
 
+	void save(std::string path);
+	void load(std::string path);
+
 	glm::vec2 getSimulationSize();
 	void setSimulationSize(glm::vec2 newSize);
 
@@ -59,6 +62,8 @@ private:
 	void CollisionDetection();
 	glm::vec2 checkCollision(Body* b1, Body* p2);
 	void resolveCollision(Body* b1, Body* p2, float elasticity, glm::vec2 MTV);
+
+	void parseSaveLine(std::string line);
 
 };
 

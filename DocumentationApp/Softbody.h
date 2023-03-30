@@ -17,6 +17,9 @@ public:
 	void update(double dt) override;
 	void render(Renderer* renderer) override;
 
+	std::string save() override;
+	static Softbody loadSoftbody(std::vector<std::string> data);
+
 	std::vector<Body*> getCollisionBodies() override;
 
 private:

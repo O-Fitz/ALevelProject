@@ -18,6 +18,8 @@ public:
 
 	std::vector<glm::vec2> getPointsPos();
 
+	std::string save();
+
 private:
 
 	Point points[2];

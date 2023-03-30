@@ -10,6 +10,9 @@ public:
 	Rectangle(double width, double height);
 	Rectangle(double width, double height, glm::vec2 position, glm::vec2 vel, glm::vec2 Force, double Mass, ImVec4 colour, bool stat);
 
+	std::string save();
+	static Rectangle loadRectangle(std::vector<std::string> data);
+
 protected:
 
 	double width;

@@ -99,6 +99,12 @@
     <ClCompile Include="Spring.cpp">
       <Filter>Bodies</Filter>
     </ClCompile>
+    <ClCompile Include="Utilities.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Softbody.cpp">
+      <Filter>Bodies</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">
@@ -590,6 +596,9 @@
     <ClInclude Include="Softbody.h">
       <Filter>Bodies</Filter>
     </ClInclude>
+    <ClInclude Include="Utilities.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="External\glm\detail\func_common.inl">
@@ -918,9 +927,6 @@
     </None>
     <None Include="External\glm\gtx\wrap.inl">
       <Filter>External\glm\gtx</Filter>
-    </None>
-    <None Include="Softbody.cpp">
-      <Filter>Bodies</Filter>
     </None>
   </ItemGroup>
 </Project>

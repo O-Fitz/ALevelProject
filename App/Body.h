@@ -20,6 +20,7 @@ public:
 	virtual void render(Renderer* renderer);
 
 	virtual std::string save();
+	static Body loadBody(std::vector<std::string> data);
 
 	virtual Projection project(glm::vec2 axis);
 	virtual std::vector<glm::vec2> getAxes();

@@ -1,6 +1,6 @@
 #include "Circle.h"
 #include "Renderer.h"
-
+#include "Utilities.h"
 
 Circle::Circle() : 
 	radius(1), Rigidbody() {
@@ -40,4 +40,29 @@ std::vector<glm::vec2> Circle::getAxes() {
 
 float Circle::getRadius() {
 	return radius;
+}
+
+std::string Circle::save() {
+	std::ostringstream os;
+	os << "circle ";
+	os << utilities::vec_to_str(position) << " ";
+	os << utilities::vec_to_str(velocity) << " ";
+	os << utilities::vec_to_str(force) << " ";
+	os << utilities::to_str(mass) << " ";
+	os << utilities::imvec_to_str(colour) << " ";
+	os << utilities::to_str(isStatic) << " ";
+	os << utilities::to_str(radius);
+
+	return os.str();
+}
+
+Circle Circle::loadCircle(std::vector<std::string> data) {
+	glm::vec2 pos = utilities::str_to_vec(data[1]);
+	glm::vec2 vel = utilities::str_to_vec(data[2]);
+	glm::vec2 frc = utilities::str_to_vec(data[3]);
+	float mss = utilities::str_to_float(data[4]);
+	ImVec4 col = utilities::str_to_imvec(data[5]);
+	bool stat = utilities::str_to_bool(data[6]);
+	float rad = utilities::str_to_float(data[7]);
+	return Circle(rad, pos, vel, frc, mss, col, stat);
 }

@@ -1,5 +1,6 @@
 #include "Rigidbody.h"
 #include "Renderer.h"
+#include "Utilities.h"
 
 Rigidbody::Rigidbody() {
 	vertices = std::vector<glm::vec2>();
@@ -41,6 +42,52 @@ void Rigidbody::update(double dt) {
 	force = glm::vec2(0, 0);
 	position += velocity * dtv; // Update the position
 
+}
+
+std::string Rigidbody::save() {
+	std::ostringstream os;
+	os << "rigidbody ";
+	os << utilities::vec_to_str(position) << " ";
+	os << utilities::vec_to_str(velocity) << " ";
+	os << utilities::vec_to_str(force) << " ";
+	os << utilities::to_str(mass) << " ";
+	os << utilities::imvec_to_str(colour) << " ";
+	os << utilities::to_str(isStatic) << " ";
+	os << "(";
+	for (int i = 0; i < vertices.size(); i++) {
+		os << utilities::vec_to_str(vertices[i]);
+		if (i != vertices.size() - 1) {
+			os << ",";
+		}
+	}
+	os << ")";
+
+	return os.str();
+}
+
+Rigidbody Rigidbody::loadRigidbody(std::vector<std::string> data) {
+	glm::vec2 pos = utilities::str_to_vec(data[1]);
+	glm::vec2 vel = utilities::str_to_vec(data[2]);
+	glm::vec2 frc = utilities::str_to_vec(data[3]);
+	float mss = utilities::str_to_float(data[4]);
+	ImVec4 col = utilities::str_to_imvec(data[5]);
+	bool stat = utilities::str_to_bool(data[6]);
+
+	// Split the list of vec2s into individual vec2s
+	// Uses similar system to splitting up line
+	std::vector<glm::vec2> vert = std::vector<glm::vec2>();
+	std::string current = std::string();
+	for (int i = 0; i < data[7].size(); i++) {
+		if (data[7][i] == ',' || data[7][i] == ')') {
+			vert.push_back(utilities::str_to_vec(current));
+			current = "";
+		}
+		else {
+			current.push_back(data[7][i]);
+		}
+	}
+
+	return Rigidbody(vert, pos, vel, frc, mss, col, stat);
 }
 
 std::vector<Body*> Rigidbody::getCollisionBodies() {

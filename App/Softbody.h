@@ -19,6 +19,9 @@ public:
 
 	std::vector<Body*> getCollisionBodies() override;
 
+	std::string save() override;
+	static Softbody loadSoftbody(std::vector<std::string> data);
+
 private:
 
 	std::vector<Point> points;

@@ -1,25 +1,20 @@
 #include "Simulation.h"
 #include "Renderer.h"
 
-Simulation::Simulation() {
+#include "Body.h"
+#include "Rigidbody.h"
+#include "Rectangle.h"
+#include "Square.h"
+#include "Circle.h"
+#include "Softbody.h"
+
+#include <sstream>
+#include <fstream>
+
+Simulation::Simulation(){
 	bodies = std::vector<PBody>();
-
-	glm::vec2 pos = glm::vec2(100, 100);
-	glm::vec2 pos2 = glm::vec2(200, 200);
-	glm::vec2 vel = glm::vec2(-100, 0);
-	glm::vec2 vel2 = glm::vec2(200, 0);
-
-	Circle c1 = Circle(20, pos, vel, glm::vec2(0, 0), 2, ImVec4(0, 255, 0, 255), false);
-	Square s1 = Square(20, pos2, vel2, glm::vec2(0, 0), 2, ImVec4(255, 0, 0, 255), false);
-
-	Square s2 = Square(20, pos2, vel2, vel2, 1, ImVec4(0, 255, 0, 255), false);
-	Square s3 = Square(20, pos2+glm::vec2(100, 0), vel, vel2, 1, ImVec4(255, 0, 0, 255), false);
-	
-	bodies.push_back(std::make_shared<Square>(s2));
-	bodies.push_back(std::make_shared<Square>(s3));
-
-	//bodies.push_back(std::make_shared<Circle>(c1));
-	//bodies.push_back(std::make_shared<Square>(s1));
+	playing = true;
+	collisions = true;
 
 }
 
@@ -29,13 +24,101 @@ Simulation::~Simulation() {
 
 void Simulation::update(double dt) {
 
+	// If simulation is not running
+	if (!playing) {
+		// Return out of update function before anything else can be executed
+		return;
+	}
+
 	// Call update functions
 	for (int i = 0; i < bodies.size(); i++) {
 		bodies[i]->update(dt);
 	}
 
 	// Collision Detection
-	collisionDetection();
+	if (collisions) {
+		collisionDetection();
+	}
+}
+
+void Simulation::save(std::string path) {
+	std::ostringstream os;
+
+	for (int i = 0; i < bodies.size(); i++) {
+		os << bodies[i]->save();
+		if (i != bodies.size() - 1) {
+			os << "\n";
+		}
+	}
+
+	std::ofstream file(path);
+
+	if (file.is_open()) {
+		file << os.str();
+	}
+	file.close();
+
+}
+
+void Simulation::load(std::string path) {
+	// Clear current bodies
+	bodies = std::vector<PBody>();
+
+	// Open file
+	std::ifstream file(path);
+	std::string line;
+
+	// Iterated through lines of the file
+	while (std::getline(file, line)) {
+		// Parse each line
+		parseLine(line);
+	}
+
+	// Close the file
+	file.close();
+}
+
+void Simulation::parseLine(std::string line) {
+
+	// Create list of data
+	std::vector<std::string> data = std::vector<std::string>();
+	// Current data represents string 
+	std::string currentData = std::string();
+
+	// Iterate through each character in the string
+	for (int i = 0; i < line.size(); i++) {
+		// If character is a space or the last character
+		if (line[i] == ' ' || i == line.size()-1) {
+			// Add the current data to the end of the list
+			data.push_back(currentData);
+			// Clear the current data
+			currentData = "";
+		}
+		else {
+			// Otherwise, add the current character to currentData
+			currentData.push_back(line[i]);
+		}
+	}
+
+	// Add bodies
+	if (data[0] == "body") {
+		bodies.push_back(std::make_shared<Body>(Body::loadBody(data)));
+	}
+	else if (data[0] == "rigidbody"){
+		bodies.push_back(std::make_shared<Rigidbody>(Rigidbody::loadRigidbody(data)));
+	}
+	else if (data[0] == "rectangle") {
+		bodies.push_back(std::make_shared<Rectangle>(Rectangle::loadRectangle(data)));
+	}
+	else if (data[0] == "square") {
+		bodies.push_back(std::make_shared<Square>(Square::loadSquare(data)));
+	}
+	else if (data[0] == "circle") {
+		bodies.push_back(std::make_shared<Circle>(Circle::loadCircle(data)));
+	}
+	else if (data[0] == "softbody") {
+		bodies.push_back(std::make_shared<Softbody>(Softbody::loadSoftbody(data)));
+	}
 }
 
 std::vector<PBody> Simulation::getBodies() {
@@ -196,4 +279,16 @@ void Simulation::impulseCalculation(Body* b1, Body* b2, glm::vec2 MTV) {
 		b1->applyImpulse(impulse);
 		b2->applyImpulse(-impulse);
 	}
+}
+
+void Simulation::pausePlay() {
+	playing = !playing;
+}
+
+bool* Simulation::getCollisionsP() {
+	return &collisions;
+}
+
+float* Simulation::getElasticityP() {
+	return &elasticity;
 }

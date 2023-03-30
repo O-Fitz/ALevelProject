@@ -7,6 +7,7 @@
 #include "Body.h"
 #include "Rigidbody.h"
 
+
 #ifndef PBody
 #define PBody std::shared_ptr<Body>
 #endif // !PBody
@@ -27,12 +28,22 @@ public:
 	void collisionDetection();
 	std::vector<PBody> getBodies();
 
+	void save(std::string path); 
+	void load(std::string path);
+	void parseLine(std::string);
+
+	void pausePlay();
+
+	bool* getCollisionsP();
+	float* getElasticityP();
+
 private:
 
 	glm::vec2 simSize;
 	std::vector<PBody> bodies;
-	bool running;
+	bool playing;
 
+	bool collisions;
 	float elasticity = 1.0f;
 
 	glm::vec2 checkCollision(Body* b1, Body* b2); 

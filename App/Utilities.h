@@ -19,16 +19,15 @@ namespace utilities {
 		return os.str();
 	}
 
-	std::string vec_to_str(const glm::vec2& vec) {
-		std::ostringstream os;
-		os << "{" << vec.x << "," << vec.y << "}";
-		return os.str();
-	}
+	std::string vec_to_str(const glm::vec2& vec);
 
-	std::string imvec_to_str(const ImVec4& vec) {
-		std::ostringstream os;
-		os << "-" << vec.x << "," << vec.y << "," << vec.z << "," << vec.w << "-";
-		return os.str();
-	}
+	std::string imvec_to_str(const ImVec4& vec);
 
+	float str_to_float(std::string str);
+
+	glm::vec2 str_to_vec(std::string str);
+
+	ImVec4 str_to_imvec(std::string str);
+
+	bool str_to_bool(std::string str);
 }

@@ -19,6 +19,8 @@ public:
 	std::vector<glm::vec2> getAxes() override;
 	float getRadius();
 
+	std::string save();
+	static Circle loadCircle(std::vector<std::string> data);
 
 	void print();
 };

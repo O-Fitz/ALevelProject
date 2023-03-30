@@ -36,6 +36,9 @@ void Renderer::renderImGUI() {
 
 	// RENDER MORE GUI HERE
 
+	if (showGeneralInformation)
+		renderGeneralInformationPanel();
+
 	// Rendering
 	ImGui::Render();
 
@@ -130,4 +133,33 @@ void Renderer::drawLine(glm::vec2 pos1, glm::vec2 pos2, ImVec4 colour) {
 
 ImVec2 Renderer::getWindowSize() {
 	return wsize;
+}
+
+void Renderer::renderGeneralInformationPanel() {
+	ImGui::Begin("General Information", &showGeneralInformation);
+
+	ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+	ImGui::Spacing();
+	ImGui::Spacing();
+	ImGui::Spacing();
+
+	ImGui::Text("Number of objects: %d", simulation->getBodies().size());
+
+	ImGui::Spacing();
+	ImGui::Spacing();
+	ImGui::Spacing();
+
+	ImGui::Checkbox("Collisions", simulation->getCollisionsP());
+	ImGui::Spacing();
+	ImGui::SliderFloat("Elasticity", simulation->getElasticityP(), 0.0f, 1.0f, "%.3f");
+
+	ImGui::Spacing();
+	ImGui::Spacing();
+	ImGui::Spacing();
+
+	if (ImGui::Button("Pause/Play")) {
+		simulation->pausePlay();
+	}
+
+	ImGui::End();
 }

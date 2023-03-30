@@ -623,6 +623,9 @@
     <ClCompile Include="Softbody.cpp">
       <Filter>Bodies</Filter>
     </ClCompile>
+    <ClCompile Include="Utilities.cpp">
+      <Filter>Utilities</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="External\glm\gtx\associated_min_max.inl">
