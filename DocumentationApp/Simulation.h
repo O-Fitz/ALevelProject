@@ -6,6 +6,10 @@
 
 #include "Body.h"
 #include "Rigidbody.h"
+#include "Rectangle.h"
+#include "Square.h"
+#include "Circle.h"
+#include "Softbody.h"
 
 
 #ifndef PBody
@@ -25,17 +29,28 @@ public:
 	glm::vec2 getSimulationSize();
 	void setSimulationSize(glm::vec2 size);
 
-	void collisionDetection();
 	std::vector<PBody> getBodies();
 
+	// Saving/Loading
 	void save(std::string path); 
 	void load(std::string path);
+
 	void parseLine(std::string);
 
+	// Add Objects
+	void addBody(const Body& body);
+	void addRigidbody(const Rigidbody& body);
+	void addRectangle(const Rectangle& body);
+	void addSquare(const Square& body);
+	void addCircle(const Circle& body);
+	void addSoftbody(const Softbody& body);
+
 	void pausePlay();
+	void clearSimulation();
 
 	bool* getCollisionsP();
 	float* getElasticityP();
+	float* getSpeed();
 
 private:
 
@@ -43,9 +58,12 @@ private:
 	std::vector<PBody> bodies;
 	bool playing;
 
+	float speed = 1;
+
 	bool collisions;
 	float elasticity = 1.0f;
 
+	void collisionDetection();
 	glm::vec2 checkCollision(Body* b1, Body* b2); 
 	void collisionResloution(Body* b1, Body* b2, glm::vec2 MTV);
 	void positionCorrection(Body* b1, Body* b2, glm::vec2 MTV);

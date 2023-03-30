@@ -60,7 +60,6 @@ void Renderer::renderImGUI() {
 		addBodyOptions();
 
 		if (ImGui::Button("Add Object")) {
-
 		}
 
 		

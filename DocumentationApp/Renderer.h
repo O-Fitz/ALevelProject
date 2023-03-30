@@ -48,7 +48,21 @@ private:
 	// ImGUI windows
 	bool showDataWindow = true;
 	bool showGeneralInformation = true;
+	bool showAddObject = true;
 
+	// Render Panels
 	void renderGeneralInformationPanel();
+	void renderAddObject();
+
+	// Add object panel
+	const char* bodyTypes[6] = { "Body", "Rigidbody", "Rectangle", "Square", "Circle", "Softbody" };
+	int selectedBodyType = 1;
+
+	void renderAddBody();
+	void renderAddRigidbody();
+	void renderAddRectangle();
+	void renderAddSquare();
+	void renderAddCircle();
+	void renderAddSoftbody();
 
 };

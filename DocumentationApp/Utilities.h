@@ -30,4 +30,8 @@ namespace utilities {
 	ImVec4 str_to_imvec(std::string str);
 
 	bool str_to_bool(std::string str);
+
+	glm::vec2 imvec2_to_vec(ImVec2 vec);
+
+	ImVec2 vec_to_imvec2(glm::vec2 vec);
 }

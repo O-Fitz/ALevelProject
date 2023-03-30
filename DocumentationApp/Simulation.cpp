@@ -1,13 +1,6 @@
 #include "Simulation.h"
 #include "Renderer.h"
 
-#include "Body.h"
-#include "Rigidbody.h"
-#include "Rectangle.h"
-#include "Square.h"
-#include "Circle.h"
-#include "Softbody.h"
-
 #include <sstream>
 #include <fstream>
 
@@ -23,6 +16,8 @@ Simulation::~Simulation() {
 }
 
 void Simulation::update(double dt) {
+
+	dt *= speed;
 
 	// If simulation is not running
 	if (!playing) {
@@ -285,10 +280,45 @@ void Simulation::pausePlay() {
 	playing = !playing;
 }
 
+void Simulation::clearSimulation(){
+	bodies = std::vector<PBody>();
+}
+
+// Adding Objects:
+void Simulation::addBody(const Body& body) {
+	bodies.push_back(std::make_shared<Body>(body));
+}
+
+void Simulation::addRigidbody(const Rigidbody& body) {
+	bodies.push_back(std::make_shared<Rigidbody>(body));
+}
+
+void Simulation::addRectangle(const Rectangle& body) {
+	bodies.push_back(std::make_shared<Rectangle>(body));
+}
+
+void Simulation::addSquare(const Square& body) {
+	bodies.push_back(std::make_shared<Square>(body));
+}
+
+void Simulation::addCircle(const Circle& body) {
+	bodies.push_back(std::make_shared<Circle>(body));
+}
+
+void Simulation::addSoftbody(const Softbody& body) {
+	bodies.push_back(std::make_shared<Softbody>(body));
+}
+
+
+// Pointer Getters
 bool* Simulation::getCollisionsP() {
 	return &collisions;
 }
 
 float* Simulation::getElasticityP() {
 	return &elasticity;
+}
+
+float* Simulation::getSpeed() {
+	return &speed;
 }

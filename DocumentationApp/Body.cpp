@@ -1,5 +1,6 @@
 #include "Body.h"
 #include "Utilities.h"
+#include "Renderer.h"
 #include <iostream>
 
 Body::Body(glm::vec2 position, glm::vec2 velocity, glm::vec2 force, float mass, ImVec4 colour, bool isStatic) :
@@ -16,7 +17,7 @@ void Body::update(double dt) {
 }
 
 void Body::render(Renderer* renderer) {
-	
+	renderer->drawCircle(position, 1, colour);
 }
 
 std::string Body::save() {
