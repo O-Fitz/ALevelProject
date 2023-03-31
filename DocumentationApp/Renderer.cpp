@@ -267,7 +267,7 @@ void Renderer::renderAddRigidbody() {
 		vertexPositions = std::vector<glm::vec2>();
 		float r = sideLength / (sqrt(2 * (1 - cos(2 * 3.141 / (float)noVertices))));
 		for (float i = 0; i < 2 * 3.141; i += 2 * 3.141 / noVertices) {
-			vertexPositions.push_back(r*glm::vec2(cos(i), sin(i)));
+			vertexPositions.push_back(r*glm::vec2(-sin(i), cos(i)));
 		}
 
 	}
@@ -361,40 +361,60 @@ void Renderer::renderAddRigidbody() {
 				}
 			}
 			// If not, clicked becommes -1
-			if (!clicked) {
+			if (!clicked)
 				currentPoint = -1;
-			}
-
 		}
-		else if (held && active) {
-			// The mouse is being held
-			if (currentPoint != -1) {
-				// If the user clicked on the vertex
-				// Move the relVertex pos to the current mouse pos
-				relVertices[currentPoint] = relMousePos;
-			}
+		else if (held && active && currentPoint != -1) {
+			// The mouse is being held and the user clicked on the vertex
+			// Move the relVertex pos to the current mouse pos
+			relVertices[currentPoint] = relMousePos;
 		}
 		else if (held && !hovered) {
 			// Mouse has moved off the box
 			// Move the vertex back to original position
 			held = false;
-			relVertices[currentPoint] = initialVertexPos;
+			if (currentPoint != -1)
+				relVertices[currentPoint] = initialVertexPos;
 		}
 		else if (held && !active) {
 			// User has released the mouse
-			// Update positions
-
 			held = false;
 
-			vertexPositions = std::vector<glm::vec2>();
-			for (auto relvertex : relVertices) {
-				vertexPositions.push_back(glm::inverse(transformation)*relvertex);
+			// Validation
+			bool convex = true;
+			bool sign = false;
+			// Checks that the shape is convex
+			for (int i = 0; i < relVertices.size(); i++) {
+				glm::vec2 p1 = relVertices[i];
+				glm::vec2 p2 = relVertices[(i + 1) % relVertices.size()];
+				glm::vec2 p3 = relVertices[(i + 2) % relVertices.size()];
+				// Calculates which direction the vertex "bends" around
+				double cross = (p2.x - p1.x) * (p3.y - p2.y) - (p2.y - p1.y) * (p3.x - p2.x);
+				if (i == 0) {
+					// If this is the first iteration
+					sign = cross > 0.0;
+				}
+				else if ((cross > 0.0) != sign) {
+					// If at any time, the vertex bends in a different direction
+					// the shape is concave
+					convex = false;
+					break;
+				}
 			}
 
+			// Update vertexPositions
+			if (convex) {
+				vertexPositions = std::vector<glm::vec2>();
+				for (auto relvertex : relVertices) {
+					vertexPositions.push_back(glm::inverse(transformation) * relvertex);
+				}
+			}
+			else if (currentPoint != -1) {
+				relVertices[currentPoint] = initialVertexPos;
+			}
 		}
 
 		// Draw vertices:
-
 		ImDrawList* draw_list = ImGui::GetWindowDrawList();
 
 		for (int i = 0; i < relVertices.size(); i++) {
@@ -403,7 +423,6 @@ void Renderer::renderAddRigidbody() {
 			draw_list->AddLine(pos1, pos2, IM_COL32(col.x, col.y, col.z, 255));
 			draw_list->AddCircleFilled(pos1, 2, ImColor(255, 0, 0, 255));
 		}
-
 		draw_list->AddCircleFilled(ImVec2(windowPos.x + 0.5f * canvas_sz.x, windowPos.y + 0.5f * canvas_sz.y), 2, ImColor(255, 255, 0, 255));
 
 		ImGui::EndChild();
