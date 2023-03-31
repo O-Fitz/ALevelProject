@@ -208,6 +208,18 @@ void Renderer::renderAddObject() {
 	else if (selectedBodyType == 1) {
 		renderAddRigidbody();
 	}
+	else if (selectedBodyType == 2) {
+		renderAddRectangle();
+	}
+	else if (selectedBodyType == 3) {
+		renderAddSquare();
+	}
+	else if (selectedBodyType == 4) {
+		renderAddCircle();
+	}
+	else if (selectedBodyType == 5) {
+		renderAddSoftbody();
+	}
 
 	ImGui::End();
 
@@ -297,7 +309,7 @@ void Renderer::renderAddRigidbody() {
 		static std::vector<glm::vec2> relVertices = std::vector<glm::vec2>();
 		static int currentPoint = -1;
 		static glm::vec2 initialVertexPos = glm::vec2();
-		static glm::mat2 transformation = glm::mat2({ {1, 0}, {0, 1} });
+		static glm::mat2 transformation = glm::mat2({ {1, 0}, {0, -1} });
 
 		// Find Box size (make it square)
 		ImVec2 canvas_sz = ImGui::GetContentRegionAvail();
@@ -316,7 +328,7 @@ void Renderer::renderAddRigidbody() {
 			}
 
 			// Find the transformation matrix
-			transformation = (canvas_sz.x)/(2.5f*max) * glm::mat2({ {1, 0}, {0, 1} });
+			transformation = (canvas_sz.x)/(2.5f*max) * glm::mat2({ {1, 0}, {0, -1} });
 
 			// Calculate the relative positions of the vertices
 			relVertices = std::vector<glm::vec2>();
@@ -436,4 +448,136 @@ void Renderer::renderAddRigidbody() {
 		simulation->addRigidbody(Rigidbody(vertexPositions, pos, vel, force, mass, col, isStatic));
 	}
 
+}
+
+void Renderer::renderAddRectangle() {
+	static glm::vec2 pos(0, 0);
+	static glm::vec2 vel(0, 0);
+	static glm::vec2 force(0, 0);
+	static float mass = 1;
+	static ImVec4 col(0, 0, 0, 255);
+	static bool isStatic = false;
+	static float width = 200;
+	static float height = 100;
+
+	ImGui::InputFloat2("Position", &pos.x);
+	ImGui::InputFloat2("Velocity", &vel.x);
+	ImGui::InputFloat2("Force", &force.x);
+	ImGui::InputFloat("Mass", &mass);
+	ImGui::ColorEdit4("Colour", &col.x);
+	ImGui::Checkbox("Static", &isStatic);
+
+	ImGui::Spacing();
+	ImGui::Spacing();
+
+	ImGui::InputFloat("Width", &width);
+	ImGui::InputFloat("Height", &height);
+
+	ImGui::Spacing();
+	ImGui::Spacing();
+
+	if (ImGui::Button("Add Object")) {
+		simulation->addRectangle(Rectangle(width, height, pos, vel, force, mass, col, isStatic));
+	}
+}
+
+void Renderer::renderAddSquare() {
+	static glm::vec2 pos(0, 0);
+	static glm::vec2 vel(0, 0);
+	static glm::vec2 force(0, 0);
+	static float mass = 1;
+	static ImVec4 col(0, 0, 0, 255);
+	static bool isStatic = false;
+	static float sideLength = 100;
+
+	ImGui::InputFloat2("Position", &pos.x);
+	ImGui::InputFloat2("Velocity", &vel.x);
+	ImGui::InputFloat2("Force", &force.x);
+	ImGui::InputFloat("Mass", &mass);
+	ImGui::ColorEdit4("Colour", &col.x);
+	ImGui::Checkbox("Static", &isStatic);
+
+	ImGui::Spacing();
+	ImGui::Spacing();
+
+	ImGui::InputFloat("Side Length", &sideLength);
+
+	ImGui::Spacing();
+	ImGui::Spacing();
+
+	if (ImGui::Button("Add Object")) {
+		simulation->addSquare(Square(sideLength, pos, vel, force, mass, col, isStatic));
+	}
+}
+
+void Renderer::renderAddCircle() {
+	static glm::vec2 pos(0, 0);
+	static glm::vec2 vel(0, 0);
+	static glm::vec2 force(0, 0);
+	static float mass = 1;
+	static ImVec4 col(0, 0, 0, 255);
+	static bool isStatic = false;
+	static float radius = 100;
+
+	ImGui::InputFloat2("Position", &pos.x);
+	ImGui::InputFloat2("Velocity", &vel.x);
+	ImGui::InputFloat2("Force", &force.x);
+	ImGui::InputFloat("Mass", &mass);
+	ImGui::ColorEdit4("Colour", &col.x);
+	ImGui::Checkbox("Static", &isStatic);
+
+	ImGui::Spacing();
+	ImGui::Spacing();
+
+	ImGui::InputFloat("Radius", &radius);
+
+	ImGui::Spacing();
+	ImGui::Spacing();
+
+	if (ImGui::Button("Add Object")) {
+		simulation->addCircle(Circle(radius, pos, vel, force, mass, col, isStatic));
+	}
+}
+
+void Renderer::renderAddSoftbody() {
+	static glm::vec2 pos(0, 0);
+	static glm::vec2 vel(0, 0);
+	static glm::vec2 force(0, 0);
+	static float mass = 1;
+	static ImVec4 col(0, 0, 0, 255);
+	static bool isStatic = false;
+	static int noPoints = 10;
+	static float radius = 100;
+	static float springConstant = 100;
+	static float dampeningFactor = 1;
+
+	ImGui::InputFloat2("Position", &pos.x);
+	ImGui::InputFloat2("Velocity", &vel.x);
+	ImGui::InputFloat2("Force", &force.x);
+	ImGui::InputFloat("Mass", &mass);
+	ImGui::ColorEdit4("Colour", &col.x);
+	ImGui::Checkbox("Static", &isStatic);
+
+	ImGui::Spacing();
+	ImGui::Spacing();
+
+	ImGui::SliderInt("No. Points", &noPoints, 6, 15);
+	ImGui::InputFloat("Radius", &radius);
+	if (ImGui::InputFloat("Spring Constant", &springConstant)) { // Validates so that spring constant is positive
+		if (springConstant <= 0) {
+			springConstant = 1.0f;
+		}
+	};
+	if (ImGui::InputFloat("Dampening Factor", &dampeningFactor)) { // Validates so that dampening factor is positive
+		if (dampeningFactor <= 0) {
+			dampeningFactor = 1.0f;
+		}
+	}
+
+	ImGui::Spacing();
+	ImGui::Spacing();
+
+	if (ImGui::Button("Add Object")) {
+		simulation->addSoftbody(Softbody(pos, vel, force, mass, col, isStatic, noPoints, radius, springConstant, dampeningFactor));
+	}
 }
