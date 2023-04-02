@@ -276,6 +276,39 @@ void Simulation::impulseCalculation(Body* b1, Body* b2, glm::vec2 MTV) {
 	}
 }
 
+PBody Simulation::getClickedObject(glm::vec2 pos) {
+
+	for (const PBody& body : bodies) {
+		// Get all axes
+		std::vector<glm::vec2> axes = body->getAxes();
+
+		bool inObject = true;
+
+		// SAT for a single point
+		for (glm::vec2 axis : axes) {
+			// Project the shape onto the axis
+			glm::vec2 proj = body->project(axis);
+
+			// Project the mouse position onto the axis
+			float posProj = glm::dot(pos, axis);
+
+			// Check if the mouse pos projection is outside of the shape projection
+			if (posProj < proj.x || posProj > proj.y) {
+				// If it is, then the mouse pos is not within the shape
+				inObject = false;
+				break;
+			}
+		}
+
+		// If the mouse pos is in the shape
+		if (inObject) {
+			// Return that shape
+			return body;
+		}
+	}
+
+}
+
 void Simulation::pausePlay() {
 	playing = !playing;
 }

@@ -31,6 +31,8 @@ public:
 
 	std::vector<PBody> getBodies();
 
+	PBody getClickedObject(glm::vec2 pos);
+
 	// Saving/Loading
 	void save(std::string path); 
 	void load(std::string path);
