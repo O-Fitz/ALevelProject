@@ -88,3 +88,31 @@ std::vector<glm::vec2> Body::getAxes() {
 void Body::addPosition(glm::vec2 pos) {
 	position += pos;
 }
+
+void Body::setPosition(glm::vec2 pos) {
+	position = pos;
+}
+
+glm::vec2* Body::getPositionP() {
+	return &position;
+}
+
+glm::vec2* Body::getVelocityP() {
+	return &velocity;
+}
+
+glm::vec2* Body::getForceP() {
+	return &force;
+}
+
+float* Body::getMassP() {
+	return &mass;
+}
+
+bool* Body::getStaticP() {
+	return &isStatic;
+}
+
+ImVec4* Body::getColourP() {
+	return &colour;
+}

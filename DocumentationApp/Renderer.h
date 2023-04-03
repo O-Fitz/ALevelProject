@@ -31,7 +31,7 @@ private:
 	// Window Pointer
 	GLFWwindow* window;
 
-	// Simulation Pointer;
+	// Simulation class Pointer
 	Simulation* simulation;
 
 
@@ -41,18 +41,28 @@ private:
 
 	ImVec4 background = ImVec4(0.45f, 0.55f, 0.60f, 1.00f); // Background colour
 
-	// Framebuffer
-	FrameBuffer fb = FrameBuffer();
-	glm::mat4 projection;
+	// Simulation Window
+	PBody focusedBody = PBody(nullptr);
+
+	FrameBuffer fb = FrameBuffer(); // Framebuffer
+	glm::mat4 projection; // Projection Matrix
+
+	void handleSimulationInputs();
 
 	// ImGUI windows
-	bool showDataWindow = true;
 	bool showGeneralInformation = true;
 	bool showAddObject = true;
+	bool showObjectInformation = true;
+	bool showHelpMenu = false;
 
 	// Render Panels
 	void renderGeneralInformationPanel();
 	void renderAddObject();
+	void renderObjectInformation();
+	void renderHelpMenu();
+
+
+	void renderMenuBar();
 
 	// Add object panel
 	const char* bodyTypes[6] = { "Body", "Rigidbody", "Rectangle", "Square", "Circle", "Softbody" };
@@ -64,5 +74,7 @@ private:
 	void renderAddSquare();
 	void renderAddCircle();
 	void renderAddSoftbody();
+
+	// Object informmation 
 
 };

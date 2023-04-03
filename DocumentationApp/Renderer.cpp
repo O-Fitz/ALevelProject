@@ -25,15 +25,6 @@ void Renderer::newFrame() {
 void Renderer::renderImGUI() {
 	ImGuiIO& io = ImGui::GetIO(); (void)io;
 
-
-	if (showDataWindow) {
-		ImGui::Begin("Data Window");
-
-		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
-
-		ImGui::End();
-	}
-
 	// RENDER MORE GUI HERE
 
 	if (showGeneralInformation)
@@ -41,6 +32,14 @@ void Renderer::renderImGUI() {
 
 	if (showAddObject) 
 		renderAddObject();
+
+	if (showObjectInformation)
+		renderObjectInformation();
+
+	if (showHelpMenu)
+		renderHelpMenu();
+
+	renderMenuBar();
 
 	// Rendering
 	ImGui::Render();
@@ -58,6 +57,8 @@ void Renderer::renderImGUI() {
 	}
 }
 
+
+
 void Renderer::renderSimulation() {
 
 	// Setup Projection matrix
@@ -67,7 +68,7 @@ void Renderer::renderSimulation() {
 
 	// Setup ImGui window with no border
 	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
-	ImGui::Begin("Viewport");
+	ImGui::Begin("Viewport", NULL, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse);
 
 	// Updates the window position and size
 	wsize = ImGui::GetWindowSize();
@@ -94,6 +95,12 @@ void Renderer::renderSimulation() {
 	ImGui::GetWindowDrawList()->AddImage(
 		(void*)fb.get_texture(), ImVec2(ImGui::GetCursorScreenPos()),
 		ImVec2(pos.x + wsize.x, pos.y + wsize.y), ImVec2(0, 1), ImVec2(1, 0));
+
+	// Invisible button for inputs:
+	ImGui::InvisibleButton(" ", wsize, ImGuiButtonFlags_MouseButtonLeft | ImGuiButtonFlags_MouseButtonRight);
+	// Handle inputs
+	handleSimulationInputs();
+
 
 	// End of ImGui window
 	ImGui::End();
@@ -579,5 +586,156 @@ void Renderer::renderAddSoftbody() {
 
 	if (ImGui::Button("Add Object")) {
 		simulation->addSoftbody(Softbody(pos, vel, force, mass, col, isStatic, noPoints, radius, springConstant, dampeningFactor));
+	}
+}
+
+void Renderer::handleSimulationInputs() {
+
+	// If the mouse is hovered or held over the button
+	const bool hovered = ImGui::IsItemHovered();
+	const bool active = ImGui::IsItemActive();
+
+	// Find mouse positions
+	glm::vec2 mousePos = utilities::imvec2_to_vec(ImGui::GetMousePos());
+	glm::vec2 windowPos = utilities::imvec2_to_vec(ImGui::GetWindowPos());
+	float scroll = ImGui::GetScrollMaxY();
+	glm::vec2 relMousePos = glm::mat2(1, 0, 0, -1) * (mousePos - windowPos - glm::vec2(0, wsize.y+scroll));
+
+	static bool held = false;
+	static glm::vec2 initialPos = glm::vec2(0, 0);
+	static glm::vec2 relBodyPos = glm::vec2(0, 0);
+
+	// New mouse click
+	if (!held && active) {
+		held = true;
+		// Find focused body
+		focusedBody = simulation->getClickedObject(relMousePos);
+		// If a body was clicked on
+		if (focusedBody != nullptr) {
+			// Set the initial pos to be the position of the body
+			initialPos = focusedBody->getPosition();
+			// Find the relative body position
+			relBodyPos = initialPos - relMousePos;
+			// Pause the simulation
+			simulation->pause();
+		}
+	}
+	// Mouse being held
+	else if (held && active) {
+		// If a body is being dragged
+		if (focusedBody != nullptr) {
+			// Set the position of the body to be the
+			// relative mouse position + relative body position
+			focusedBody->setPosition(relMousePos+relBodyPos);
+		}
+	}
+	// Mouse moved out of viewport
+	else if (held && !hovered) {
+		// If a body was clicked on
+		if (focusedBody != nullptr) {
+			// Set the body position to be its initial position
+			focusedBody->setPosition(initialPos);
+		}
+		// set held to false
+		held = false;
+	}
+	// Mouse released
+	else if (held && !active) {
+		// Set held to false
+		held = false;
+	}
+}
+
+void Renderer::renderObjectInformation() {
+
+	ImGui::Begin("Object Information", &showObjectInformation);
+
+	if (focusedBody != nullptr) {
+
+
+		ImGui::InputFloat2("Position", &(focusedBody->getPositionP()->x));
+		ImGui::InputFloat2("Velocity", &focusedBody->getVelocityP()->x);
+		ImGui::InputFloat2("Force", &focusedBody->getForceP()->x);
+		ImGui::InputFloat("Mass", focusedBody->getMassP());
+		ImGui::ColorEdit4("Colour", &focusedBody->getColourP()->x);
+		ImGui::Checkbox("Static", focusedBody->getStaticP());
+
+	}
+	else {
+		ImGui::Text("No Object has been selected");
+	}
+	ImGui::End();
+
+}
+
+
+void Renderer::renderHelpMenu() {
+	static int selected = 0;
+	
+	ImGui::Begin("Help", &showHelpMenu);
+
+	// Select From List of menus
+	ImGui::BeginChild("left pane", ImVec2(150, 0), true);
+
+	// Menu Items
+	char label1[] = "General Information Window";
+	if (ImGui::Selectable(label1, selected == 0))
+		selected = 0;
+
+	char label2[] = "Example Help Window";
+	if (ImGui::Selectable(label2, selected == 1))
+		selected = 1;
+
+	ImGui::EndChild();
+
+	ImGui::SameLine();
+
+	// Text for each time
+	ImGui::BeginGroup();
+
+	ImGui::BeginChild("");
+	if (selected == 0) {
+
+		ImGui::Text("General Information Window");
+		ImGui::Separator();
+		std::string text = std::string("The General Information window contains information about the simulation. It contains:\n")+
+			std::string("\n- Framerate\n- The Number of Objects\n- A button to clear the simulation\n- A toggle to turn on or off collisions\n")+
+			std::string("- A slide to control how elasic the collisions are\n- A slide to control the speed of the simulation\n")+
+			std::string("- And a button to pause the simulation.");
+		ImGui::Text(text.c_str());
+	}
+	else if (selected == 1) {
+		ImGui::Text("Example Help Window");
+		ImGui::Separator();
+		ImGui::Text("This is an example help window.");
+	}
+
+	ImGui::EndChild();
+	ImGui::EndGroup();
+
+	ImGui::End();
+}
+
+void Renderer::renderMenuBar() {
+	if (ImGui::BeginMainMenuBar())
+	{
+		if (ImGui::BeginMenu("File"))
+		{
+			
+			ImGui::EndMenu();
+		}
+		if (ImGui::BeginMenu("View"))
+		{
+			
+			ImGui::MenuItem("General Information", "", &showGeneralInformation);
+			ImGui::MenuItem("Add Object", "", &showAddObject);
+			ImGui::MenuItem("Object Information", "", &showObjectInformation);
+
+			ImGui::EndMenu();
+		}
+		if (ImGui::MenuItem("Help", "", showHelpMenu)) {
+			showHelpMenu = true;
+		}
+		ImGui::EndMainMenuBar();
 	}
 }

@@ -26,6 +26,15 @@ public:
 	bool getStatic();
 	ImVec4 getColour();
 
+	glm::vec2* getPositionP();
+	glm::vec2* getVelocityP();
+	glm::vec2* getForceP();
+	float* getMassP();
+	bool* getStaticP();
+	ImVec4* getColourP();
+
+	void setPosition(glm::vec2 pos);
+
 	void addPosition(glm::vec2 pos);
 
 	void applyImpulse(glm::vec2 impulse);

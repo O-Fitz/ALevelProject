@@ -179,13 +179,22 @@ glm::vec2 Simulation::checkCollision(Body* b1, Body* b2) {
 		}
 		else {
 			// Calculate the overlap distance between the two shadows
-			float newOverlap = std::min(p1.y, p2.y) - std::max(p1.x, p2.x);
-			if (newOverlap < overlap) {
+
+			float overlap1 = p1.y - p2.x;
+			float overlap2 = p2.y - p1.x;
+			if (overlap1 < overlap) {
 				// If the overlap is smaller than the current smallest overlap
 				// The current smallest overlap becomes newOverlap
-				overlap = newOverlap;
+				overlap = overlap1;
 				// The Minimum Translation Vector is equal the the normalized axis multiplied by the size of the overlap
-				MTV = glm::normalize(axis) * (overlap);
+				MTV = glm::normalize(axis) * -overlap;
+			}
+			if (overlap2 < overlap) {
+				// If the overlap is smaller than the current smallest overlap
+				// The current smallest overlap becomes newOverlap
+				overlap = overlap2;
+				// The Minimum Translation Vector is equal the the normalized axis multiplied by the size of the overlap
+				MTV = glm::normalize(axis) * overlap;
 			}
 		}
 	}
@@ -226,8 +235,8 @@ void Simulation::positionCorrection(Body* b1, Body* b2, glm::vec2 MTV) {
 
 		glm::vec2 moveVector = MTV / (rMass1 + rMass2);
 
-		b1->addPosition(-moveVector * rMass1);
-		b2->addPosition(moveVector * rMass2);
+		b1->addPosition(moveVector * rMass1);
+		b2->addPosition(-moveVector * rMass2);
 	}
 
 }
@@ -307,10 +316,20 @@ PBody Simulation::getClickedObject(glm::vec2 pos) {
 		}
 	}
 
+	return PBody(nullptr);
+
 }
 
 void Simulation::pausePlay() {
 	playing = !playing;
+}
+
+void Simulation::pause() {
+	playing = false;
+}
+
+void Simulation::play() {
+	playing = true;
 }
 
 void Simulation::clearSimulation(){

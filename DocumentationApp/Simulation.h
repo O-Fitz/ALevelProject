@@ -48,6 +48,8 @@ public:
 	void addSoftbody(const Softbody& body);
 
 	void pausePlay();
+	void pause();
+	void play();
 	void clearSimulation();
 
 	bool* getCollisionsP();
