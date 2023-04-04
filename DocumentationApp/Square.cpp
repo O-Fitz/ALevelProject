@@ -37,5 +37,6 @@ Square Square::loadSquare(std::vector<std::string> data) {
 	ImVec4 col = utilities::str_to_imvec(data[5]);
 	bool stat = utilities::str_to_bool(data[6]);
 	float len = utilities::str_to_float(data[7]);
+	std::cout << "Length: " << len << std::endl;
 	return Square(len, pos, vel, frc, mss, col, stat);
 }

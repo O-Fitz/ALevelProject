@@ -1,6 +1,7 @@
 #include "Rigidbody.h"
 #include "Renderer.h"
 #include "Utilities.h"
+#include <algorithm>
 
 Rigidbody::Rigidbody() {
 	vertices = std::vector<glm::vec2>();
@@ -94,7 +95,7 @@ std::vector<Body*> Rigidbody::getCollisionBodies() {
 
 glm::vec2 Rigidbody::project(glm::vec2 axis) {
 	// Set minA to maximum value (so that any other values will be less than it)
-	float minA = std::numeric_limits<float>::max();
+	float minA = std::numeric_limits<float>::infinity();
 	// Set maxA to minimum value (so that any other values will be greater than it)
 	float maxA = -minA;
 

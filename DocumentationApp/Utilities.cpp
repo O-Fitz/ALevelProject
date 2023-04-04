@@ -87,3 +87,4 @@ glm::vec2 utilities::imvec2_to_vec(ImVec2 vec) {
 ImVec2 utilities::vec_to_imvec2(glm::vec2 vec) {
 	return ImVec2(vec.x, vec.y);
 }
+

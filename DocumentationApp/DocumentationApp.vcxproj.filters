@@ -40,6 +40,9 @@
     <Filter Include="OpenGLAbstraction">
       <UniqueIdentifier>{71c498cb-c98d-44c5-8293-a08f7bb147d7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="External\imgui_file_explorer">
+      <UniqueIdentifier>{10196e0e-37a9-488a-8a84-07dcb235ec34}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -104,6 +107,9 @@
     </ClCompile>
     <ClCompile Include="Softbody.cpp">
       <Filter>Bodies</Filter>
+    </ClCompile>
+    <ClCompile Include="External\imgui-filebrowser\imfilebrowser.cpp">
+      <Filter>External\imgui_file_explorer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -598,6 +604,9 @@
     </ClInclude>
     <ClInclude Include="Utilities.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="External\imgui-filebrowser\imfilebrowser.h">
+      <Filter>External\imgui_file_explorer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

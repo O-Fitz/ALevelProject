@@ -56,6 +56,7 @@ void Simulation::save(std::string path) {
 }
 
 void Simulation::load(std::string path) {
+	std::cout << "Path: " << path << std::endl;
 	// Clear current bodies
 	bodies = std::vector<PBody>();
 
@@ -83,7 +84,7 @@ void Simulation::parseLine(std::string line) {
 	// Iterate through each character in the string
 	for (int i = 0; i < line.size(); i++) {
 		// If character is a space or the last character
-		if (line[i] == ' ' || i == line.size()-1) {
+		if (line[i] == ' ') {
 			// Add the current data to the end of the list
 			data.push_back(currentData);
 			// Clear the current data
@@ -94,6 +95,7 @@ void Simulation::parseLine(std::string line) {
 			currentData.push_back(line[i]);
 		}
 	}
+	data.push_back(currentData);
 
 	// Add bodies
 	if (data[0] == "body") {

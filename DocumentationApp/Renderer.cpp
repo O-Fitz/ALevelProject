@@ -4,6 +4,14 @@
 
 Renderer::Renderer(GLFWwindow* win, Simulation* sim) : window(win), simulation(sim){
 
+	saveWindow = ImGui::FileBrowser(ImGuiFileBrowserFlags_EnterNewFilename | ImGuiFileBrowserFlags_CreateNewDir);
+	saveWindow.SetTitle("Save");
+	saveWindow.SetTypeFilters({ ".phys" });
+
+	loadWindow = ImGui::FileBrowser();
+	loadWindow.SetTitle("Load");
+	loadWindow.SetTypeFilters({ ".phys" });
+
 }
 
 void Renderer::newFrame() {
@@ -38,6 +46,12 @@ void Renderer::renderImGUI() {
 
 	if (showHelpMenu)
 		renderHelpMenu();
+
+	if (showSaveWindow)
+		renderSaveWindow();
+
+	if (showLoadWindow)
+		renderLoadWindow();
 
 	renderMenuBar();
 
@@ -668,7 +682,6 @@ void Renderer::renderObjectInformation() {
 
 }
 
-
 void Renderer::renderHelpMenu() {
 	static int selected = 0;
 	
@@ -716,26 +729,83 @@ void Renderer::renderHelpMenu() {
 	ImGui::End();
 }
 
+void Renderer::renderSaveWindow() {
+	// Display window
+	saveWindow.Display();
+
+	// If user has selected path
+	if (saveWindow.HasSelected()) {
+		// Find path
+		std::string filepath = saveWindow.GetSelected().string();
+		// Check if path contains ".phys" at the end
+		if (filepath.find(".phys") != filepath.size()-5) {
+			// If it doesn't, add it
+			filepath += ".phys";
+		}
+		// Save the simulation
+		simulation->save(filepath);
+		// Hide the save window
+		showSaveWindow = false;
+		// Clear the selection.
+		saveWindow.ClearSelected();
+	}
+
+}
+
+void Renderer::renderLoadWindow() {
+	// Display window
+	loadWindow.Display();
+
+	// If user has selected path
+	if (loadWindow.HasSelected()) {
+		// Find path
+		std::string filepath = loadWindow.GetSelected().string();
+		// Save the simulation
+		simulation->load(filepath);
+		// Hide the save window
+		showLoadWindow = false;
+		// Clear the selection.
+		loadWindow.ClearSelected();
+	}
+}
+
 void Renderer::renderMenuBar() {
-	if (ImGui::BeginMainMenuBar())
-	{
-		if (ImGui::BeginMenu("File"))
-		{
-			
+	if (ImGui::BeginMainMenuBar()) {
+		// File Menu
+		if (ImGui::BeginMenu("File")) {
+			// Save button
+			if (ImGui::MenuItem("Save")) {
+				// Open the save window
+				showSaveWindow = true;
+				saveWindow.Open();
+			}
+
+			// Load button
+			if (ImGui::MenuItem("Load")) {
+				// Open the load window
+				showLoadWindow = true;
+				loadWindow.Open();
+			}
+
 			ImGui::EndMenu();
 		}
-		if (ImGui::BeginMenu("View"))
-		{
+
+		//  Open windows
+		if (ImGui::BeginMenu("View")) {
 			
+			// Options for each different window
 			ImGui::MenuItem("General Information", "", &showGeneralInformation);
 			ImGui::MenuItem("Add Object", "", &showAddObject);
 			ImGui::MenuItem("Object Information", "", &showObjectInformation);
 
 			ImGui::EndMenu();
 		}
+
+		// Help window
 		if (ImGui::MenuItem("Help", "", showHelpMenu)) {
 			showHelpMenu = true;
 		}
+
 		ImGui::EndMainMenuBar();
 	}
 }

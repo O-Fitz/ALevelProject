@@ -1,5 +1,7 @@
 #pragma once
 
+#define NOMINMAX
+
 #include "imguiInclude.h"
 #include "Simulation.h"
 
@@ -10,6 +12,8 @@
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
 #include "glm/gtc/type_ptr.hpp"
+
+#include "imgui-filebrowser/imfilebrowser.h"
 
 class Renderer {
 
@@ -54,14 +58,16 @@ private:
 	bool showAddObject = true;
 	bool showObjectInformation = true;
 	bool showHelpMenu = false;
+	bool showSaveWindow = false;
+	bool showLoadWindow = false;
 
 	// Render Panels
 	void renderGeneralInformationPanel();
 	void renderAddObject();
 	void renderObjectInformation();
 	void renderHelpMenu();
-
-
+	void renderSaveWindow();
+	void renderLoadWindow();
 	void renderMenuBar();
 
 	// Add object panel
@@ -75,6 +81,7 @@ private:
 	void renderAddCircle();
 	void renderAddSoftbody();
 
-	// Object informmation 
+	ImGui::FileBrowser saveWindow;
+	ImGui::FileBrowser loadWindow;
 
 };
