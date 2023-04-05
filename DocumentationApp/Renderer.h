@@ -27,6 +27,7 @@ public:
 	void drawCircle(glm::vec2 position, double radius, ImVec4 colour);
 	void drawPolygon(glm::vec2 position, std::vector<glm::vec2> vertices, ImVec4 colour);
 	void drawLine(glm::vec2 pos1, glm::vec2 pos2, ImVec4 colour);
+	void drawArrow(glm::vec2 pos1, glm::vec2 pos2, ImVec4 colour);
 
 	ImVec2 getWindowSize();
 
@@ -50,6 +51,7 @@ private:
 
 	FrameBuffer fb = FrameBuffer(); // Framebuffer
 	glm::mat4 projection; // Projection Matrix
+	bool velocityArrows = false;
 
 	void handleSimulationInputs();
 

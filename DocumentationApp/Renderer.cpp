@@ -71,15 +71,13 @@ void Renderer::renderImGUI() {
 	}
 }
 
-
-
 void Renderer::renderSimulation() {
 
 	// Setup Projection matrix
 	projection = glm::ortho(0.0f, wsize.x, 0.0f, wsize.y, -1.0f, 1.0f);
 	glMatrixMode(GL_PROJECTION_MATRIX);
 	glLoadMatrixf(glm::value_ptr(projection));
-
+	
 	// Setup ImGui window with no border
 	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
 	ImGui::Begin("Viewport", NULL, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse);
@@ -101,6 +99,13 @@ void Renderer::renderSimulation() {
 	for (int i = 0; i < n.size(); i++) {
 		n[i]->render(this);
 	}
+
+	if (velocityArrows) {
+		for (int i = 0; i < n.size(); i++) {
+			drawArrow(n[i]->getPosition(), n[i]->getPosition() + n[i]->getVelocity(), ImVec4(0, 0, 0, 255));
+		}
+	}
+
 
 	// Unbinds Frame buffer
 	fb.unbind();
@@ -155,6 +160,24 @@ void Renderer::drawLine(glm::vec2 pos1, glm::vec2 pos2, ImVec4 colour) {
 	glEnd();
 }
 
+void Renderer::drawArrow(glm::vec2 pos1, glm::vec2 pos2, ImVec4 colour) {
+
+	glBegin(GL_LINES);
+	glColor4f(colour.x, colour.y, colour.z, colour.w);
+	glVertex2f(pos1.x, pos1.y);
+	glVertex2f(pos2.x, pos2.y);
+	glm::vec2 difLength = (pos2 - pos1) * 0.9f;
+	glm::vec2 difWidth = glm::vec2(difLength.y, -difLength.x) * 0.07f;
+	glm::vec2 point = pos1 + difLength + difWidth;
+	glVertex2f(point.x, point.y);
+	glVertex2f(pos2.x, pos2.y);
+	point = pos1 + difLength - difWidth;
+	glVertex2f(point.x, point.y);
+	glVertex2f(pos2.x, pos2.y);
+	glEnd();
+
+}
+
 ImVec2 Renderer::getWindowSize() {
 	return wsize;
 }
@@ -175,6 +198,11 @@ void Renderer::renderGeneralInformationPanel() {
 	if (ImGui::Button("Clear Simmulation")) {
 		simulation->clearSimulation();
 	}
+
+	ImGui::Spacing();
+	ImGui::Spacing();
+
+	ImGui::Checkbox("Velocity arrows", &velocityArrows);
 
 	ImGui::Spacing();
 	ImGui::Spacing();

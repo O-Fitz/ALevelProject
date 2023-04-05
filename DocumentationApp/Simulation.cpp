@@ -56,7 +56,6 @@ void Simulation::save(std::string path) {
 }
 
 void Simulation::load(std::string path) {
-	std::cout << "Path: " << path << std::endl;
 	// Clear current bodies
 	bodies = std::vector<PBody>();
 
