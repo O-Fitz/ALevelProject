@@ -6,7 +6,8 @@
 
 Simulation::Simulation(){
 	bodies = std::vector<PBody>();
-	playing = true;
+
+	playing = false;
 	collisions = true;
 
 }
@@ -180,26 +181,23 @@ glm::vec2 Simulation::checkCollision(Body* b1, Body* b2) {
 		}
 		else {
 			// Calculate the overlap distance between the two shadows
-
-			float overlap1 = p1.y - p2.x;
-			float overlap2 = p2.y - p1.x;
-			if (overlap1 < overlap) {
-				// If the overlap is smaller than the current smallest overlap
-				// The current smallest overlap becomes newOverlap
-				overlap = overlap1;
+			float current_overlap1 = p1.y - p2.x;
+			float current_overlap2 = p2.y - p1.x;
+			if (current_overlap1 < overlap) {
+				// If the current_overlap is smaller than the overlap
+				// The overlap becomes current_overlap
+				overlap = current_overlap1;
 				// The Minimum Translation Vector is equal the the normalized axis multiplied by the size of the overlap
 				MTV = glm::normalize(axis) * -overlap;
-			}
-			if (overlap2 < overlap) {
-				// If the overlap is smaller than the current smallest overlap
-				// The current smallest overlap becomes newOverlap
-				overlap = overlap2;
+			}if (current_overlap2 < overlap) {
+				// If the current_overlap is smaller than the overlap
+				// The overlap becomes current_overlap
+				overlap = current_overlap2;
 				// The Minimum Translation Vector is equal the the normalized axis multiplied by the size of the overlap
 				MTV = glm::normalize(axis) * overlap;
 			}
 		}
 	}
-
 	return MTV;
 }
 
@@ -256,13 +254,11 @@ void Simulation::impulseCalculation(Body* b1, Body* b2, glm::vec2 MTV) {
 
 		// Calculates the component of body's velocity parallel to the normal 
 		glm::vec2 par = normal * (glm::dot(body->getVelocity(), normal) / glm::dot(normal, normal));
-		// Calculates the component of body's velocity perpendicular to the normal
-		glm::vec2 perp = body->getVelocity() - par;
 		
 		// Impulse = mass * change in velocity
-		// Change in velocity = perp - par (reflects the body in the opposite direction to the normal)
+		// Change in velocity = - 2 * par (reflects the body in the opposite direction to the normal)
 		// Elasticity detemines how much energy is conservec in the reaction
-		glm::vec2 impulse = (perp - par) * (elasticity * body->getMass() * 2);
+		glm::vec2 impulse = -2.0f * par * elasticity * body->getMass();
 		body->applyImpulse(impulse);
 	}
 	else {
@@ -288,16 +284,17 @@ void Simulation::impulseCalculation(Body* b1, Body* b2, glm::vec2 MTV) {
 
 PBody Simulation::getClickedObject(glm::vec2 pos) {
 
-	for (const PBody& body : bodies) {
+	//for (const PBody& body : bodies) {
+	for (int i=bodies.size()-1; i>=0; i--){
 		// Get all axes
-		std::vector<glm::vec2> axes = body->getAxes();
+		std::vector<glm::vec2> axes = bodies[i]->getAxes();
 
 		bool inObject = true;
 
 		// SAT for a single point
 		for (glm::vec2 axis : axes) {
 			// Project the shape onto the axis
-			glm::vec2 proj = body->project(axis);
+			glm::vec2 proj = bodies[i]->project(axis);
 
 			// Project the mouse position onto the axis
 			float posProj = glm::dot(pos, axis);
@@ -313,7 +310,7 @@ PBody Simulation::getClickedObject(glm::vec2 pos) {
 		// If the mouse pos is in the shape
 		if (inObject) {
 			// Return that shape
-			return body;
+			return bodies[i];
 		}
 	}
 

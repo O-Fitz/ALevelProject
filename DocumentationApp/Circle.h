@@ -21,5 +21,5 @@ public:
 protected:
 
 	double radius;
-	int collisionAxis = 10;
+	int collisionAxis = 20;
 };
