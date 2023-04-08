@@ -1,4 +1,5 @@
 #include "Simulation.h"
+
 #include "Renderer.h"
 
 #include <sstream>

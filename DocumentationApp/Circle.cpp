@@ -30,10 +30,10 @@ std::vector<glm::vec2> Circle::getAxes() {
 
 	// Iterate through angles in radians
 	for (float i = 0; i < 2 * 3.141; i += 2 * 3.141 / collisionAxis) {
-		// x = sin(i)
-		// y = cos(i)
+		// x = cos(i)
+		// y = sin(i)
 		// Dont need to multiply by the radius as the axis is only a direction
-		axes.push_back(glm::normalize(glm::vec2(sin(i), cos(i))));
+		axes.push_back(glm::normalize(glm::vec2(cos(i), sin(i))));
 	}
 	return axes;
 }
