@@ -184,4 +184,111 @@ namespace CollisionTesting
 			Assert::IsTrue(sim.checkCollision(&square1, &square2) == glm::vec2(0, -10));
 		}
 	};
+
+	TEST_CLASS(CollisionResolution) {
+	public:
+
+		TEST_METHOD(PositionCorrectionNN) {
+			glm::vec2 pos1 = glm::vec2(100, 100);
+			glm::vec2 pos2 = glm::vec2(100, 140);
+			glm::vec2 zero = glm::vec2(0, 0);
+
+			float sideLength = 50;
+
+			Square square1 = Square(sideLength, pos1, zero, zero, 1, ImVec4(), false);
+			Square square2 = Square(sideLength, pos2, zero, zero, 1, ImVec4(), false);
+
+			Simulation sim = Simulation();
+
+			glm::vec2 MTV = glm::vec2(0, -10);
+
+			sim.positionCorrection(&square1, &square2, MTV);
+
+			glm::vec2 expected_pos1 = glm::vec2(100, 95);
+			glm::vec2 expected_pos2 = glm::vec2(100, 145);
+
+			Assert::IsTrue(expected_pos1 == square1.getPosition());
+			Assert::IsTrue(expected_pos2 == square2.getPosition());
+
+		}
+
+		TEST_METHOD(PositionCorrectionSN) {
+			glm::vec2 pos1 = glm::vec2(100, 100);
+			glm::vec2 pos2 = glm::vec2(100, 140);
+			glm::vec2 zero = glm::vec2(0, 0);
+
+			float sideLength = 50;
+
+			Square square1 = Square(sideLength, pos1, zero, zero, 1, ImVec4(), true);
+			Square square2 = Square(sideLength, pos2, zero, zero, 1, ImVec4(), false);
+
+			Simulation sim = Simulation();
+
+			glm::vec2 MTV = glm::vec2(0, -10);
+
+			sim.positionCorrection(&square1, &square2, MTV);
+
+			glm::vec2 expected_pos1 = glm::vec2(100, 100);
+			glm::vec2 expected_pos2 = glm::vec2(100, 150);
+
+			Assert::IsTrue(expected_pos1 == square1.getPosition());
+			Assert::IsTrue(expected_pos2 == square2.getPosition());
+
+		}
+
+		TEST_METHOD(ImpulseCalculationNN) {
+			glm::vec2 pos1 = glm::vec2(100, 100);
+			glm::vec2 pos2 = glm::vec2(100, 140);
+			glm::vec2 vel1 = glm::vec2(100, 100);
+			glm::vec2 vel2 = glm::vec2(100, -100);
+			glm::vec2 zero = glm::vec2(0, 0);
+
+			float sideLength = 50;
+
+			Square square1 = Square(sideLength, pos1, vel1, zero, 1, ImVec4(), false);
+			Square square2 = Square(sideLength, pos2, vel2, zero, 1, ImVec4(), false);
+
+			Simulation sim = Simulation();
+
+			glm::vec2 MTV = glm::vec2(0, -10);
+
+			sim.impulseCalculation(&square1, &square2, MTV);
+
+			square1.update(0.016);
+			square2.update(0.016);
+
+			glm::vec2 expected_vel1 = glm::vec2(100, -100);
+			glm::vec2 expected_vel2 = glm::vec2(100, 100);
+
+			Assert::IsTrue(expected_vel1 == square1.getVelocity());
+			Assert::IsTrue(expected_vel2 == square2.getVelocity());
+		}
+
+		TEST_METHOD(ImpulseCalculationSN) {
+			glm::vec2 pos1 = glm::vec2(100, 100);
+			glm::vec2 pos2 = glm::vec2(100, 140);
+			glm::vec2 vel2 = glm::vec2(100, -100);
+			glm::vec2 zero = glm::vec2(0, 0);
+
+			float sideLength = 50;
+
+			Square square1 = Square(sideLength, pos1, zero, zero, 1, ImVec4(), true);
+			Square square2 = Square(sideLength, pos2, vel2, zero, 1, ImVec4(), false);
+
+			Simulation sim = Simulation();
+
+			glm::vec2 MTV = glm::vec2(0, -10);
+
+			sim.impulseCalculation(&square1, &square2, MTV);
+
+			square1.update(0.016);
+			square2.update(0.016);
+
+			glm::vec2 expected_vel1 = glm::vec2(0, 0);
+			glm::vec2 expected_vel2 = glm::vec2(100, 100);
+
+			Assert::IsTrue(expected_vel1 == square1.getVelocity());
+			Assert::IsTrue(expected_vel2 == square2.getVelocity());
+		}
+	};
 }
