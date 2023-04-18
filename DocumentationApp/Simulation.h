@@ -56,7 +56,7 @@ public:
 	float* getElasticityP();
 	float* getSpeed();
 
-
+private:
 
 	glm::vec2 simSize;
 	std::vector<PBody> bodies;

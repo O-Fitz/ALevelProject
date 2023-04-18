@@ -292,3 +292,49 @@ namespace CollisionTesting
 		}
 	};
 }
+
+namespace SoftbodyTesting {
+
+	TEST_CLASS(Springs) {
+
+		TEST_METHOD(SpringUpdate) {
+
+			float radius = 5;
+			glm::vec2 pos1 = glm::vec2(100, 100);
+			glm::vec2 pos2 = glm::vec2(100, 200);
+			glm::vec2 zero = glm::vec2(0, 0);
+			float mass = 1;
+
+			std::shared_ptr<Circle> c1 = std::make_shared<Circle>(Circle(radius, pos1, zero, zero, mass, ImVec4(), false));
+			std::shared_ptr<Circle> c2 = std::make_shared<Circle>(Circle(radius, pos2, zero, zero, mass, ImVec4(), false));
+
+			float naturalLength = 50;
+			float springConstant = 30;
+			float dampeningFactor = 0.5;
+
+			Spring spring = Spring(c1, c2, naturalLength, springConstant, dampeningFactor);
+
+			float dt = 0.016;
+
+			spring.update(0.016);
+			c1->update(dt);
+			c2->update(dt);
+
+			float extension = 50;
+			glm::vec2 force = extension * springConstant * glm::vec2(0, 1);
+
+			float rMass = 1 / mass + 1 / mass;
+
+			glm::vec2 vel1 = (force * 0.5f * dt) / mass;
+			glm::vec2 vel2 = (-force * 0.5f * dt) / mass;
+
+			glm::vec2 expectedPosition1 = pos1 + vel1 * dt;
+			glm::vec2 expectedPosition2 = pos2 + vel2 * dt;
+
+			Assert::IsTrue(expectedPosition1 == c1->getPosition() && expectedPosition2 == c2->getPosition());
+
+		}
+
+	};
+
+}

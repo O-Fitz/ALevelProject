@@ -34,15 +34,9 @@ void Application::run() {
 
 	double dt;
 
-	int i = 0;
-
 	// Main loop
 	while (!glfwWindowShouldClose(window))
 	{
-		if (i == 300)
-			simulation.play();
-		else
-			i++;
 		// Poll events
 		glfwPollEvents();
 

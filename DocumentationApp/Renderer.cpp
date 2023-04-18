@@ -197,6 +197,7 @@ void Renderer::renderGeneralInformationPanel() {
 
 	if (ImGui::Button("Clear Simmulation")) {
 		simulation->clearSimulation();
+		focusedBody = nullptr;
 	}
 
 	ImGui::Spacing();

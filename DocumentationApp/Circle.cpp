@@ -35,6 +35,8 @@ std::vector<glm::vec2> Circle::getAxes() {
 		// Dont need to multiply by the radius as the axis is only a direction
 		axes.push_back(glm::normalize(glm::vec2(cos(i), sin(i))));
 	}
+
+	axes.push_back(glm::vec2(0, 1));
 	return axes;
 }
 

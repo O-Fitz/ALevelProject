@@ -32,8 +32,9 @@ void Spring::update(double dt) {
 		// Apply half of the force to both of the points
 		glm::vec2 relVelocity = point2->getVelocity() - point1->getVelocity();
 		glm::vec2 newForce = force - relVelocity * dampeningFactor;
-		point1->applyImpulse(newForce * -0.5f * (float)dt);
-		point2->applyImpulse(newForce * 0.5f * (float)dt);
+
+		point1->applyImpulse(-0.5f * newForce * (float)dt);
+		point2->applyImpulse(0.5f * newForce * (float)dt);
 	}
 
 }

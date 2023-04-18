@@ -289,6 +289,8 @@ PBody Simulation::getClickedObject(glm::vec2 pos) {
 	for (int i=bodies.size()-1; i>=0; i--){
 		// Get all axes
 		std::vector<glm::vec2> axes = bodies[i]->getAxes();
+		if (axes.size() == 0)
+			break;
 
 		bool inObject = true;
 
