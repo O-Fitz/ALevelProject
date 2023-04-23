@@ -64,3 +64,7 @@ Circle Circle::loadCircle(std::vector<std::string> data) {
 	float rad = utilities::str_to_float(data[7]);
 	return Circle(rad, pos, vel, frc, mss, col, stat);
 }
+
+double Circle::getRadius() {
+	return radius;
+}

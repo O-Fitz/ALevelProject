@@ -123,9 +123,10 @@ namespace CollisionTesting
 			// Make sure that at least 1 axis was returned
 			Assert::AreNotSame(noAxes, 0);
 
-			for (float angle = 0; angle < 2 * 3.141; angle += 2 * 3.141 / (noAxes - 1)) {
+			for (float angle = 0; angle < 2 * 3.141; angle += 2 * 3.141 / (noAxes - 2)) {
 				expected_axes.push_back(glm::normalize(glm::vec2(cos(angle), sin(angle))));
 			}
+			expected_axes.push_back(glm::vec2(0, 1));
 
 			for (int i = 0; i < axes.size(); i++) {
 				Assert::IsTrue(axes[i] == expected_axes[i]);
@@ -337,4 +338,270 @@ namespace SoftbodyTesting {
 
 	};
 
+}
+
+namespace UtilityTesting {
+	TEST_CLASS(Saving) {
+
+		TEST_METHOD(SavingBody) {
+			glm::vec2 position = glm::vec2(100, 100);
+			glm::vec2 velocity = glm::vec2(200, 50);
+			glm::vec2 force = glm::vec2(10, -10);
+			float mass = 1;
+			ImVec4 colour = ImVec4(255, 0, 0, 255);
+			bool isStatic = false;
+
+			std::string expectedString = "body {100,100} {200,50} {10,-10} 1 -255,0,0,255- 0";
+
+			Body body = Body(position, velocity, force, mass, colour, isStatic);
+
+			Assert::IsTrue(expectedString == body.save());
+		}
+
+		TEST_METHOD(SavingRigidbody){
+			glm::vec2 position = glm::vec2(100, 100);
+			glm::vec2 velocity = glm::vec2(200, 50);	
+			glm::vec2 force = glm::vec2(10, -10);
+			float mass = 1;
+			ImVec4 colour = ImVec4(255, 0, 0, 255);
+			bool isStatic = false;
+
+			std::vector<glm::vec2> vertices = std::vector<glm::vec2>();
+			vertices.push_back(glm::vec2(20, 10));
+			vertices.push_back(glm::vec2(-10, 10));
+			vertices.push_back(glm::vec2(20, 40));
+
+			std::string expectedString = "rigidbody {100,100} {200,50} {10,-10} 1 -255,0,0,255- 0 ({20,10}.{-10,10}.{20,40})";
+
+			Rigidbody rigidbody = Rigidbody(vertices, position, velocity, force, mass, colour, isStatic);
+
+			Assert::IsTrue(expectedString == rigidbody.save());
+		}
+
+		TEST_METHOD(SavingRectangle) {
+			glm::vec2 position = glm::vec2(100, 100);
+			glm::vec2 velocity = glm::vec2(200, 50);
+			glm::vec2 force = glm::vec2(10, -10);
+			float mass = 1;
+			ImVec4 colour = ImVec4(255, 0, 0, 255);
+			bool isStatic = false;
+			float width = 100;
+			float height = 200;
+
+			std::string expectedString = "rectangle {100,100} {200,50} {10,-10} 1 -255,0,0,255- 0 100 200";
+
+			Rectangle rectangle = Rectangle(width, height, position, velocity, force, mass, colour, isStatic);
+
+			Assert::IsTrue(expectedString == rectangle.save());
+		}
+
+		TEST_METHOD(SavingSquare) {
+			glm::vec2 position = glm::vec2(100, 100);
+			glm::vec2 velocity = glm::vec2(200, 50);
+			glm::vec2 force = glm::vec2(10, -10);
+			float mass = 1;
+			ImVec4 colour = ImVec4(255, 0, 0, 255);
+			bool isStatic = false;
+			float sideLength = 50;
+
+			std::string expectedString = "square {100,100} {200,50} {10,-10} 1 -255,0,0,255- 0 50";
+
+			Square square = Square(sideLength, position, velocity, force, mass, colour, isStatic);
+
+			Assert::IsTrue(expectedString == square.save());
+		}
+
+		TEST_METHOD(SavingCircle) {
+			glm::vec2 position = glm::vec2(100, 100);
+			glm::vec2 velocity = glm::vec2(200, 50);
+			glm::vec2 force = glm::vec2(10, -10);
+			float mass = 1;
+			ImVec4 colour = ImVec4(255, 0, 0, 255);
+			bool isStatic = false;
+			float radius = 100;
+
+			std::string expectedString = "circle {100,100} {200,50} {10,-10} 1 -255,0,0,255- 0 100";
+
+			Circle circle = Circle(radius, position, velocity, force, mass, colour, isStatic);
+
+			Assert::IsTrue(expectedString == circle.save());
+		}
+
+		TEST_METHOD(SavingSoftbody) {
+			glm::vec2 position = glm::vec2(100, 100);
+			glm::vec2 velocity = glm::vec2(200, 50);
+			glm::vec2 force = glm::vec2(10, -10);
+			float mass = 1;
+			ImVec4 colour = ImVec4(255, 0, 0, 255);
+			bool isStatic = false;
+
+			int noPoints = 10;
+			float radius = 100;
+			float springConstant = 20;
+			float dampeningFactor = 0.5;
+
+			std::string expectedString = "softbody {100,100} {200,50} {10,-10} 1 -255,0,0,255- 0 10 100 20 0.5";
+
+			Softbody softbody = Softbody(position, velocity, force, mass, colour, isStatic, noPoints, radius, springConstant, dampeningFactor);
+
+			Assert::IsTrue(expectedString == softbody.save());
+		}
+
+	};
+
+	TEST_CLASS(Loading) {
+
+		TEST_METHOD(LoadingBody){
+
+			glm::vec2 position = glm::vec2(100, 100);
+			glm::vec2 velocity = glm::vec2(200, 50);
+			glm::vec2 force = glm::vec2(10, -10);
+			float mass = 1;
+			ImVec4 colour = ImVec4(255, 0, 0, 255);
+			bool isStatic = false;
+
+			std::vector<std::string> loadString = std::vector<std::string>({ "body", "{100,100}", "{200,50}", "{10, -10}", "1", "-255,0,0,255-", "0" });
+
+			Body body = body.loadBody(loadString);
+
+			Assert::IsTrue(body.getPosition() == position);
+			Assert::IsTrue(body.getVelocity() == velocity);
+			Assert::IsTrue(body.getForce() == force);
+			Assert::IsTrue(body.getMass() == mass);
+			Assert::IsTrue(body.getColour().x == colour.x && body.getColour().y == colour.y && body.getColour().z == colour.z && body.getColour().w == colour.w);
+			Assert::IsTrue(body.getStatic() == isStatic);
+
+		}
+
+		TEST_METHOD(LoadingRigidody){
+
+			glm::vec2 position = glm::vec2(100, 100);
+			glm::vec2 velocity = glm::vec2(200, 50);
+			glm::vec2 force = glm::vec2(10, -10);
+			float mass = 1;
+			ImVec4 colour = ImVec4(255, 0, 0, 255);
+			bool isStatic = false;
+
+			std::vector<glm::vec2> expectedVertices = std::vector<glm::vec2>();
+			expectedVertices.push_back(glm::vec2(20, 10));
+			expectedVertices.push_back(glm::vec2(-10, 10));
+			expectedVertices.push_back(glm::vec2(20, 40));
+
+			std::vector<std::string> loadString = std::vector<std::string>({ "body", "{100,100}", "{200,50}", "{10, -10}", "1", "-255,0,0,255-", "0", "({20,10}.{-10,10}.{20,40})" });
+
+			Rigidbody body = Rigidbody::loadRigidbody(loadString);
+
+			Assert::IsTrue(body.getPosition() == position);
+			Assert::IsTrue(body.getVelocity() == velocity);
+			Assert::IsTrue(body.getForce() == force);
+			Assert::IsTrue(body.getMass() == mass);
+			Assert::IsTrue(body.getColour().x == colour.x && body.getColour().y == colour.y && body.getColour().z == colour.z && body.getColour().w == colour.w);
+			Assert::IsTrue(body.getStatic() == isStatic);
+
+			std::vector<glm::vec2> vertices = body.getVertices();
+			for (int i = 0; i < vertices.size(); i++) {
+				Assert::IsTrue(vertices[i] == expectedVertices[i] + position);
+			}
+		}
+
+		TEST_METHOD(LoadingRectangle){
+			glm::vec2 position = glm::vec2(100, 100);
+			glm::vec2 velocity = glm::vec2(200, 50);
+			glm::vec2 force = glm::vec2(10, -10);
+			float mass = 1;
+			ImVec4 colour = ImVec4(255, 0, 0, 255);
+			bool isStatic = false;
+
+			float width = 100;
+			float height = 200;
+
+			std::vector<std::string> loadString = std::vector<std::string>({ "body", "{100,100}", "{200,50}", "{10, -10}", "1", "-255,0,0,255-", "0", "100", "200"});
+
+			Rectangle body = Rectangle::loadRectangle(loadString);
+
+			Assert::IsTrue(body.getPosition() == position);
+			Assert::IsTrue(body.getVelocity() == velocity);
+			Assert::IsTrue(body.getForce() == force);
+			Assert::IsTrue(body.getMass() == mass);
+			Assert::IsTrue(body.getColour().x == colour.x && body.getColour().y == colour.y && body.getColour().z == colour.z && body.getColour().w == colour.w);
+			Assert::IsTrue(body.getStatic() == isStatic);
+			Assert::IsTrue(body.getWidth() == width);
+			Assert::IsTrue(body.getHeight() == height);
+		}
+
+		TEST_METHOD(LoadingSquare){
+			glm::vec2 position = glm::vec2(100, 100);
+			glm::vec2 velocity = glm::vec2(200, 50);
+			glm::vec2 force = glm::vec2(10, -10);
+			float mass = 1;
+			ImVec4 colour = ImVec4(255, 0, 0, 255);
+			bool isStatic = false;
+
+			float sideLength = 100;
+
+			std::vector<std::string> loadString = std::vector<std::string>({ "body", "{100,100}", "{200,50}", "{10, -10}", "1", "-255,0,0,255-", "0", "100" });
+
+			Square body = Square::loadSquare(loadString);
+
+			Assert::IsTrue(body.getPosition() == position);
+			Assert::IsTrue(body.getVelocity() == velocity);
+			Assert::IsTrue(body.getForce() == force);
+			Assert::IsTrue(body.getMass() == mass);
+			Assert::IsTrue(body.getColour().x == colour.x && body.getColour().y == colour.y && body.getColour().z == colour.z && body.getColour().w == colour.w);
+			Assert::IsTrue(body.getStatic() == isStatic);
+			Assert::IsTrue(body.getSideLength() == sideLength);
+		}
+
+		TEST_METHOD(LoadingCircle){
+			glm::vec2 position = glm::vec2(100, 100);
+			glm::vec2 velocity = glm::vec2(200, 50);
+			glm::vec2 force = glm::vec2(10, -10);
+			float mass = 1;
+			ImVec4 colour = ImVec4(255, 0, 0, 255);
+			bool isStatic = false;
+
+			float radius = 100;
+
+			std::vector<std::string> loadString = std::vector<std::string>({ "body", "{100,100}", "{200,50}", "{10, -10}", "1", "-255,0,0,255-", "0", "100" });
+
+			Circle body = Circle::loadCircle(loadString);
+
+			Assert::IsTrue(body.getPosition() == position);
+			Assert::IsTrue(body.getVelocity() == velocity);
+			Assert::IsTrue(body.getForce() == force);
+			Assert::IsTrue(body.getMass() == mass);
+			Assert::IsTrue(body.getColour().x == colour.x && body.getColour().y == colour.y && body.getColour().z == colour.z && body.getColour().w == colour.w);
+			Assert::IsTrue(body.getStatic() == isStatic);
+			Assert::IsTrue(body.getRadius() == radius);
+		}
+		
+		TEST_METHOD(LoadingSoftbody){
+			glm::vec2 position = glm::vec2(100, 100);
+			glm::vec2 velocity = glm::vec2(200, 50);
+			glm::vec2 force = glm::vec2(10, -10);
+			float mass = 1;
+			ImVec4 colour = ImVec4(255, 0, 0, 255);
+			bool isStatic = false;
+
+			int noPoints = 10;
+			float radius = 100;
+			float springConstant = 20;
+			float dampeningFactor = 0.2;
+
+			std::vector<std::string> loadString = std::vector<std::string>({ "body", "{100,100}", "{200,50}", "{10, -10}", "1", "-255,0,0,255-", "0", "10", "100", "20", "0.2"});
+
+			Softbody body = Softbody::loadSoftbody(loadString);
+
+			Assert::IsTrue(body.getPosition() == position);
+			Assert::IsTrue(body.getVelocity() == velocity);
+			Assert::IsTrue(body.getForce() == force);
+			Assert::IsTrue(body.getMass() == mass);
+			Assert::IsTrue(body.getColour().x == colour.x && body.getColour().y == colour.y && body.getColour().z == colour.z && body.getColour().w == colour.w);
+			Assert::IsTrue(body.getStatic() == isStatic);
+			Assert::IsTrue(body.getNoPoints() == noPoints);
+			Assert::IsTrue(body.getRadius() == radius);
+			Assert::IsTrue(body.getSpringConstant() == springConstant);
+			Assert::IsTrue(body.getDampeningFactor() == dampeningFactor);
+		}
+	};
 }

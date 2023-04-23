@@ -13,6 +13,9 @@ public:
 	std::string save();
 	static Rectangle loadRectangle(std::vector<std::string> data);
 
+	double getWidth();
+	double getHeight();
+
 protected:
 
 	double width;

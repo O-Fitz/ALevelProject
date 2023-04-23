@@ -55,3 +55,11 @@ Rectangle Rectangle::loadRectangle(std::vector<std::string> data) {
 	float hei = utilities::str_to_float(data[8]);
 	return Rectangle(wid, hei, pos, vel, frc, mss, col, stat);
 }
+
+double Rectangle::getWidth() {
+	return width;
+}
+
+double Rectangle::getHeight() {
+	return height;
+}

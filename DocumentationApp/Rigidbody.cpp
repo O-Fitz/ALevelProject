@@ -56,7 +56,7 @@ std::string Rigidbody::save() {
 	for (int i = 0; i < vertices.size(); i++) {
 		os << utilities::vec_to_str(vertices[i]);
 		if (i != vertices.size() - 1) {
-			os << ",";
+			os << ".";
 		}
 	}
 	os << ")";
@@ -77,11 +77,12 @@ Rigidbody Rigidbody::loadRigidbody(std::vector<std::string> data) {
 	std::vector<glm::vec2> vert = std::vector<glm::vec2>();
 	std::string current = std::string();
 	for (int i = 0; i < data[7].size(); i++) {
-		if (data[7][i] == ',' || data[7][i] == ')') {
+		if (data[7][i] == '.' || data[7][i] == ')') {
 			vert.push_back(utilities::str_to_vec(current));
+			std::cout << current << "\n";
 			current = "";
 		}
-		else {
+		else if (i!=0) {
 			current.push_back(data[7][i]);
 		}
 	}

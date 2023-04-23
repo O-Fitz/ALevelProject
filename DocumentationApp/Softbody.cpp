@@ -133,3 +133,19 @@ Softbody Softbody::loadSoftbody(std::vector<std::string> data) {
 
 	return Softbody(pos, vel, frc, mss, col, stat, np, rad, sc, df);
 }
+
+int Softbody::getNoPoints() {
+	return noPoints;
+}
+
+float Softbody::getRadius() {
+	return radius;
+}
+
+float Softbody::getSpringConstant() {
+	return springConstant;
+}
+
+float Softbody::getDampeningFactor() {
+	return dampeningFactor;
+}

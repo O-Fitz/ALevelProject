@@ -13,6 +13,8 @@ public:
 	std::string save() override;
 	static Square loadSquare(std::vector<std::string> data);
 
+	double getSideLength();
+
 protected:
 
 	double sideLength;

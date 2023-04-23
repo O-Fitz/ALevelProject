@@ -39,3 +39,7 @@ Square Square::loadSquare(std::vector<std::string> data) {
 	float len = utilities::str_to_float(data[7]);
 	return Square(len, pos, vel, frc, mss, col, stat);
 }
+
+double Square::getSideLength() {
+	return sideLength;
+}

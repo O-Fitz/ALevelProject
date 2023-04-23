@@ -22,6 +22,11 @@ public:
 
 	std::vector<Body*> getCollisionBodies() override;
 
+	int getNoPoints();
+	float getRadius();
+	float getSpringConstant();
+	float getDampeningFactor();
+
 private:
 
 	std::vector<Point> points;

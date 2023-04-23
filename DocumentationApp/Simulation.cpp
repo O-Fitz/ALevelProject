@@ -10,7 +10,6 @@ Simulation::Simulation(){
 
 	playing = false;
 	collisions = true;
-
 }
 
 Simulation::~Simulation() {

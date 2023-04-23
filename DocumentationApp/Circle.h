@@ -17,6 +17,8 @@ public:
 	glm::vec2 project(glm::vec2 axis) override;
 	std::vector<glm::vec2> getAxes() override;
 
+	double getRadius();
+
 
 protected:
 
