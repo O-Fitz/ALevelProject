@@ -22,7 +22,6 @@ class Simulation {
 public:
 
 	Simulation();
-	~Simulation();
 
 	void update(double dt);
 
@@ -56,7 +55,7 @@ public:
 	float* getElasticityP();
 	float* getSpeed();
 
-//private:
+private:
 
 	glm::vec2 simSize;
 	std::vector<PBody> bodies;

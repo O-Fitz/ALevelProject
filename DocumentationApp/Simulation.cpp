@@ -1,5 +1,4 @@
 #include "Simulation.h"
-
 #include "Renderer.h"
 
 #include <sstream>
@@ -10,10 +9,6 @@ Simulation::Simulation(){
 
 	playing = false;
 	collisions = true;
-}
-
-Simulation::~Simulation() {
-
 }
 
 void Simulation::update(double dt) {
